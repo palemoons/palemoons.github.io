@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-Hans" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>DL-FWI内训Day2 | 所思大书院</title><meta name="author" content="Palemoons"><meta name="copyright" content="Palemoons"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="DL-FWI数据结构 进行深度学习训练的第一步是厘清数据集的基本结构。 对于一个地震数据集，存在以下结构关系： 1234567891011dataset|- data unit 1   |- seismic data      |- section 1 (T * R)      |- section"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://palemoons.github.io/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'DL-FWI内训Day2',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-07 00:27:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://palemoons-blog.oss-cn-beijing.aliyuncs.com/202303202127659.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="所思大书院"><span class="site-name">所思大书院</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">DL-FWI内训Day2</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-07-06T15:42:34.000Z" title="Created 2023-07-06 23:42:34">2023-07-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-07-06T16:27:11.064Z" title="Updated 2023-07-07 00:27:11">2023-07-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="DL-FWI内训Day2"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>DL-FWI数据结构</h1>
+<p>进行深度学习训练的第一步是厘清数据集的基本结构。</p>
+<p>对于一个地震数据集，存在以下结构关系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dataset</span><br><span class="line">|- data unit 1</span><br><span class="line">   |- seismic data</span><br><span class="line">      |- section 1 (T * R)</span><br><span class="line">      |- section 2</span><br><span class="line">      |- ...</span><br><span class="line">      |- section S</span><br><span class="line">   |- vmodel data (m * n)</span><br><span class="line">|- data unit 2</span><br><span class="line">...</span><br><span class="line">|- data unit N</span><br></pre></td></tr></table></figure>
+<p>在上述的数据集中，共有<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>个单元数据对，每个单元数据对包含速度模型和地震数据。其中速度模型的分辨率为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\times n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>，地震数据包含<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>炮产生的剖面，每个剖面的分辨率为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>×</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">T\times R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span></span></span></span>，代表了时间（Time）和接收点（Receiver）数量。</p>
+<h1>常见的FWI数据集</h1>
+<h2 id="SEG盐体数据">SEG盐体数据</h2>
+<p>SEG盐的数据描述了一个大约<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>k</mi><mi>m</mi><mo>×</mo><mn>3</mn><mi>k</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">2km\times 3km</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mord mathnormal">km</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord">3</span><span class="mord mathnormal">km</span></span></span></span>的地下二维剖面区域. 采样后, 地下的像素区域大小为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>201</mn><mo>×</mo><mn>301</mn></mrow><annotation encoding="application/x-tex">201\times 301</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">201</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">301</span></span></span></span>. 波在这个地下区域的传播速度为<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1500</mn><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi><mo>∼</mo><mn>4482</mn><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">1500m/s\sim 4482m/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1500</span><span class="mord mathnormal">m</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">4482</span><span class="mord mathnormal">m</span><span class="mord">/</span><span class="mord mathnormal">s</span></span></span></span>。</p>
+<p>实际上, 这个SEG盐数据是现实地下盐层三维分析数据通过剖面切片获得的, 共获得了140个切面数据。</p>
+<p>模型由SEG研究委员会建立, 大部分的计算是在Sandia和Los Alamos国家实验室完成的。</p>
+<img src="https://palemoons-blog.oss-cn-beijing.aliyuncs.com/202307070011216.png" alt="SEG盐体数据" style="width: 400px;" />
+<h2 id="SEG盐体模拟数据">SEG盐体模拟数据</h2>
+<p>由于真实数据量是很匮乏的, 而DL-FWI的一般网络都是非常吃数据量的模型, 故还需要通过合成一些同SEG盐数据类似分布的模拟数据来进行预训练, 作为网络背景。</p>
+<p>模拟数据集有1700个与SEG盐数据大小相同的合成速度模型。每幅图像都有不同宽度的层，从大约5到12层不等。为了精确模仿盐体, 每个速度模型在中间或底部随机嵌入了随机形状的盐体。同时，模拟数据的地层速度波动也控制在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2000</mn><mi>k</mi><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi><mo>∼</mo><mn>4500</mn><mi>k</mi><mi>m</mi><mi mathvariant="normal">/</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">2000km/s\sim 4500km/s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2000</span><span class="mord mathnormal">km</span><span class="mord">/</span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">4500</span><span class="mord mathnormal">km</span><span class="mord">/</span><span class="mord mathnormal">s</span></span></span></span>。</p>
+<p>该模拟数据最早出现于FCNVMB提供的开源数据。</p>
+<img src="https://palemoons-blog.oss-cn-beijing.aliyuncs.com/202307070014076.png" alt="SEG掩体模拟数据" style="width: 400px;" />
+<p>对比这两种模型，真实模型的构造更加复杂，会在观测范围内出现更多的反射波。</p>
+<h2 id="OpenFWI数据集">OpenFWI数据集</h2>
+<p>OpenFWI是近一两年随着DL-FWI的蓬勃发展而诞生的大规模、多结构基准数据集的集合。<br>
+它包含了12 个根据不同先验合成的数据集，其中包括一个 3D 数据集。而这12个数据集又可以细分为四类数据，Vel类、Fault类、Style类和Kimberlina类。除Style外，它们都表示不同的地下结构，Style则为一种自然图像的迁移假想地层。其中每一种类又可以分为A、B两类，A/B代表地层的难度分级。</p>
+<p>OpenFWI数据集的体量非常庞大。同时，官方提供的每个速度模型对应的地震数据并没有经过下采样，因此时间域与宽度的比例非常大。在实际使用的时候，需要对数据进行下采样。</p>
+<h1>数据输入</h1>
+<p>FWI的数据暂时没有统一的格式，其中就包括了<code>.npy</code>和<code>.mat</code>格式，导入方式如下例所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .mat format</span></span><br><span class="line">seg_real_seismit_data = scipy.io.loadmat(<span class="string">&quot;./simple_data/seismic_SEGReal.mat&quot;</span>)[<span class="string">&quot;data&quot;</span>]</span><br><span class="line"><span class="comment"># .npy format</span></span><br><span class="line">openfwi_seismit_data = np.load(<span class="string">&quot;./simple_data/seismic_openfwi_CurveFaultA.npy&quot;</span>)</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://palemoons.github.io">Palemoons</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://palemoons.github.io/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay2/">https://palemoons.github.io/2023/07/06/DL-FWI内训Day2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/FWI/">FWI</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay1/" title="DL-FWI内训Day1"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">DL-FWI内训Day1</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay1/" title="DL-FWI内训Day1"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-07-06</div><div class="title">DL-FWI内训Day1</div></div></a></div><div><a href="/2022/07/08/%E5%9F%BA%E4%BA%8E%E6%9A%97%E9%80%9A%E9%81%93%E5%85%88%E9%AA%8C%E7%9A%84%E5%8E%BB%E9%9B%BE%E7%AE%97%E6%B3%95/" title="基于暗通道先验的去雾算法"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-08</div><div class="title">基于暗通道先验的去雾算法</div></div></a></div><div><a href="/2022/07/18/pix2pix%E5%8E%BB%E4%BA%91%E9%9B%BE%E5%A4%8D%E7%8E%B0/" title="pix2pix去云雾复现"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-18</div><div class="title">pix2pix去云雾复现</div></div></a></div><div><a href="/2023/05/17/%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AC%94%E8%AE%B0/" title="随机梯度下降笔记"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-05-17</div><div class="title">随机梯度下降笔记</div></div></a></div><div><a href="/2023/06/09/%E8%87%AA%E5%8A%A8%E5%BE%AE%E5%88%86%E7%AC%94%E8%AE%B0/" title="自动微分笔记"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-09</div><div class="title">自动微分笔记</div></div></a></div><div><a href="/2023/06/16/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%AC%94%E8%AE%B0/" title="朴素贝叶斯笔记"><img class="cover" src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-16</div><div class="title">朴素贝叶斯笔记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://palemoons-blog.oss-cn-beijing.aliyuncs.com/202303202127659.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Palemoons</div><div class="author-info__description">天涯何处无芳草</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">17</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">8</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/palemoons" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:palemoons14@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="https://t.me/palemoonsF" target="_blank" title="Telegram"><i class="fab fa-telegram-plane"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">DL-FWI数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">常见的FWI数据集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#SEG%E7%9B%90%E4%BD%93%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">SEG盐体数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SEG%E7%9B%90%E4%BD%93%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE"><span class="toc-number">2.2.</span> <span class="toc-text">SEG盐体模拟数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenFWI%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">2.3.</span> <span class="toc-text">OpenFWI数据集</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">数据输入</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay2/" title="DL-FWI内训Day2"><img src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DL-FWI内训Day2"/></a><div class="content"><a class="title" href="/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay2/" title="DL-FWI内训Day2">DL-FWI内训Day2</a><time datetime="2023-07-06T15:42:34.000Z" title="Created 2023-07-06 23:42:34">2023-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay1/" title="DL-FWI内训Day1"><img src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DL-FWI内训Day1"/></a><div class="content"><a class="title" href="/2023/07/06/DL-FWI%E5%86%85%E8%AE%ADDay1/" title="DL-FWI内训Day1">DL-FWI内训Day1</a><time datetime="2023-07-05T17:42:35.000Z" title="Created 2023-07-06 01:42:35">2023-07-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/07/05/%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E7%AC%94%E8%AE%B0/" title="矩阵分解笔记"><img src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="矩阵分解笔记"/></a><div class="content"><a class="title" href="/2023/07/05/%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3%E7%AC%94%E8%AE%B0/" title="矩阵分解笔记">矩阵分解笔记</a><time datetime="2023-07-05T11:40:13.000Z" title="Created 2023-07-05 19:40:13">2023-07-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/19/%E5%86%B3%E7%AD%96%E6%A0%91ID3%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" title="决策树ID3算法笔记"><img src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="决策树ID3算法笔记"/></a><div class="content"><a class="title" href="/2023/06/19/%E5%86%B3%E7%AD%96%E6%A0%91ID3%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" title="决策树ID3算法笔记">决策树ID3算法笔记</a><time datetime="2023-06-19T08:29:25.000Z" title="Created 2023-06-19 16:29:25">2023-06-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/06/16/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%AC%94%E8%AE%B0/" title="朴素贝叶斯笔记"><img src="https://i.loli.net/2021/09/02/SFP83buQoMtDXAR.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="朴素贝叶斯笔记"/></a><div class="content"><a class="title" href="/2023/06/16/%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF%E7%AC%94%E8%AE%B0/" title="朴素贝叶斯笔记">朴素贝叶斯笔记</a><time datetime="2023-06-16T12:19:04.000Z" title="Created 2023-06-16 20:19:04">2023-06-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: #a3bded"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Palemoons</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
