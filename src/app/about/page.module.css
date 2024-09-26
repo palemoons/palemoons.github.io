@@ -1,0 +1,40 @@
+.header {
+  padding-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media (max-width: 640px) {
+    flex-direction: column-reverse;
+  }
+}
+.titleContainer {
+  height: min-content;
+  @media (max-width: 640px) {
+    text-align: center;
+  }
+}
+.title {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 40px;
+  font-weight: 600;
+}
+.description {
+  margin: 8px 0 4px 0;
+  font-size: 14px;
+  white-space: pre-line;
+}
+.postTime {
+  margin-bottom: 4px;
+}
+.postTime span {
+  margin: 0 12px 16px 0;
+  font-size: 14px;
+  color: #808080;
+}
+.avatarContainer {
+  text-align: center;
+}
+.avatarContainer img {
+  border-radius: 50%;
+}

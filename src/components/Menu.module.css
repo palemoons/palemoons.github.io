@@ -1,0 +1,44 @@
+.menu {
+  position: relative;
+  height: 36px;
+  width: 36px;
+}
+
+.menuIcon {
+  border: solid transparent;
+  border-radius: 2px;
+  border-width: 1px;
+}
+.menuIcon:hover {
+  cursor: pointer;
+  background-color: var(--hover-color);
+}
+.menuIcon svg {
+  height: 66.7%;
+  width: 66.7%;
+  fill: var(--svg-color);
+}
+
+.menuList {
+  /* absolute left-0 top-full z-10 mt-0.5 w-24 rounded-md border border-zinc-600 bg-zinc-200 py-2 shadow-lg dark:bg-zinc-800 */
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 1;
+  margin-top: 4px;
+  padding: 4px 0;
+  width: 96px;
+  border: solid var(--border-color);
+  border-radius: 2px;
+  border-width: 1px;
+  background-color: var(--bg-color);
+  box-shadow: var(--shadow);
+}
+
+.menuItem {
+  padding: 4px;
+  text-align: center;
+}
+.menuItem:hover {
+  background-color: var(--hover-color);
+}
