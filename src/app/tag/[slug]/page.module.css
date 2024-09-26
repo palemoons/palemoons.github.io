@@ -1,0 +1,12 @@
+.siteTitle {
+  margin: 48px 0 24px 0;
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.tag {
+  padding: 4px 6px;
+  background-color: var(--inline-bg-color);
+  color: var(--inline-code-color);
+  border-radius: 2px;
+}

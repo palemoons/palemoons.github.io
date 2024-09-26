@@ -1,0 +1,95 @@
+:root {
+  --bg-color: #f4f4f5;
+  --text-color: #27272a;
+  --hover-color: #d4d4d8;
+  --border-color: #71717a;
+  --svg-color: #18181b;
+  --inline-bg-color: #d4d4d8;
+  --inline-code-color: #3f3f46;
+  --code-bg-color: #2f2f2f;
+  --code-color: #c5c8c6;
+  --bg-muted-color: #ededed;
+  --border-muted-color: #d0d7deb3;
+  --quote-color: #636c76;
+  --quote-bg-color: #a3a3a3;
+  --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-color: #27272a;
+  --text-color: #f4f4f5;
+  --hover-color: #3f3f46;
+  --svg-color: #f4f4f5;
+  --inline-bg-color: #3f3f46;
+  --inline-code-color: #d4d4d8;
+  --bg-muted-color: #2f2f2f;
+  --quote-color: #8d96a0;
+  --quote-bg-color: #525252;
+}
+
+html {
+  min-height: 100%;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family:
+    Lucida Grande,
+    Franklin Gothic Medium,
+    Geneva,
+    "WenQuanYi Micro Hei",
+    sans-serif;
+  font-size: 18px;
+}
+
+html a {
+  color: var(--text-color);
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+}
+
+.main {
+  min-height: 360px;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.container {
+  max-width: 860px;
+  padding-left: 32px;
+  padding-right: 32px;
+  margin-left: auto;
+  margin-right: auto;
+  @media (max-width: 640px) {
+    padding: 0 16px;
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.flexItem {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.url {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.h-full {
+  height: 100%;
+}
+
+.w-full {
+  width: 100%;
+}
