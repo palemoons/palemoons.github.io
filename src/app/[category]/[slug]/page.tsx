@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPostBySlug } from "@/lib/posts";
+import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
 import styles from "./page.module.css";
 import ReactMarkdown from "@/components/ReactMarkdown";
 import { IPostHeader } from "@/interfaces/Post";
@@ -63,4 +63,16 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   if (!post) return notFound();
 
   return { title: `${post.title} | ${process.env.TITLE}`, description: post.title };
+}
+
+export function generateStaticParams() {
+  const categories = ["note", "article"];
+  return categories
+    .map((category) =>
+      getPostsByCategory(category).map((post) => ({
+        category,
+        slug: post.key,
+      })),
+    )
+    .flat();
 }

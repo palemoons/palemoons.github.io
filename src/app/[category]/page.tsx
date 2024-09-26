@@ -27,3 +27,9 @@ export function generateMetadata({ params }: { params: { category: string } }) {
     return { title: `${matchedItem[0].title} | ${process.env.TITLE}`, description: "Category of blog." };
   else return notFound();
 }
+
+export function generateStaticParams() {
+  return navItems.map((item) => ({
+    category: item.category,
+  }));
+}
