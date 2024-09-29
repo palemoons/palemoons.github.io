@@ -5,6 +5,7 @@ import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
 import styles from "./page.module.css";
 import ReactMarkdown from "@/components/ReactMarkdown";
 import { IPostHeader } from "@/interfaces/Post";
+import { SITE_CONFIG } from "@/app/site.config";
 
 export default function Page({ params }: { params: { category: string; slug: string } }) {
   const post = getPostBySlug(params.slug);
@@ -62,15 +63,15 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const post = getPostBySlug(params.slug);
   if (!post) return notFound();
 
-  return { title: `${post.title} | ${process.env.TITLE}`, description: post.title };
+  return { title: `${post.title} | ${SITE_CONFIG.title}`, description: post.title };
 }
 
 export function generateStaticParams() {
-  const categories = ["note", "article"];
+  const categories = SITE_CONFIG.categories;
   return categories
     .map((category) =>
-      getPostsByCategory(category).map((post) => ({
-        category,
+      getPostsByCategory(category.url).map((post) => ({
+        category: category.url,
         slug: post.key,
       })),
     )

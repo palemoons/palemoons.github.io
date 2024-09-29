@@ -6,10 +6,11 @@ import { IPostHeader } from "@/interfaces/Post";
 import avatar from "@/assets/avatar.jpg";
 import styles from "./page.module.css";
 import { Metadata } from "next";
+import { SITE_CONFIG } from "../site.config";
 
 export const metadata: Metadata = {
-  title: `关于 | ${process.env.TITLE}`,
-  description: "About the blog and author."
+  title: `关于 | ${SITE_CONFIG.title}`,
+  description: "About the blog and author.",
 };
 
 export default function AboutPage() {

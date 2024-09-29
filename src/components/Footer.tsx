@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
+import { SITE_CONFIG } from "@/app/site.config";
 
 const Footer = () => {
   const buildTime = process.env.NEXT_PUBLIC_BUILD_TIME || "未知";
@@ -17,7 +18,7 @@ const Footer = () => {
           <span className={styles.dot}> · </span>
           <span>
             Powered by{" "}
-            <Link href="https://github.com/palemoons/palemoons.github.io" target="_blank">
+            <Link href={SITE_CONFIG.siteRepo} target="_blank">
               Github
             </Link>
           </span>

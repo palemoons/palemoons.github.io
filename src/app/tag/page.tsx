@@ -4,10 +4,11 @@ import { countTags } from "@/lib/posts";
 import { ITag } from "@/interfaces/Post";
 import styles from "./page.module.css";
 import { Metadata } from "next";
+import { SITE_CONFIG } from "../site.config";
 
 export const metadata: Metadata = {
-  title: `文章分类 | ${process.env.TITLE}`,
-  description: "Tags of the blog."
+  title: `文章分类 | ${SITE_CONFIG.title}`,
+  description: "Tags of the blog.",
 };
 
 export default function TagArchive() {

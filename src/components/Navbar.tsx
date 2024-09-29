@@ -8,6 +8,7 @@ import { SVGProps, useEffect, useState } from "react";
 import { Menu, MenuItem } from "./Menu";
 import icoPath from "@/app/favicon.ico";
 import styles from "./Navbar.module.css";
+import { SITE_CONFIG } from "@/app/site.config";
 
 const MoonIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" {...props}>
@@ -21,12 +22,7 @@ const SunIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const Navbar = ({ ...props }) => {
-  const navItems = [
-    { name: "技术笔记", url: "/note" },
-    { name: "生活杂谈", url: "/article" },
-    { name: "文章分类", url: "/tag" },
-    { name: "关于本站", url: "/about" },
-  ];
+  const navItems = SITE_CONFIG.categories.concat(SITE_CONFIG.subpages);
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const currentPath = usePathname();
@@ -47,17 +43,17 @@ const Navbar = ({ ...props }) => {
             priority={false}
             width={32}
             height={32}
-            alt="Palemoons' Blog"
+            alt={SITE_CONFIG.title}
             className={styles.siteIcon}
           />
-          <div className={styles.title}>{process.env.TITLE}</div>
+          <div className={styles.title}>{SITE_CONFIG.title}</div>
         </Link>
         <nav className={styles.links}>
           {navItems.map((navItem, i) => (
             <div className="flexItem" key={i.toString()}>
               <Link
-                className={`${styles.linkItem} ${currentPath === navItem.url && styles.selected}`}
-                href={navItem.url}
+                className={`${styles.linkItem} ${currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url && styles.selected}`}
+                href={`/${navItem.url}`}
                 key={i.toString()}
               >
                 {navItem.name}

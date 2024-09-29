@@ -4,11 +4,12 @@ import Link from "next/link";
 import BlogList from "@/components/BlogList";
 import styles from "./page.module.css";
 import { getPostsByCategory } from "@/lib/posts";
+import { SITE_CONFIG } from "./site.config";
 
 export const metadata: Metadata = {
-  generator: "Next.js",
-  title: "Palemoons' Archive",
-  description: "Palemoons' personal website.",
+  title: SITE_CONFIG.title,
+  description: SITE_CONFIG.description,
+  generator: SITE_CONFIG.generator,
 };
 
 export const viewport: Viewport = {

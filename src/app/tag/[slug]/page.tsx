@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Pagination from "@/components/Pagination";
 import { countTags, getPostsByTag } from "@/lib/posts";
 import styles from "./page.module.css";
+import { SITE_CONFIG } from "@/app/site.config";
 
 export default function TagPage({ params }: { params: { slug: string } }) {
   const posts = getPostsByTag(decodeURI(params.slug));
@@ -19,7 +20,7 @@ export default function TagPage({ params }: { params: { slug: string } }) {
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   return {
-    title: `${decodeURI(params.slug)} | ${process.env.TITLE}`,
+    title: `${decodeURI(params.slug)} | ${SITE_CONFIG.title}`,
     description: `Posts including tag ${params.slug}`,
   };
 }
