@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, SVGProps } from "react";
+import { useState, SVGProps, ImgHTMLAttributes } from "react";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -38,21 +38,20 @@ export default function ReactMarkdown({ frontMatter, children }: { frontMatter: 
         },
         img({ node, ...props }) {
           const { src, alt, ...rest } = props;
-          return src ? (
-            <>
-              <img
+          return (
+            src && (
+              <CustomImage
                 src={`/img/${encodeImgName(imgPath, path.basename(src))}${path.extname(src)}`}
                 alt={alt || ""}
                 {...rest}
               />
-              {alt && <span>{alt}</span>}
-            </>
-          ) : null;
+            )
+          );
         },
         a({ node, children, href, ...props }) {
           if (href)
             return (
-              <Link href={href} target="_blank" {...props}>
+              <Link href={href} target="_blank" title={href} {...props}>
                 {children}
               </Link>
             );
@@ -63,6 +62,16 @@ export default function ReactMarkdown({ frontMatter, children }: { frontMatter: 
     </Markdown>
   );
 }
+
+const CustomImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
+
+  return (
+    <>
+      <img src={props.src} alt={props.alt} {...props} />
+      {props.alt && <span>{props.alt}</span>}
+    </>
+  );
+};
 
 const CodeSnippet = (params: { children: string; language?: string; className?: string }) => {
   const { children, language, className } = params;
