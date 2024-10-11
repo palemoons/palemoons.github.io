@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
 import styles from "./page.module.css";
 import ReactMarkdown from "@/components/ReactMarkdown";
+import Comments from "@/components/Comments";
 import { IPostHeader } from "@/interfaces/Post";
 import { SITE_CONFIG } from "@/app/site.config";
 
@@ -55,6 +56,7 @@ export default function Page({ params }: { params: { category: string; slug: str
       <div>
         <ReactMarkdown frontMatter={frontMatter as IPostHeader}>{content}</ReactMarkdown>
       </div>
+      <Comments />
     </>
   );
 }

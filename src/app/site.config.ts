@@ -4,6 +4,7 @@ export const SITE_CONFIG = {
   generator: "Next.js",
   siteUrl: "https://blog.palemoons.tech",
   siteRepo: "https://github.com/palemoons/palemoons.github.io",
+  commentRepo: "palemoons/blog-comment",
 
   categories: [
     { name: "技术笔记", url: "note" },
