@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, SVGProps, ImgHTMLAttributes } from "react";
+import { useState, SVGProps, ImgHTMLAttributes, useEffect } from "react";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -15,6 +15,7 @@ import { encodeImgName } from "@/lib/images";
 import { IPostHeader } from "@/interfaces/Post";
 import styles from "./ReactMarkdown.module.css";
 import Link from "next/link";
+import Spinner from "./Spinner";
 
 export default function ReactMarkdown({ frontMatter, children }: { frontMatter: IPostHeader; children: string }) {
   const { fname, category, date } = frontMatter;
@@ -64,10 +65,19 @@ export default function ReactMarkdown({ frontMatter, children }: { frontMatter: 
 }
 
 const CustomImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
-
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    setLoaded(true);
+  }, []);
   return (
     <>
-      <img src={props.src} alt={props.alt} {...props} />
+      {loaded ? (
+        <img src={props.src} alt={props.alt} {...props} />
+      ) : (
+        <div className={styles.spinner}>
+          <Spinner />
+        </div>
+      )}
       {props.alt && <span>{props.alt}</span>}
     </>
   );
