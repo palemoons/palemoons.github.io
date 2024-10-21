@@ -38,7 +38,7 @@ const Index = () => {
           更多文章...
         </Link>
         <div className={styles.sectionTitle}>最新杂谈</div>
-        <BlogList posts={recentArticles} size={5} />
+        <BlogList posts={recentArticles} size={SITE_CONFIG.landingPageListSize} />
         <Link href="/article" className={styles.more}>
           更多文章...
         </Link>

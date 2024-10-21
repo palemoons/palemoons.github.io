@@ -14,7 +14,7 @@ export default function postArchive({ params }: { params: { category: string } }
         {SITE_CONFIG.categories.filter((item) => item.url === params.category)[0].name}
       </div>
       <div>共归档 {posts.length} 篇文章。</div>
-      <Pagination posts={posts} />
+      <Pagination posts={posts} pageSize={SITE_CONFIG.categoryPaginationSize} />
     </>
   );
 }
