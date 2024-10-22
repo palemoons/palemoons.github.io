@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
-import { encodeImgName } from "@/lib/images";
 import { IPostHeader } from "@/interfaces/Post";
 
 const postsDir = path.join(process.cwd(), "_posts");
@@ -46,9 +45,10 @@ categories.forEach((category) => {
       files.forEach((file) => {
         const ext = path.extname(file);
         if ([".jpg", ".png", ".jpeg", ".webp", ".gif"].includes(ext)) {
-          const encodedFileName = encodeImgName(path.join(category, yearFolder, post), path.basename(file)) + ext;
+          const postImgDir = path.join(publicImgDir, frontMatter.abbrlink);
+          if (!fs.existsSync(postImgDir)) fs.mkdirSync(postImgDir);
           const originalFilePath = path.join(postFolder, post, file);
-          const destinationPath = path.join(publicImgDir, encodedFileName);
+          const destinationPath = path.join(postImgDir, file);
           fs.copyFileSync(originalFilePath, destinationPath);
         }
       });

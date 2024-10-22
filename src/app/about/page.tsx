@@ -3,7 +3,6 @@ import Image from "next/image";
 import { getAboutPost } from "@/lib/posts";
 import ReactMarkdown from "@/components/ReactMarkdown";
 import Comments from "@/components/Comments";
-import { IPostHeader } from "@/interfaces/Post";
 import avatar from "@/assets/avatar.jpg";
 import styles from "./page.module.css";
 import { Metadata } from "next";
@@ -45,7 +44,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <ReactMarkdown frontMatter={frontMatter as IPostHeader}>{content}</ReactMarkdown>
+      <ReactMarkdown abbrlink={frontMatter.abbrlink!}>{content}</ReactMarkdown>
       <Comments />
     </>
   );

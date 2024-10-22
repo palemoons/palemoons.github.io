@@ -10,16 +10,11 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import hybrid from "react-syntax-highlighter/dist/esm/styles/hljs/hybrid";
 import "katex/dist/katex.min.css";
-import path from "path";
-import { encodeImgName } from "@/lib/images";
-import { IPostHeader } from "@/interfaces/Post";
 import styles from "./ReactMarkdown.module.css";
 import Link from "next/link";
 import Spinner from "./Spinner";
 
-export default function ReactMarkdown({ frontMatter, children }: { frontMatter: IPostHeader; children: string }) {
-  const { fname, category, date } = frontMatter;
-  const imgPath = path.join(category, new Date(date).getFullYear().toString(), fname);
+export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string; children: string }) {
   return (
     <Markdown
       className={styles.reactMarkdown}
@@ -39,15 +34,7 @@ export default function ReactMarkdown({ frontMatter, children }: { frontMatter: 
         },
         img({ node, ...props }) {
           const { src, alt, ...rest } = props;
-          return (
-            src && (
-              <CustomImage
-                src={`/img/${encodeImgName(imgPath, path.basename(src))}${path.extname(src)}`}
-                alt={alt || ""}
-                {...rest}
-              />
-            )
-          );
+          return src && <CustomImage src={`/img/${abbrlink}/${src}`} alt={alt || ""} {...rest} />;
         },
         a({ node, children, href, ...props }) {
           if (href)
