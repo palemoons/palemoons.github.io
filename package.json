@@ -12,7 +12,7 @@
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
     "markdown-toc-unlazy": "^1.0.1",
-    "next": "14.2.10",
+    "next": "14.2.15",
     "next-themes": "^0.3.0",
     "pinyin": "^4.0.0-alpha.2",
     "react": "^18.3.1",
