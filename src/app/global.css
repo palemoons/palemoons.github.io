@@ -38,6 +38,7 @@ html {
     "WenQuanYi Micro Hei",
     sans-serif;
   font-size: 18px;
+  scroll-behavior: smooth;
 }
 
 html a {
@@ -53,8 +54,6 @@ body {
 
 .main {
   min-height: 360px;
-  width: -moz-available;
-  width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -66,6 +65,8 @@ body {
   padding-right: 32px;
   margin-left: auto;
   margin-right: auto;
+  width: -moz-available;
+  width: -webkit-fill-available;
   @media (max-width: 640px) {
     padding: 0 16px;
   }

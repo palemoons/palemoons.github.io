@@ -7,6 +7,7 @@ export const SITE_CONFIG = {
   commentRepo: "palemoons/blog-comment",
   landingPageListSize: 5,
   categoryPaginationSize: 20,
+  tocMaxHeader: 3,
 
   categories: [
     { name: "技术笔记", url: "note" },

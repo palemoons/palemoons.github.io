@@ -52,7 +52,7 @@ const Navbar = ({ ...props }) => {
           {navItems.map((navItem, i) => (
             <div className="flexItem" key={i.toString()}>
               <Link
-                className={`${styles.linkItem} ${currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url && styles.selected}`}
+                className={`${styles.linkItem} ${currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url ? styles.selected : ""}`}
                 href={`/${navItem.url}`}
                 key={i.toString()}
               >

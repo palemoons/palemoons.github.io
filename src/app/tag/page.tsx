@@ -15,7 +15,7 @@ export default function TagArchive() {
   const tagRecord = sortTagsByAlphabet(countTags());
   const tagList = Object.entries(tagRecord);
   return (
-    <div>
+    <div className="container">
       <div className={styles.siteTitle}>文章分类</div>
       {tagList.map((value, index) => {
         const [letter, tags] = value;

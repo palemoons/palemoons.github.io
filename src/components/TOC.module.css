@@ -1,0 +1,85 @@
+.toc_wrapper {
+  width: 200px;
+  margin-top: 48px;
+  padding-left: 16px;
+  border-left: solid 1px var(--border-color);
+}
+
+.toc {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 24px;
+  margin: 16px 0;
+}
+
+.toTop,
+.toComments {
+  text-decoration: none;
+  display: inline;
+}
+
+.fixedLink {
+  margin-top: 16px;
+}
+
+.fixedLink span{
+  margin: 0 8px;
+}
+
+.toc_wrapper ul {
+  padding-left: 16px;
+}
+
+.toc_h1,
+.toc_h2,
+.toc_h3,
+.toc_h4,
+.toc_h5,
+.toc_h6 {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-decoration: none;
+  margin: 2px 0;
+}
+
+.toTop:hover,
+.toComments:hover,
+.toc_h1:hover,
+.toc_h2:hover,
+.toc_h3:hover,
+.toc_h4:hover,
+.toc_h5:hover,
+.toc_h6:hover {
+  text-decoration: underline;
+}
+
+.active {
+  font-weight: 600;
+}
+
+.toc_h2 {
+  margin-left: 12px;
+}
+
+.toc_h3 {
+  margin-left: 24px;
+}
+
+.toc_h4 {
+  margin-left: 36px;
+}
+
+.toc_h5 {
+  margin-left: 48px;
+}
+
+.toc_h6 {
+  margin-left: 60px;
+}

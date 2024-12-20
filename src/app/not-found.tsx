@@ -5,7 +5,7 @@ import styles from "./not-found.module.css";
 
 export default function NotFound() {
   return (
-    <div className={styles.notfound}>
+    <div className={`${styles.notfound} container`}>
       <div className={styles.title}>Oops!</div>
       <div>This page could not be found.</div>
     </div>

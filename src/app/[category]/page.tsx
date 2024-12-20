@@ -9,13 +9,13 @@ export default function postArchive({ params }: { params: { category: string } }
   if (posts.length <= 0) return notFound();
 
   return (
-    <>
+    <div className="container">
       <div className={styles.siteTitle}>
         {SITE_CONFIG.categories.filter((item) => item.url === params.category)[0].name}
       </div>
       <div>共归档 {posts.length} 篇文章。</div>
       <Pagination posts={posts} pageSize={SITE_CONFIG.categoryPaginationSize} />
-    </>
+    </div>
   );
 }
 

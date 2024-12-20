@@ -8,13 +8,13 @@ export default function TagPage({ params }: { params: { slug: string } }) {
   const posts = getPostsByTag(decodeURI(params.slug));
   if (posts.length <= 0) return notFound();
   return (
-    <>
+    <div className="container">
       <div className={styles.siteTitle}>
         <span className={styles.tag}>#{decodeURI(params.slug)}</span>
       </div>
       <div>共归档 {posts.length} 篇文章。</div>
       <Pagination posts={posts} />
-    </>
+    </div>
   );
 }
 

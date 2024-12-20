@@ -1,5 +1,28 @@
+.pageWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.postWrapper {
+  @media (max-width: 1340px) {
+    max-width: 720px;
+  }
+  @media (max-width: 1200px) {
+    max-width: 640px;
+  }
+}
+
 .postHeader {
   border-bottom: 1px solid var(--quote-color);
+}
+
+.postHeader :global(#toc-title)::before {
+  display: block;
+  content: " ";
+  margin-top: -72px;
+  height: 72px;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .postTitle {
@@ -34,4 +57,12 @@
 }
 .postTime a {
   color: #808080;
+}
+
+/* for table-of-content */
+.toc {
+  flex-grow: 1;
+  @media (max-width: 1080px) {
+    display: none;
+  }
 }

@@ -22,7 +22,7 @@ const Index = () => {
   const recentNotes = getPostsByCategory("note");
   const recentArticles = getPostsByCategory("article");
   return (
-    <section>
+    <section className="container">
       <div id="introduction">
         <div className={styles.siteTitle}>你好，来访者。</div>
         <div className={styles.siteDesc}>这里是Palemoons的网络存档点。</div>

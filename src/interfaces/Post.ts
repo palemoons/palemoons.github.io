@@ -23,4 +23,12 @@ interface ITag {
   count: number;
 }
 
-export type { IPost, IPostHeader, ITag };
+interface Itoc {
+  content: string;
+  slug: string;
+  lvl: number;
+  i: number;
+  seen: number;
+}
+
+export type { IPost, IPostHeader, ITag, Itoc };

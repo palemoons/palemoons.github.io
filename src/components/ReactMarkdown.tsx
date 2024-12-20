@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, SVGProps, ImgHTMLAttributes, useEffect } from "react";
+import React from "react";
+import { useState, useEffect, Children } from "react";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -15,6 +16,22 @@ import Link from "next/link";
 import Spinner from "./Spinner";
 
 export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string; children: string }) {
+  const HeadingRenderer = ({ level, children }: { level: number; children?: React.ReactNode }) => {
+    const text = React.Children.toArray(children).join("");
+    const id =
+      text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "") || text;
+
+    const TitleTag = `h${level}` as keyof JSX.IntrinsicElements;
+    return (
+      <TitleTag id={id} className={styles.anchor}>
+        {children}
+      </TitleTag>
+    );
+  };
+
   return (
     <Markdown
       className={styles.reactMarkdown}
@@ -44,6 +61,12 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
               </Link>
             );
         },
+        h1: (props) => <HeadingRenderer level={1} {...props} />,
+        h2: (props) => <HeadingRenderer level={2} {...props} />,
+        h3: (props) => <HeadingRenderer level={3} {...props} />,
+        h4: (props) => <HeadingRenderer level={4} {...props} />,
+        h5: (props) => <HeadingRenderer level={5} {...props} />,
+        h6: (props) => <HeadingRenderer level={6} {...props} />,
       }}
     >
       {children}
@@ -51,7 +74,7 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
   );
 }
 
-const CustomImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
+const CustomImage = (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setLoaded(true);
@@ -61,9 +84,9 @@ const CustomImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
       {loaded ? (
         <img src={props.src} alt={props.alt} {...props} />
       ) : (
-        <div className={styles.spinner}>
+        <span className={styles.spinner}>
           <Spinner />
-        </div>
+        </span>
       )}
       {props.alt && <span>{props.alt}</span>}
     </>
@@ -104,7 +127,7 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
   );
 };
 
-const ClipBoardIcon = (props: SVGProps<SVGSVGElement>) => (
+const ClipBoardIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" {...props}>
     <path
       fill="currentColor"
@@ -113,7 +136,7 @@ const ClipBoardIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const CopyIcon = (props: SVGProps<SVGSVGElement>) => (
+const CopyIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 1024 1024" {...props}>
     <path
       fill="currentColor"

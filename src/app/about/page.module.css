@@ -1,3 +1,17 @@
+.pageWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.postWrapper {
+  @media (max-width: 1340px) {
+    max-width: 720px;
+  }
+  @media (max-width: 1200px) {
+    max-width: 640px;
+  }
+}
+
 .header {
   padding-top: 32px;
   display: flex;
@@ -37,4 +51,12 @@
 }
 .avatarContainer img {
   border-radius: 50%;
+}
+
+/* for table-of-content */
+.toc {
+  flex-grow: 1;
+  @media (max-width: 1080px) {
+    display: none;
+  }
 }

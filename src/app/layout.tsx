@@ -11,7 +11,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body>
         <ThemeProvider defaultTheme="system">
           <Navbar />
-          <main className="main container">{children}</main>
+          <main className="main">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>

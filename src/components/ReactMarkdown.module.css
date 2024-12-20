@@ -31,6 +31,7 @@
 
 .reactMarkdown code {
   font-size: 14px;
+  border-radius: 0 0 4px 4px;
 }
 
 .reactMarkdown img {
@@ -130,6 +131,15 @@
 
 .reactMarkdown hr {
   border-bottom: 1px solid var(--quote-color);
+}
+
+.reactMarkdown .anchor::before {
+  display: block;
+  content: " ";
+  margin-top: -72px;
+  height: 72px;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .codeHeader {
