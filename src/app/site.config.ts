@@ -8,6 +8,7 @@ export const SITE_CONFIG = {
   landingPageListSize: 5,
   categoryPaginationSize: 20,
   tocMaxHeader: 3,
+  maxCodeHeight: 300,
 
   categories: [
     { name: "技术笔记", url: "note" },

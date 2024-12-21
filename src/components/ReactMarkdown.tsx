@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useState, useEffect, Children } from "react";
+import { useState, useEffect, useRef } from "react";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
@@ -14,6 +14,7 @@ import "katex/dist/katex.min.css";
 import styles from "./ReactMarkdown.module.css";
 import Link from "next/link";
 import Spinner from "./Spinner";
+import { SITE_CONFIG } from "@/app/site.config";
 
 export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string; children: string }) {
   const HeadingRenderer = ({ level, children }: { level: number; children?: React.ReactNode }) => {
@@ -96,13 +97,22 @@ const CustomImage = (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
 const CodeSnippet = (params: { children: string; language?: string; className?: string }) => {
   const { children, language, className } = params;
   const [copied, setCopied] = useState(false);
+  const [codeHeight, setCodeHeight] = useState(0);
+  const [extended, setExtented] = useState(false);
+  const codeRef = useRef<HTMLDivElement | null>(null);
   const onCopy = () => {
     if (copied) return;
     setCopied(true);
     setTimeout(() => setCopied(false), 1200);
   };
+  const onExtend = () => {
+    setExtented(!extended);
+  };
+  useEffect(() => {
+    if (codeRef.current) setCodeHeight(codeRef.current.clientHeight);
+  }, []);
   return (
-    <>
+    <div className={styles.codeWrapper} style={{ maxHeight: !extended ? SITE_CONFIG.maxCodeHeight : "unset" }}>
       <div className={styles.codeHeader}>
         <span>{language}</span>
         {copied ? (
@@ -120,10 +130,26 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
         )}
       </div>
 
-      <SyntaxHighlighter PreTag="code" language={language} style={hybrid} showLineNumbers className={className}>
+      <SyntaxHighlighter
+        PreTag={(props) => <code {...props} ref={codeRef} />}
+        language={language}
+        style={hybrid}
+        showLineNumbers
+        className={className}
+      >
         {children}
       </SyntaxHighlighter>
-    </>
+      {codeHeight > SITE_CONFIG.maxCodeHeight &&
+        (!extended ? (
+          <div className={styles.extendWrapper} onClick={onExtend}>
+            <ExtendIcon />
+          </div>
+        ) : (
+          <div className={styles.foldWrapper} onClick={onExtend}>
+            <ExtendIcon />
+          </div>
+        ))}
+    </div>
   );
 };
 
@@ -141,6 +167,19 @@ const CopyIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path
       fill="currentColor"
       d="m778.24 289.513-369.594 369.57-139.613-139.59a34.91 34.91 0 1 0-49.338 49.339l164.282 164.305a34.77 34.77 0 0 0 49.338 0l394.263-394.286a34.91 34.91 0 1 0-49.338-49.338"
+    />
+  </svg>
+);
+
+const ExtendIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 1024 1024" {...props}>
+    <path
+      fill="currentColor"
+      d="M515.04 557.19c-11.54 0-23.02-4.39-31.81-13.18L123.34 184.13c-17.57-17.57-17.57-46.04 0-63.61s46.04-17.57 63.61 0L515.04 448.6l328.08-328.08c17.57-17.57 46.04-17.57 63.61 0s17.57 46.04 0 63.61L546.84 544.01c-8.78 8.79-20.26 13.18-31.8 13.18z"
+    />
+    <path
+      fill="currentColor"
+      d="M515.04 917.11c-11.54 0-23.02-4.39-31.81-13.18L123.34 544.04c-17.57-17.57-17.57-46.04 0-63.61s46.04-17.57 63.61 0l328.08 328.08 328.08-328.08c17.57-17.57 46.04-17.57 63.61 0s17.57 46.04 0 63.61L546.84 903.93c-8.78 8.79-20.26 13.18-31.8 13.18z"
     />
   </svg>
 );
