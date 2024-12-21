@@ -1,14 +1,15 @@
-.inlineCode {
+.reactMarkdown {
+  margin-top: 12px;
+}
+
+.reactMarkdown .inlineCode {
   display: inline;
   padding: 2px 4px;
+  margin: 0 2px;
   border-radius: 4px;
   background-color: var(--inline-bg-color);
   color: var(--inline-code-color);
   word-break: break-word;
-}
-
-.reactMarkdown {
-  margin-top: 12px;
 }
 
 .reactMarkdown p,
@@ -30,7 +31,9 @@
 }
 
 .reactMarkdown code {
+  font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace;
   font-size: 14px;
+  line-height: 18px;
   border-radius: 0 0 4px 4px;
 }
 

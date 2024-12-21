@@ -29,6 +29,7 @@
   margin: 48px 0 12px 0;
   display: block;
   font-size: 40px;
+  line-height: 48px;
   font-weight: 600;
 }
 
@@ -41,6 +42,7 @@
   margin: 0 6px 4px 0;
   padding: 3px 6px;
   font-size: 14px;
+  line-height: 18px;
   background-color: var(--inline-bg-color);
   color: var(--inline-code-color);
   border-radius: 2px;

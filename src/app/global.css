@@ -33,11 +33,10 @@ html {
   color: var(--text-color);
   font-family:
     Lucida Grande,
-    Franklin Gothic Medium,
     Geneva,
-    "WenQuanYi Micro Hei",
-    sans-serif;
+    ui-sans-serif;
   font-size: 18px;
+  line-height: 28px;
   scroll-behavior: smooth;
 }
 

@@ -17,8 +17,8 @@ export default function Page({ params }: { params: { category: string; slug: str
   const { title, description, tags } = frontMatter;
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
-  const tocContent = handleTocHeader(
-    toc(content).json.filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader),
+  const tocContent = handleTocHeader(toc(content).json).filter(
+    (header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader,
   );
   return (
     <div className={styles.pageWrapper}>

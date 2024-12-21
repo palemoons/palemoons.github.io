@@ -21,7 +21,7 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
     const id =
       text
         .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/[^\p{Script=Han}a-z0-9]+/gu, "-")
         .replace(/^-|-$/g, "") || text;
 
     const TitleTag = `h${level}` as keyof JSX.IntrinsicElements;
@@ -36,7 +36,7 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
     <Markdown
       className={styles.reactMarkdown}
       remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }]]}
-      rehypePlugins={[rehypeKatex, rehypeRaw]}
+      rehypePlugins={[[rehypeKatex, { strict: false }], rehypeRaw]}
       components={{
         code({ node, ...props }) {
           const { children, className } = props;

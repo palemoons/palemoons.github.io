@@ -14,9 +14,7 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
+          if (entry.isIntersecting) setActiveId(entry.target.id);
         });
       },
       {
@@ -25,7 +23,7 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
         threshold: 1.0,
       },
     );
-    const headingElements = tocContent.map((toc) => document.getElementById(toc.content));
+    const headingElements = tocContent.map((toc) => document.getElementById(handleSlug(toc.slug)));
     headingElements.forEach((element) => {
       if (element) observer.observe(element);
     });
@@ -39,15 +37,18 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
     <div className={`${styles.toc_wrapper} ${className || ""}`} {...rest}>
       <div className={styles.toc}>
         <div className={styles.title}>目录</div>
-        {tocContent.map((value) => (
-          <Link
-            className={`${stylesList[value.lvl]} ${activeId === value.content ? styles.active : ""}`}
-            key={value.i.toString()}
-            href={`#${value.slug}`}
-          >
-            {value.content}
-          </Link>
-        ))}
+        {tocContent.map((value) => {
+          const slug = handleSlug(value.slug);
+          return (
+            <Link
+              className={`${stylesList[value.lvl]} ${activeId === slug ? styles.active : ""}`}
+              key={value.i.toString()}
+              href={`#${slug}`}
+            >
+              {value.content}
+            </Link>
+          );
+        })}
         <div className={styles.fixedLink}>
           <Link className={styles.toTop} href="#toc-title">
             顶部
@@ -61,5 +62,11 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
     </div>
   );
 };
+
+const handleSlug = (slug: string) =>
+  slug
+    .toLowerCase()
+    .replace(/[^\p{Script=Han}a-z0-9]+/gu, "-")
+    .replace(/^-|-$/g, "") || slug;
 
 export default TOC;
