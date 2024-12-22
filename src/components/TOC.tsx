@@ -33,31 +33,30 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
       });
     };
   }, [tocContent]);
+
   return (
-    <div className={`${styles.toc_wrapper} ${className || ""}`} {...rest}>
-      <div className={styles.toc}>
-        <div className={styles.title}>目录</div>
-        {tocContent.map((value) => {
-          const slug = handleSlug(value.slug);
-          return (
-            <Link
-              className={`${stylesList[value.lvl]} ${activeId === slug ? styles.active : ""}`}
-              key={value.i.toString()}
-              href={`#${slug}`}
-            >
-              {value.content}
-            </Link>
-          );
-        })}
-        <div className={styles.fixedLink}>
-          <Link className={styles.toTop} href="#toc-title">
-            顶部
+    <div className={`${styles.tocWrapper} ${className || ""}`} {...rest}>
+      <div className={styles.title}>目录</div>
+      {tocContent.map((value, index) => {
+        const slug = handleSlug(value.slug);
+        return (
+          <Link
+            className={`${stylesList[value.lvl]} ${activeId === slug ? styles.active : ""}`}
+            key={index.toString()}
+            href={`#${slug}`}
+          >
+            {value.content}
           </Link>
-          <span>|</span>
-          <Link className={styles.toComments} href="#toc-comments">
-            评论
-          </Link>
-        </div>
+        );
+      })}
+      <div className={styles.fixedLink}>
+        <Link className={styles.toTop} href="#toc-title">
+          顶部
+        </Link>
+        <span>|</span>
+        <Link className={styles.toComments} href="#toc-comments">
+          评论
+        </Link>
       </div>
     </div>
   );

@@ -22,7 +22,9 @@ export default function Page({ params }: { params: { category: string; slug: str
   );
   return (
     <div className={styles.pageWrapper}>
-      <TOC tocContent={tocContent} style={{ visibility: "hidden" }} className={styles.toc} />
+      <div className={styles.tocWrapper}>
+        <TOC tocContent={tocContent} style={{ visibility: "hidden" }} className={styles.toc} />
+      </div>
       <div className={`${styles.postWrapper} container`}>
         <div className={styles.postHeader}>
           <div className={styles.postTitle} id="toc-title">
@@ -67,7 +69,9 @@ export default function Page({ params }: { params: { category: string; slug: str
         </div>
         <Comments id="toc-comments" />
       </div>
-      <TOC tocContent={tocContent} className={styles.toc} />
+      <div className={styles.tocWrapper}>
+        <TOC tocContent={tocContent} className={styles.toc} />
+      </div>
     </div>
   );
 }

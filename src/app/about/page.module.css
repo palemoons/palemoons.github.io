@@ -54,9 +54,26 @@
 }
 
 /* for table-of-content */
-.toc {
-  flex-grow: 1;
+.tocWrapper {
+  width: calc(50vw - 490px);
+  padding-top: 48px;
+  padding-left: 16px;
+  border-left: solid 1px var(--border-color);
+  @media (max-width: 1340px) {
+    width: calc(50vw - 420px);
+  }
+  @media (max-width: 1200px) {
+    width: calc(50vw - 380px);
+  }
   @media (max-width: 1080px) {
     display: none;
   }
+}
+
+.toc {
+  position: sticky;
+  top: 72px;
+  width: 100%;
+  height: calc(100vh - 96px);
+  overflow-y: auto;
 }

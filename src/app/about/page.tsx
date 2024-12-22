@@ -27,7 +27,9 @@ export default function AboutPage() {
   );
   return (
     <div className={styles.pageWrapper}>
-      <TOC tocContent={tocContent} style={{ visibility: "hidden" }} className={styles.toc} />
+      <div className={styles.tocWrapper}>
+        <TOC tocContent={tocContent} style={{ visibility: "hidden" }} className={styles.toc} />
+      </div>
       <div className={`${styles.postWrapper} container`}>
         <div className={styles.header}>
           <div className={styles.titleContainer}>
@@ -55,7 +57,9 @@ export default function AboutPage() {
         <ReactMarkdown abbrlink={frontMatter.abbrlink!}>{content}</ReactMarkdown>
         <Comments />
       </div>
-      <TOC tocContent={tocContent} className={styles.toc} />
+      <div className={styles.tocWrapper}>
+        <TOC tocContent={tocContent} className={styles.toc} />
+      </div>
     </div>
   );
 }
