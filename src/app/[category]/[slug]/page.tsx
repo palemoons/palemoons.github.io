@@ -6,7 +6,7 @@ import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
 import { Itoc } from "@/interfaces/Post";
 import styles from "./page.module.css";
 import ReactMarkdown from "@/components/ReactMarkdown";
-import TOC from "@/components/TOC";
+import { TOC, MobileTOC } from "@/components/TOC";
 import Comments from "@/components/Comments";
 import { SITE_CONFIG } from "@/app/site.config";
 
@@ -72,6 +72,7 @@ export default function Page({ params }: { params: { category: string; slug: str
       <div className={styles.tocWrapper}>
         <TOC tocContent={tocContent} className={styles.toc} />
       </div>
+      <MobileTOC tocContent={tocContent} className={styles.mobileTOC} />
     </div>
   );
 }

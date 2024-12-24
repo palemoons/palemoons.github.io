@@ -5,7 +5,7 @@ import toc from "markdown-toc-unlazy";
 import { getAboutPost } from "@/lib/posts";
 import ReactMarkdown from "@/components/ReactMarkdown";
 import Comments from "@/components/Comments";
-import TOC from "@/components/TOC";
+import { TOC, MobileTOC } from "@/components/TOC";
 import { Itoc } from "@/interfaces/Post";
 import avatar from "@/assets/avatar.jpg";
 import styles from "./page.module.css";
@@ -33,7 +33,7 @@ export default function AboutPage() {
       <div className={`${styles.postWrapper} container`}>
         <div className={styles.header}>
           <div className={styles.titleContainer}>
-            <div className={styles.title}>{frontMatter.title}</div>
+            <div className={styles.title} id="toc-title">{frontMatter.title}</div>
             <div className={styles.description}>{frontMatter.description}</div>
             <div className={styles.postTime}>
               <span>
@@ -55,11 +55,12 @@ export default function AboutPage() {
         </div>
 
         <ReactMarkdown abbrlink={frontMatter.abbrlink!}>{content}</ReactMarkdown>
-        <Comments />
+        <Comments id="toc-comments" />
       </div>
       <div className={styles.tocWrapper}>
         <TOC tocContent={tocContent} className={styles.toc} />
       </div>
+      <MobileTOC tocContent={tocContent} className={styles.mobileTOC} />
     </div>
   );
 }

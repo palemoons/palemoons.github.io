@@ -19,10 +19,14 @@
 .postHeader :global(#toc-title)::before {
   display: block;
   content: " ";
-  margin-top: -72px;
-  height: 72px;
   visibility: hidden;
   pointer-events: none;
+  margin-top: -72px;
+  height: 72px;
+  @media (min-width: 640px) {
+    margin-top: -96px;
+    height: 96px;
+  }
 }
 
 .postTitle {
@@ -84,4 +88,13 @@
   width: 100%;
   height: calc(100vh - 96px);
   overflow-y: auto;
+}
+
+.mobileTOC {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  @media (min-width: 1080px) {
+    display: none;
+  }
 }
