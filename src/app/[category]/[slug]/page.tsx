@@ -22,9 +22,7 @@ export default function Page({ params }: { params: { category: string; slug: str
   );
   return (
     <div className={styles.pageWrapper}>
-      <div className={styles.tocWrapper}>
-        <TOC tocContent={tocContent} style={{ visibility: "hidden" }} className={styles.toc} />
-      </div>
+      <div className={styles.tocWrapper} />
       <div className={`${styles.postWrapper} container`}>
         <div className={styles.postHeader}>
           <div className={styles.postTitle} id="toc-title">

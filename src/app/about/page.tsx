@@ -27,13 +27,13 @@ export default function AboutPage() {
   );
   return (
     <div className={styles.pageWrapper}>
-      <div className={styles.tocWrapper}>
-        <TOC tocContent={tocContent} style={{ visibility: "hidden" }} className={styles.toc} />
-      </div>
+      <div className={styles.tocWrapper} />
       <div className={`${styles.postWrapper} container`}>
         <div className={styles.header}>
           <div className={styles.titleContainer}>
-            <div className={styles.title} id="toc-title">{frontMatter.title}</div>
+            <div className={styles.title} id="toc-title">
+              {frontMatter.title}
+            </div>
             <div className={styles.description}>{frontMatter.description}</div>
             <div className={styles.postTime}>
               <span>

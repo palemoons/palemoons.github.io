@@ -38,6 +38,10 @@
   display: none;
 }
 
+.active {
+  font-weight: 600;
+}
+
 .tocWrapper > * {
   display: block;
 }
@@ -74,10 +78,6 @@
   margin: 0 8px;
 }
 
-.toc_wrapper ul {
-  padding-left: 16px;
-}
-
 .toc_h1,
 .toc_h2,
 .toc_h3,
@@ -100,10 +100,6 @@
 .toc_h5:hover,
 .toc_h6:hover {
   text-decoration: underline;
-}
-
-.active {
-  font-weight: 600;
 }
 
 .toc_h2 {
