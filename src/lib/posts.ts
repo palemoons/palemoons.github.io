@@ -6,30 +6,24 @@ import { IPost, IPostHeader, ITag } from "@/interfaces/Post";
 
 const postsDir = path.join(process.cwd(), "_posts");
 const publicDir = path.join(process.cwd(), "public");
+const postIndexPath = path.join(publicDir, "postIndex.json");
 
 export const getSortedPosts = () => {
-  const posts = Object.entries(JSON.parse(fs.readFileSync(path.join(publicDir, "postIndex.json"), "utf-8"))) as Array<
-    [string, IPostHeader]
-  >;
+  const posts = Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<[string, IPostHeader]>;
   return posts
     .map((value) => ({ key: value[0], value: value[1] }))
     .sort((a, b) => (a.value.date < b.value.date ? 1 : -1));
 };
 
 export const getPostBySlug = (slug: string) => {
-  const abbrlinkMap = new Map(
-    Object.entries(JSON.parse(fs.readFileSync(path.join(process.cwd(), "public/postIndex.json"), "utf-8"))),
-  ) as Map<string, IPostHeader>;
+  const abbrlinkMap = new Map(Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8")))) as Map<
+    string,
+    IPostHeader
+  >;
   const realSlug = abbrlinkMap.get(slug);
   if (!realSlug) return null;
   const year = new Date(realSlug.date).getFullYear();
-  const fullPath = path.join(
-    postsDir,
-    realSlug.category,
-    year.toString(),
-    realSlug.fname,
-    `${realSlug.fname}.md`,
-  );
+  const fullPath = path.join(postsDir, realSlug.category, year.toString(), realSlug.fname, `${realSlug.fname}.md`);
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
   const { tags, ...rest } = data;
@@ -44,9 +38,7 @@ export const getPostBySlug = (slug: string) => {
 };
 
 export const getPostsByCategory = (category: string) => {
-  const postArray = Object.entries(
-    JSON.parse(fs.readFileSync(path.join(process.cwd(), "public/postIndex.json"), "utf-8")),
-  ) as Array<[string, IPostHeader]>;
+  const postArray = Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<[string, IPostHeader]>;
   const posts = postArray.filter((value) => {
     const postInfo = value[1];
     return postInfo.category === category;
@@ -57,9 +49,9 @@ export const getPostsByCategory = (category: string) => {
 };
 
 export const getPostsByTag = (tag: string) => {
-  const postIndexArray = Object.entries(
-    JSON.parse(fs.readFileSync(path.join(process.cwd(), "public/postIndex.json"), "utf-8")),
-  ) as Array<[string, IPostHeader]>;
+  const postIndexArray = Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<
+    [string, IPostHeader]
+  >;
   const posts = postIndexArray.filter((value) => {
     const postInfo = value[1] as IPostHeader;
     return postInfo.tags.includes(tag);
@@ -71,9 +63,7 @@ export const getPostsByTag = (tag: string) => {
 
 export const countTags = () => {
   const postIndex = new Map(
-    Object.entries(JSON.parse(fs.readFileSync(path.join(process.cwd(), "public/postIndex.json"), "utf-8"))) as Array<
-      [string, IPostHeader]
-    >,
+    Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<[string, IPostHeader]>,
   );
   const tagCount: Record<string, number> = {};
 

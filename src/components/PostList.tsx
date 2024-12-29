@@ -1,18 +1,40 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { IPostHeader } from "@/interfaces/Post";
-import styles from "./Pagination.module.css";
-import BlogList from "./BlogList";
+import styles from "./PostList.module.css";
 
-export default function Pagination({
+const BlogList = ({ posts, size = -1 }: { posts: Array<{ key: string; value: IPostHeader }>; size?: number }) => {
+  const postsData = size > 0 ? posts.slice(0, size) : posts;
+  return (
+    <div>
+      {postsData.map((post, index) => {
+        const { key: abbrlink, value: postInfo } = post;
+        const { title, category, date } = postInfo;
+        return (
+          <div key={index.toString()} className={styles.listItem}>
+            <Link href={`/${category}/${abbrlink}`} className={styles.href}>
+              {title}
+            </Link>
+            <Link href={`/${category}/${abbrlink}`} className={`${styles.href} ${styles.date}`}>
+              {date}
+            </Link>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const Pagination = ({
   posts,
   pageSize = 10,
 }: {
   posts: Array<{ key: string; value: IPostHeader }>;
   pageSize?: number;
-}) {
-  const [currentPage, setCurrentPage] = useState(1);
+}) => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const totalPages = Math.ceil(posts.length / pageSize);
   const currentPosts = posts.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const splittedPostsRecord: Record<string, Array<{ key: string; value: IPostHeader }>> = {};
@@ -62,4 +84,6 @@ export default function Pagination({
       </div>
     </>
   );
-}
+};
+
+export { BlogList, Pagination };

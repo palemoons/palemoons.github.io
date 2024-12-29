@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Pagination from "@/components/Pagination";
+import { Pagination } from "@/components/PostList";
 import { countTags, getPostsByTag } from "@/lib/posts";
 import styles from "./page.module.css";
 import { SITE_CONFIG } from "@/app/site.config";
@@ -13,7 +13,7 @@ export default function TagPage({ params }: { params: { slug: string } }) {
         <span className={styles.tag}>#{decodeURI(params.slug)}</span>
       </div>
       <div>共归档 {posts.length} 篇文章。</div>
-      <Pagination posts={posts} />
+      <Pagination posts={posts} pageSize={SITE_CONFIG.categoryPaginationSize} />
     </div>
   );
 }
@@ -21,13 +21,13 @@ export default function TagPage({ params }: { params: { slug: string } }) {
 export function generateMetadata({ params }: { params: { slug: string } }) {
   return {
     title: `${decodeURI(params.slug)} | ${SITE_CONFIG.title}`,
-    description: `Posts including tag ${params.slug}`,
+    description: `Posts including tag ${decodeURI(params.slug)}`,
   };
 }
 
 export function generateStaticParams() {
   const tags = countTags();
   return tags.map((tag) => ({
-    slug: tag.name,
+    slug: encodeURI(tag.name),
   }));
 }

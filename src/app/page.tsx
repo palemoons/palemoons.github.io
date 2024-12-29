@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import BlogList from "@/components/BlogList";
+import { BlogList } from "@/components/PostList";
 import styles from "./page.module.css";
 import { getPostsByCategory } from "@/lib/posts";
 import { SITE_CONFIG } from "./site.config";
@@ -10,6 +10,16 @@ export const metadata: Metadata = {
   title: SITE_CONFIG.title,
   description: SITE_CONFIG.description,
   generator: SITE_CONFIG.generator,
+  alternates: {
+    types: {
+      "application/rss+xml": [
+        {
+          title: `RSS Feed | ${SITE_CONFIG.title}`,
+          url: `${SITE_CONFIG.siteUrl}/feed`,
+        },
+      ],
+    },
+  },
 };
 
 export const viewport: Viewport = {

@@ -1,3 +1,19 @@
+/* BlogList */
+.listItem {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  margin: 12px 0;
+}
+
+.date {
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+/* Pagination */
 .yearContainer {
   margin-top: 8px;
   margin-bottom: 24px;

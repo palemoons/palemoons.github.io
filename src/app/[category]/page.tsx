@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Pagination from "@/components/Pagination";
+import { Pagination } from "@/components/PostList";
 import { getPostsByCategory } from "@/lib/posts";
 import styles from "./page.module.css";
 import { SITE_CONFIG } from "../site.config";

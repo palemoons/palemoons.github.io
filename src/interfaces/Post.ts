@@ -16,6 +16,7 @@ interface IPostHeader {
   date: string;
   category: string;
   tags: Array<string>;
+  description: string;
 }
 
 interface ITag {

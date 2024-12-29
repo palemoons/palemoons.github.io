@@ -37,6 +37,7 @@ categories.forEach((category) => {
         category: category,
         date: frontMatter.date,
         fname: post,
+        description: frontMatter.description || "",
         tags: frontMatter.tags?.split(",").map((value: string) => value.trim()) || [],
       };
       postIndex.set(frontMatter.abbrlink, postInfo);
