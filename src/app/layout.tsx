@@ -136,7 +136,7 @@ const Footer = () => {
           </Link>
         </span>
         <span className={styles.dot}> · </span>
-        <span>Deployed on {SITE_CONFIG.buildTime}</span>
+        <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
       </div>
     </footer>
   );

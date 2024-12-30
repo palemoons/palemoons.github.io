@@ -12,7 +12,7 @@ export const SITE_CONFIG = {
   categoryPaginationSize: 20,
   tocMaxHeader: 3,
   maxCodeHeight: 300,
-  buildTime: new Date().toISOString().split("T")[0],
+  buildTime: new Date(),
 
   categories: [
     { name: "技术笔记", url: "note" },

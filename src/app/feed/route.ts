@@ -10,8 +10,10 @@ export async function GET() {
     description: SITE_CONFIG.description,
     link: SITE_CONFIG.siteUrl,
     id: SITE_CONFIG.siteUrl,
+    favicon: `c${SITE_CONFIG.siteUrl}/favicon.ico`,
     copyright: `All rights reserved ${new Date().getFullYear()}, ${SITE_CONFIG.author}`,
     language: "zh-CN",
+    updated: SITE_CONFIG.buildTime,
   });
 
   posts.forEach(({ key: abbrlink, value: post }) => {
@@ -24,9 +26,9 @@ export async function GET() {
     });
   });
 
-  return new Response(feed.rss2(), {
+  return new Response(feed.atom1(), {
     headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8",
+      "Content-Type": "text/xml; charset=utf-8",
     },
   });
 }
