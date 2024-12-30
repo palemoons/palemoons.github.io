@@ -28,6 +28,6 @@ export function generateMetadata({ params }: { params: { slug: string } }) {
 export function generateStaticParams() {
   const tags = countTags();
   return tags.map((tag) => ({
-    slug: encodeURI(tag.name),
+    slug: tag.name,
   }));
 }

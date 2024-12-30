@@ -28,7 +28,7 @@ export async function GET() {
 
   return new Response(feed.atom1(), {
     headers: {
-      "Content-Type": "text/xml; charset=utf-8",
+      "Content-Type": "application/atom+xml; charset=utf-8",
     },
   });
 }

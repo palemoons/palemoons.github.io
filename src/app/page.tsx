@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   generator: SITE_CONFIG.generator,
   alternates: {
     types: {
-      "text/xml": [
+      "application/rss+xml": [
         {
           title: SITE_CONFIG.title,
           url: `${SITE_CONFIG.siteUrl}/feed`,
