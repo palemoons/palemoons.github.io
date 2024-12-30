@@ -6,8 +6,8 @@ import { SITE_CONFIG } from "@/app/site.config";
 export async function GET() {
   const posts: Array<{ key: string; value: IPostHeader }> = getSortedPosts();
   const feed = new Feed({
-    title: `RSS Feed | ${SITE_CONFIG.title}`,
-    description: `RSS feed for ${SITE_CONFIG.title}.`,
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
     link: SITE_CONFIG.siteUrl,
     id: SITE_CONFIG.siteUrl,
     copyright: `All rights reserved ${new Date().getFullYear()}, ${SITE_CONFIG.author}`,

@@ -1,5 +1,5 @@
 module.exports = {
   output: "export",
-  basePath: process.env.NODE_ENV === "production" ? "/palemoons.github.io" : "",
+  basePath: "",
   images: { unoptimized: true },
 };
