@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { SVGProps, useEffect, useState, useRef } from "react";
+import classNames from "classnames";
 import icoPath from "@/app/favicon.ico";
 import { SITE_CONFIG } from "@/app/site.config";
 import styles from "./layout.module.css";
@@ -70,7 +71,9 @@ const Navbar = () => {
           {navItems.map((navItem, i) => (
             <div className="flexItem" key={i.toString()}>
               <Link
-                className={`${styles.linkItem} ${currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url ? styles.selected : ""}`}
+                className={classNames(styles.linkItem, {
+                  [styles.selected]: currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url,
+                })}
                 href={`/${navItem.url}`}
                 key={i.toString()}
               >
@@ -81,7 +84,7 @@ const Navbar = () => {
         </nav>
         <div className={styles.menuWrapper}>
           <div className={styles.menu} onClick={onToggleMenu} ref={menuRef}>
-            <div className={`${styles.menuIcon} flexItem w-full h-full`}>
+            <div className={classNames(styles.menuIcon, "flexItem", "w-full", "h-full")}>
               <MenuIcon />
             </div>
             {isOpen && (
@@ -97,7 +100,7 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className={`flexItem ${styles.darkIcon} h-full`} onClick={onUpdateTheme}>
+        <div className={classNames(styles.darkIcon, "flexItem", "h-full")} onClick={onUpdateTheme}>
           <div className="flexItem">{mounted && (theme === "light" ? <MoonIcon /> : <SunIcon />)}</div>
         </div>
       </div>

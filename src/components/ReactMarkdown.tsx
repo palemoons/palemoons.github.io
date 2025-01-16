@@ -13,7 +13,6 @@ import hybrid from "react-syntax-highlighter/dist/esm/styles/hljs/hybrid";
 import "katex/dist/katex.min.css";
 import styles from "./ReactMarkdown.module.css";
 import Link from "next/link";
-import Spinner from "./Spinner";
 import { SITE_CONFIG } from "@/app/site.config";
 
 export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string; children: string }) {
@@ -76,20 +75,11 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
 }
 
 const CustomImage = (props: React.ImgHTMLAttributes<HTMLImageElement>) => {
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
+  const { src, alt, className, ...rest } = props;
   return (
     <>
-      {loaded ? (
-        <img src={props.src} alt={props.alt} {...props} />
-      ) : (
-        <span className={styles.spinner}>
-          <Spinner />
-        </span>
-      )}
-      {props.alt && <span>{props.alt}</span>}
+      <img src={src} alt={alt} className={className} {...rest} />
+      {alt && <span>{alt}</span>}
     </>
   );
 };

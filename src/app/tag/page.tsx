@@ -2,6 +2,7 @@ import Link from "next/link";
 import pinyin from "pinyin";
 import { countTags } from "@/lib/posts";
 import { ITag } from "@/interfaces/Post";
+import classNames from "classnames";
 import styles from "./page.module.css";
 import { Metadata } from "next";
 import { SITE_CONFIG } from "../site.config";
@@ -25,7 +26,7 @@ export default function TagArchive() {
               <div className={styles.tagLetter}>{letter.toUpperCase()}</div>
               <div className={styles.tagContainer}>
                 {tags.map((tag, i) => (
-                  <Link href={`/tag/${tag.name}`} className={`${styles.tagLink} flexItem`} key={i.toString()}>
+                  <Link href={`/tag/${tag.name}`} className={classNames(styles.tagLink, "flexItem")} key={i.toString()}>
                     # {tag.name} ({tag.count})
                   </Link>
                 ))}
