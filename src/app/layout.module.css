@@ -18,7 +18,7 @@
 
 .title {
   padding: 0 4px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
   font-weight: 600;
 }
@@ -34,13 +34,13 @@
 }
 
 .linkItem {
-  width: 96px;
+  width: 84px;
   border: solid transparent;
   border-radius: 2px;
   border-width: 1px;
   padding: 2px;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 36px;
   text-decoration: none;
   color: var(--text-color);

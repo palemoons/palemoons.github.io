@@ -13,10 +13,7 @@
   --quote-color: #636c76;
   --quote-bg-color: #a3a3a3;
   --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --navbar-height: 72px;
-  @media (max-width: 640px) {
-    --navbar-height: 64px;
-  }
+  --navbar-height: 56px;
 }
 
 [data-theme="dark"] {
@@ -39,7 +36,7 @@ html {
     Lucida Grande,
     Geneva,
     ui-sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 28px;
   scroll-behavior: smooth;
 }
