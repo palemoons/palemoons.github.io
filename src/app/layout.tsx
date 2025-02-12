@@ -91,7 +91,7 @@ const Navbar = () => {
               <div className={styles.menuList}>
                 {navItems.map((navItem, i) => (
                   <div key={i.toString()} className={styles.menuItem}>
-                    <Link href={navItem.url} className="url">
+                    <Link href={`/${navItem.url}`} className="url">
                       {navItem.name}
                     </Link>
                   </div>
