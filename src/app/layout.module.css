@@ -7,7 +7,6 @@
   width: 100%;
   background-color: var(--bg-color);
   border-bottom: 0.5px solid var(--border-color);
-
 }
 
 .siteIcon {
@@ -45,7 +44,7 @@
   text-decoration: none;
   color: var(--text-color);
 }
-.linkItem.selected{
+.linkItem.selected {
   color: var(--quote-bg-color);
 }
 
@@ -149,6 +148,30 @@
 
 .footerContainer span {
   margin: 0 4px;
+}
+
+.infoIcon {
+  fill: var(--svg-color);
+  line-height: 100%;
+}
+
+.rss {
+  display: flex;
+  align-items: center;
+}
+
+.rssLink {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tips {
+  max-width: 180px;
+  position: fixed;
+  bottom: 64px;
+  background-color: var(--hover-color);
+  padding: 8px;
+  border-radius: 2px;
 }
 
 .dot {

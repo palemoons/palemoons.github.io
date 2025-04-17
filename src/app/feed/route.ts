@@ -10,7 +10,7 @@ export async function GET() {
     description: SITE_CONFIG.description,
     link: SITE_CONFIG.siteUrl,
     id: SITE_CONFIG.siteUrl,
-    favicon: `c${SITE_CONFIG.siteUrl}/favicon.ico`,
+    favicon: `${SITE_CONFIG.siteUrl}/favicon.ico`,
     copyright: `All rights reserved ${new Date().getFullYear()}, ${SITE_CONFIG.author}`,
     language: "zh-CN",
     updated: SITE_CONFIG.buildTime,
@@ -19,8 +19,8 @@ export async function GET() {
   posts.forEach(({ key: abbrlink, value: post }) => {
     feed.addItem({
       title: post.title,
-      id: `${SITE_CONFIG.siteUrl}/${abbrlink}`,
-      link: `${SITE_CONFIG.siteUrl}/${abbrlink}`,
+      id: `${SITE_CONFIG.siteUrl}/${post.category}/${abbrlink}`,
+      link: `${SITE_CONFIG.siteUrl}/${post.category}/${abbrlink}`,
       description: post.description,
       date: new Date(post.date),
     });
