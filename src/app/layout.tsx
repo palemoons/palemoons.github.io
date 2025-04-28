@@ -112,6 +112,7 @@ const Navbar = () => {
 const Footer = () => {
   const [isCopy, setIsCopy] = useState<Boolean>(false);
   const [isHover, setIsHover] = useState<Boolean>(false);
+  const [isHoverIcon, setIsHoverIcon] = useState<Boolean>(false);
   const onCopy = () => {
     if (isCopy) return;
     setIsCopy(true);
@@ -127,22 +128,34 @@ const Footer = () => {
           <span className={styles.dot}> · </span>
           <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
             <div className={styles.rss} onClick={onCopy}>
-              <div
+              <InfoIcon
                 className={styles.infoIcon}
+                onMouseOver={() => {
+                  setIsHoverIcon(true);
+                }}
+                onMouseLeave={() => {
+                  setIsHoverIcon(false);
+                }}
+              />
+              {isHoverIcon && <span className={styles.tips}>受GitHub Pages限制，无法在线查看XML文件</span>}
+
+              <span
                 onMouseOver={() => {
                   setIsHover(true);
                 }}
                 onMouseLeave={() => {
                   setIsHover(false);
                 }}
+                className={styles.rssLink}
               >
-                <InfoIcon />
-                {isHover && !isCopy && (
-                  <span className={styles.tips}>受GitHub Pages限制，无法在线查看XML文件，点击以复制RSS链接</span>
-                )}
-              </div>
-              <span className={styles.rssLink}>RSS Feed</span>
-              {isCopy && <span className={styles.tips}>RSS链接已复制到剪贴板！</span>}
+                RSS Feed
+              </span>
+              {isHover &&
+                (isCopy ? (
+                  <span className={styles.tips}>已复制到剪贴板</span>
+                ) : (
+                  <span className={styles.tips}>点击以复制RSS链接</span>
+                ))}
             </div>
           </CopyToClipboard>
         </div>
@@ -187,10 +200,8 @@ const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
 );
 
 const InfoIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 1024 1024" {...props}>
-    <path
-      d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512-230.4 512-512 512zm0-938.667c-234.667 0-426.667 192-426.667 426.667s192 426.667 426.667 426.667 426.667-192 426.667-426.667S746.667 85.333 512 85.333zm0 512c-25.6 0-42.667-17.066-42.667-42.666V256c0-25.6 17.067-42.667 42.667-42.667S554.667 230.4 554.667 256v298.667c0 21.333-17.067 42.666-42.667 42.666zm0 81.067c25.6 0 46.933 21.333 46.933 46.933S537.6 772.267 512 772.267s-46.933-21.334-46.933-46.934S486.4 678.4 512 678.4z"
-    />
+  <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 1024 1024" {...props}>
+    <path d="M512 1024C230.4 1024 0 793.6 0 512S230.4 0 512 0s512 230.4 512 512-230.4 512-512 512zm0-938.667c-234.667 0-426.667 192-426.667 426.667s192 426.667 426.667 426.667 426.667-192 426.667-426.667S746.667 85.333 512 85.333zm0 512c-25.6 0-42.667-17.066-42.667-42.666V256c0-25.6 17.067-42.667 42.667-42.667S554.667 230.4 554.667 256v298.667c0 21.333-17.067 42.666-42.667 42.666zm0 81.067c25.6 0 46.933 21.333 46.933 46.933S537.6 772.267 512 772.267s-46.933-21.334-46.933-46.934S486.4 678.4 512 678.4z" />
   </svg>
 );
 

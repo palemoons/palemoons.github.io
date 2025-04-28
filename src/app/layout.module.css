@@ -152,7 +152,6 @@
 
 .infoIcon {
   fill: var(--svg-color);
-  line-height: 100%;
 }
 
 .rss {
@@ -170,7 +169,7 @@
   position: fixed;
   bottom: 64px;
   background-color: var(--hover-color);
-  padding: 8px;
+  padding: 4px 6px;
   border-radius: 2px;
 }
 
