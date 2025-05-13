@@ -111,8 +111,7 @@ const Navbar = () => {
 
 const Footer = () => {
   const [isCopy, setIsCopy] = useState<Boolean>(false);
-  const [isHover, setIsHover] = useState<Boolean>(false);
-  const [isHoverIcon, setIsHoverIcon] = useState<Boolean>(false);
+
   const onCopy = () => {
     if (isCopy) return;
     setIsCopy(true);
@@ -128,34 +127,21 @@ const Footer = () => {
           <span className={styles.dot}> · </span>
           <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
             <div className={styles.rss} onClick={onCopy}>
-              <InfoIcon
-                className={styles.infoIcon}
-                onMouseOver={() => {
-                  setIsHoverIcon(true);
-                }}
-                onMouseLeave={() => {
-                  setIsHoverIcon(false);
-                }}
-              />
-              {isHoverIcon && <span className={styles.tips}>受GitHub Pages限制，无法在线查看XML文件</span>}
-
-              <span
-                onMouseOver={() => {
-                  setIsHover(true);
-                }}
-                onMouseLeave={() => {
-                  setIsHover(false);
-                }}
-                className={styles.rssLink}
-              >
-                RSS Feed
+              <span className={styles.rssTips}>
+                <InfoIcon className={styles.rssIcon} />
+                {
+                  <span className={styles.iconTips}>
+                    受GitHub Pages限制
+                    <br />
+                    无法在线查看XML文件
+                    <br />
+                    点击链接以复制
+                  </span>
+                }
               </span>
-              {isHover &&
-                (isCopy ? (
-                  <span className={styles.tips}>已复制到剪贴板</span>
-                ) : (
-                  <span className={styles.tips}>点击以复制RSS链接</span>
-                ))}
+              <span className={styles.rssLink}>
+                RSS Feed{isCopy && <span className={styles.linkTips}>已复制到剪贴板</span>}
+              </span>
             </div>
           </CopyToClipboard>
         </div>
