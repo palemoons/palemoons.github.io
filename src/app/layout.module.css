@@ -150,13 +150,19 @@
   margin: 0 4px;
 }
 
-.rssTips {
-  position: relative;
-  display: inline-block;
+.rss {
+  display: flex;
+  align-items: center;
 }
 
-.infoIcon {
-  fill: var(--svg-color);
+.rssTips {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.rssIcon {
+  fill: var(--text-color);
 }
 
 .rssTips .iconTips{
@@ -175,11 +181,6 @@
 
 .rssTips:hover .iconTips {
   visibility: visible;
-}
-
-.rss {
-  display: flex;
-  align-items: center;
 }
 
 .rssLink {
