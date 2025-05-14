@@ -126,7 +126,7 @@ const Footer = () => {
           </span>
           <span className={styles.dot}> · </span>
           <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
-            <div className={styles.rss} onClick={onCopy}>
+            <div className={styles.rss}>
               <span className={styles.rssTips}>
                 <InfoIcon className={styles.rssIcon} />
                 {
@@ -139,8 +139,8 @@ const Footer = () => {
                   </span>
                 }
               </span>
-              <span className={styles.rssLink}>
-                RSS Feed{isCopy && <span className={styles.linkTips}>已复制到剪贴板</span>}
+              <span className={styles.rssLink} onClick={onCopy}>
+                {isCopy ? "已复制!" : "RSS Feed"}
               </span>
             </div>
           </CopyToClipboard>

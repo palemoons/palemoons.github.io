@@ -159,22 +159,18 @@
   fill: var(--svg-color);
 }
 
-.rssTips .iconTips,
-.linkTips {
+.rssTips .iconTips{
+  visibility: hidden;
   position: absolute;
   z-index: 1;
+  background-color: var(--hover-color);
+  width: 150px;
+  margin-left: -75px;
   bottom: 120%;
   left: 50%;
-  background-color: var(--hover-color);
   text-align: center;
   padding: 4px 6px;
   border-radius: 2px;
-}
-
-.rssTips .iconTips {
-  visibility: hidden;
-  width: 150px;
-  margin-left: -75px;
 }
 
 .rssTips:hover .iconTips {
@@ -190,11 +186,6 @@
   position: relative;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.rssLink .linkTips {
-  width: 120px;
-  margin-left: -60px;
 }
 
 .dot {
