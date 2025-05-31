@@ -127,17 +127,15 @@ const Footer = () => {
           <span className={styles.dot}> · </span>
           <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
             <div className={styles.rss}>
-              <span className={styles.rssTips}>
-                <InfoIcon className={styles.rssIcon} />
-                {
-                  <span className={styles.iconTips}>
-                    受GitHub Pages限制
-                    <br />
-                    无法在线查看XML文件
-                    <br />
-                    点击链接以复制
-                  </span>
-                }
+              <span className={styles.rssIcon}>
+                <InfoIcon aria-describedby="icon-desc" />
+                <span role="tooltip" id="icon-desc">
+                  受GitHub Pages限制
+                  <br />
+                  无法在线查看XML文件
+                  <br />
+                  点击链接以复制
+                </span>
               </span>
               <span className={styles.rssLink} onClick={onCopy}>
                 {isCopy ? "已复制!" : "RSS Feed"}

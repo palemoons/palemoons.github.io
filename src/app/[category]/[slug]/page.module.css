@@ -88,6 +88,7 @@
 
 .mobileTOC {
   position: fixed;
+  z-index: 1;
   bottom: 16px;
   right: 16px;
   @media (min-width: 1080px) {

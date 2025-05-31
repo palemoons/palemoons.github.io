@@ -155,36 +155,46 @@
   align-items: center;
 }
 
-.rssTips {
+.rssIcon {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
 
-.rssIcon {
+.rssIcon svg {
   fill: var(--text-color);
 }
 
-.rssTips .iconTips{
+.rssIcon svg:hover + :global(#icon-desc) {
+  visibility: visible;
+}
+
+.rss :global(#icon-desc) {
   visibility: hidden;
+  cursor: pointer;
   position: absolute;
-  z-index: 1;
+  margin-left: -81px;
+  bottom: 180%;
+  left: 50%;
   background-color: var(--hover-color);
   width: 150px;
-  margin-left: -75px;
-  bottom: 120%;
-  left: 50%;
   text-align: center;
   padding: 4px 6px;
   border-radius: 2px;
 }
 
-.rssTips:hover .iconTips {
-  visibility: visible;
+.rss :global(#icon-desc)::after {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--hover-color) transparent transparent transparent;
 }
 
 .rssLink {
-  position: relative;
   text-decoration: underline;
   cursor: pointer;
 }
