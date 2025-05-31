@@ -9,7 +9,7 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
   const stylesList = [styles.toc_h1, styles.toc_h2, styles.toc_h3, styles.toc_h4, styles.toc_h5];
   const { className, ...rest } = props;
   const [activeId, setActiveId] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -44,7 +44,7 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
         const elementOffsetTop = element.offsetTop;
         const elementHeight = element.clientHeight;
 
-        const scrollTop = elementOffsetTop - (containerHeight / 2) + (elementHeight / 2);
+        const scrollTop = elementOffsetTop - containerHeight / 2 + elementHeight / 2;
         container.scrollTo({
           top: scrollTop,
           behavior: "smooth",
@@ -82,9 +82,20 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
 };
 
 const MobileTOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLAttributes<HTMLDivElement>) => {
+  const tocRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (tocRef.current && !tocRef.current.contains(e.target as Node)) setIsOpen(false);
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [tocRef]);
   return (
-    <div {...props}>
+    <div ref={tocRef} {...props}>
       <div
         className={styles.IconWrapper}
         onClick={() => {
