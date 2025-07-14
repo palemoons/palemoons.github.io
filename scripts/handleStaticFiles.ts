@@ -8,10 +8,21 @@ const postsDir = path.join(process.cwd(), "_posts");
 const publicImgDir = path.join(process.cwd(), "public", "img");
 const nonPostDirs = ["about", "scripts"];
 
+const ONLY_STRING_SCHEMA = new yaml.Schema({
+  explicit: [
+    new yaml.Type('tag:yaml.org,2002:str', {
+      kind: 'scalar',
+      resolve: () => true,
+      construct: (data) => (data != null ? data.toString() : ''),
+    }),
+  ],
+});
+
 const customMatter = (content: string) =>
   matter(content, {
     engines: {
-      yaml: (str: string) => yaml.load(str, { schema: yaml.JSON_SCHEMA }) as object,
+      yaml: (str: string) =>
+        yaml.load(str, { schema: ONLY_STRING_SCHEMA }) as Record<string, any>,
     },
   });
 
@@ -31,7 +42,7 @@ categories.forEach((category) => {
       const fileContents = fs.readFileSync(fullPath, "utf8");
       // Use gray-matter to parse the post metadata section
       const { data: frontMatter } = customMatter(fileContents);
-
+      console.log(frontMatter)
       const postInfo: IPostHeader = {
         title: frontMatter.title,
         category: category,
