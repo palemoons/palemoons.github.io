@@ -42,7 +42,7 @@ categories.forEach((category) => {
       const fileContents = fs.readFileSync(fullPath, "utf8");
       // Use gray-matter to parse the post metadata section
       const { data: frontMatter } = customMatter(fileContents);
-      console.log(frontMatter)
+      
       const postInfo: IPostHeader = {
         title: frontMatter.title,
         category: category,
