@@ -148,8 +148,8 @@
   height: calc(var(--navbar-height) + 12px);
 }
 
-.reactMarkdown :global(#zoom-container){
-  background-color: rgba(0,0,0,0.5);
+.reactMarkdown :global(#zoom-container) {
+  background-color: rgba(0, 0, 0, 0.5);
   width: 100dvw;
   height: calc(100dvh - var(--navbar-height));
   position: fixed;
@@ -202,4 +202,43 @@
   background-color: rgb(29, 31, 33);
   cursor: pointer;
   rotate: 180deg;
+}
+
+.updateWrapper {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+
+  background-color: var(--bg-muted-color);
+  border-left: 1px solid var(--border-muted-color);
+  border-left-width: 4px;
+  color: var(--quote-color);
+
+  box-shadow: none;
+}
+
+.updateHeader {
+  margin-bottom: 0.35rem;
+
+  font-size: 0.75rem;
+  line-height: 1.4;
+  font-weight: 500;
+
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.updateHeader::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--border-muted-color);
+}
+
+.updateContent {
+  font-size: 0.9rem;
 }

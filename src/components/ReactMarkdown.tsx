@@ -5,11 +5,14 @@ import { useState, useEffect, useRef } from "react";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
+import remarkDirective from "remark-directive";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import CopyToClipboard from "react-copy-to-clipboard";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import hybrid from "react-syntax-highlighter/dist/esm/styles/hljs/hybrid";
+import type { Root } from "mdast";
+import { visit } from "unist-util-visit";
 import "katex/dist/katex.min.css";
 import styles from "./ReactMarkdown.module.css";
 import Link from "next/link";
@@ -31,43 +34,48 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
       </TitleTag>
     );
   };
+  const components = {
+    code(props: React.ComponentProps<"code">) {
+      const { children, className } = props;
+      const match = /language-(\w+)/.exec(className || "");
+      return match ? (
+        <CodeSnippet language={match[1]} className={className || ""}>
+          {String(children).replace(/\n$/, "")}
+        </CodeSnippet>
+      ) : (
+        <code className={`${styles.inlineCode} ${className || ""}`}>{children}</code>
+      );
+    },
+    img(props: React.ComponentProps<"img">) {
+      const { src, alt, ...rest } = props;
+      return src && <CustomImage src={`/img/${abbrlink}/${src}`} alt={alt || ""} {...rest} />;
+    },
+    a({ children, href, ...props }: React.ComponentProps<"a">) {
+      if (href)
+        return (
+          <Link href={href} target="_blank" title={href} {...props}>
+            {children}
+          </Link>
+        );
+    },
+    h1: (props: React.ComponentProps<"h1">) => <HeadingRenderer level={1} {...props} />,
+    h2: (props: React.ComponentProps<"h2">) => <HeadingRenderer level={2} {...props} />,
+    h3: (props: React.ComponentProps<"h3">) => <HeadingRenderer level={3} {...props} />,
+    h4: (props: React.ComponentProps<"h4">) => <HeadingRenderer level={4} {...props} />,
+    h5: (props: React.ComponentProps<"h5">) => <HeadingRenderer level={5} {...props} />,
+    h6: (props: React.ComponentProps<"h6">) => <HeadingRenderer level={6} {...props} />,
+    "update-block": (props: React.ComponentProps<"div">) => {
+      const { date, children } = props as any;
+      return <UpdateBlock dateInfo={date}>{children}</UpdateBlock>;
+    },
+  };
 
   return (
     <Markdown
       className={styles.reactMarkdown}
-      remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }]]}
+      remarkPlugins={[remarkMath, [remarkGfm, { singleTilde: false }], remarkDirective, remarkDirectiveCustom]}
       rehypePlugins={[[rehypeKatex, { strict: false }], rehypeRaw]}
-      components={{
-        code({ node, ...props }) {
-          const { children, className } = props;
-          const match = /language-(\w+)/.exec(className || "");
-          return match ? (
-            <CodeSnippet language={match[1]} className={className || ""}>
-              {String(children).replace(/\n$/, "")}
-            </CodeSnippet>
-          ) : (
-            <code className={`${styles.inlineCode} ${className || ""}`}>{children}</code>
-          );
-        },
-        img({ node, ...props }) {
-          const { src, alt, ...rest } = props;
-          return src && <CustomImage src={`/img/${abbrlink}/${src}`} alt={alt || ""} {...rest} />;
-        },
-        a({ node, children, href, ...props }) {
-          if (href)
-            return (
-              <Link href={href} target="_blank" title={href} {...props}>
-                {children}
-              </Link>
-            );
-        },
-        h1: (props) => <HeadingRenderer level={1} {...props} />,
-        h2: (props) => <HeadingRenderer level={2} {...props} />,
-        h3: (props) => <HeadingRenderer level={3} {...props} />,
-        h4: (props) => <HeadingRenderer level={4} {...props} />,
-        h5: (props) => <HeadingRenderer level={5} {...props} />,
-        h6: (props) => <HeadingRenderer level={6} {...props} />,
-      }}
+      components={components}
     >
       {children}
     </Markdown>
@@ -173,3 +181,32 @@ const ExtendIcon = (props: React.SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
+
+const remarkDirectiveCustom = () => {
+  return (tree: Root) => {
+    visit(tree, (node) => {
+      // custom markdown syntax: update
+      if (node.type === "containerDirective" && node.name === "update") {
+        // :::update
+        const data = node.data || (node.data = {});
+        data.hName = "update-block";
+        const rawDate = node.attributes?.date;
+        const date = rawDate ? new Date(rawDate) : null;
+
+        data.hProperties = {
+          ...(node.attributes || {}),
+          date: date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日` : "未知时间",
+        };
+      }
+    });
+  };
+};
+
+const UpdateBlock = ({ dateInfo, children }: { dateInfo: string; children: React.ReactNode }) => {
+  return (
+    <div className={styles.updateWrapper}>
+      <div className={styles.updateHeader}>更新于 {dateInfo}</div>
+      <div className={styles.updateContent}>{children}</div>
+    </div>
+  );
+};
