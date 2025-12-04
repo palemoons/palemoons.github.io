@@ -17,6 +17,7 @@ import "katex/dist/katex.min.css";
 import styles from "./ReactMarkdown.module.css";
 import Link from "next/link";
 import { SITE_CONFIG } from "@/app/site.config";
+import InfoIcon from "./icons/InfoIcon";
 
 export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string; children: string }) {
   const HeadingRenderer = ({ level, children }: { level: number; children?: React.ReactNode }) => {
@@ -64,9 +65,9 @@ export default function ReactMarkdown({ abbrlink, children }: { abbrlink: string
     h4: (props: React.ComponentProps<"h4">) => <HeadingRenderer level={4} {...props} />,
     h5: (props: React.ComponentProps<"h5">) => <HeadingRenderer level={5} {...props} />,
     h6: (props: React.ComponentProps<"h6">) => <HeadingRenderer level={6} {...props} />,
-    "update-block": (props: React.ComponentProps<"div">) => {
-      const { date, children } = props as any;
-      return <UpdateBlock dateInfo={date}>{children}</UpdateBlock>;
+    "update-block": ({ date, type, children }: { date: string; type: string; children?: React.ReactNode }) => {
+      if (type === "containerDirective") return <UpdateBlock dateInfo={date}>{children}</UpdateBlock>;
+      if (type === "leafDirective") return <SectionUpdateHint dateInfo={date} />;
     },
   };
 
@@ -186,8 +187,7 @@ const remarkDirectiveCustom = () => {
   return (tree: Root) => {
     visit(tree, (node) => {
       // custom markdown syntax: update
-      if (node.type === "containerDirective" && node.name === "update") {
-        // :::update
+      if ((node.type === "containerDirective" || node.type === "leafDirective") && node.name === "update") {
         const data = node.data || (node.data = {});
         data.hName = "update-block";
         const rawDate = node.attributes?.date;
@@ -195,6 +195,7 @@ const remarkDirectiveCustom = () => {
 
         data.hProperties = {
           ...(node.attributes || {}),
+          type: node.type,
           date: date ? `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日` : "未知时间",
         };
       }
@@ -203,10 +204,24 @@ const remarkDirectiveCustom = () => {
 };
 
 const UpdateBlock = ({ dateInfo, children }: { dateInfo: string; children: React.ReactNode }) => {
+  if (!dateInfo) return null;
   return (
-    <div className={styles.updateWrapper}>
-      <div className={styles.updateHeader}>更新于 {dateInfo}</div>
-      <div className={styles.updateContent}>{children}</div>
+    <div className={styles.updateBlock}>
+      <div className={styles.updateBlockHeader}>
+        <InfoIcon className={styles.updateBadge} />
+        更新于 {dateInfo}
+      </div>
+      <div className={styles.updateBlockContent}>{children}</div>
+    </div>
+  );
+};
+
+export const SectionUpdateHint = ({ dateInfo }: { dateInfo?: string }) => {
+  if (!dateInfo) return null;
+  return (
+    <div className={styles.updateHint}>
+      <InfoIcon className={styles.updateBadge} />
+      <span>本节于 {dateInfo} 更新</span>
     </div>
   );
 };

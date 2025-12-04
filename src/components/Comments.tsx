@@ -3,7 +3,7 @@
 import React from "react";
 import { useTheme } from "next-themes";
 import { SITE_CONFIG } from "@/app/site.config";
-import Spinner from "./Spinner";
+import Spinner from "./icons/SpinnerIcon";
 import styles from "./Comments.module.css";
 
 export default function Comments(props: React.HTMLAttributes<HTMLDivElement>) {

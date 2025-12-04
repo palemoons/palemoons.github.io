@@ -204,7 +204,7 @@
   rotate: 180deg;
 }
 
-.updateWrapper {
+.updateBlock {
   margin: 1.25rem 0;
   padding: 0.75rem 1rem;
   border-top-right-radius: 6px;
@@ -218,11 +218,12 @@
   box-shadow: none;
 }
 
-.updateHeader {
-  margin-bottom: 0.35rem;
+.updateBadge {
+  fill: var(--quote-color);
+}
 
+.updateBlockHeader {
   font-size: 0.75rem;
-  line-height: 1.4;
   font-weight: 500;
 
   display: flex;
@@ -230,15 +231,35 @@
   gap: 0.4rem;
 }
 
-.updateHeader::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background-color: var(--border-muted-color);
+.updateBlockContent {
+  font-size: 0.9rem;
 }
 
-.updateContent {
-  font-size: 0.9rem;
+.updateBlockContent > p {
+  margin-top: 0.5rem;
+}
+
+.updateBlockContent p:last-child {
+  margin-bottom: 0;
+}
+
+.updateHint {
+  margin: 0.5rem 0 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-left: 4px solid var(--border-muted-color);
+  background-color: var(--bg-muted-color);
+
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--quote-color);
 }
