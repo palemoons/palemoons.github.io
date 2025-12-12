@@ -6,7 +6,7 @@
 
 .tag {
   padding: 4px 6px;
-  background-color: var(--inline-bg-color);
-  color: var(--inline-code-color);
+  background-color: var(--color-inline-bg);
+  color: var(--color-inline-fg);
   border-radius: 2px;
 }

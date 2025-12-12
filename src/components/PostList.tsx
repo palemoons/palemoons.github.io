@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { IPostHeader } from "@/interfaces/Post";
+import { IPostHeader } from "@/interfaces/post";
 import styles from "./PostList.module.css";
 
 const BlogList = ({ posts, size = -1 }: { posts: Array<{ key: string; value: IPostHeader }>; size?: number }) => {

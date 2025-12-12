@@ -1,20 +1,21 @@
+import { SITE_CONFIG } from "@/app/site.config";
+import Comments from "@/components/Comments";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { MobileTOC, TOC } from "@/components/TOC";
+import { Itoc } from "@/interfaces/post";
+import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
+import toc from "markdown-toc-unlazy";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import toc from "markdown-toc-unlazy";
-import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
-import { Itoc } from "@/interfaces/Post";
+
 import styles from "./page.module.css";
-import ReactMarkdown from "@/components/ReactMarkdown";
-import { TOC, MobileTOC } from "@/components/TOC";
-import Comments from "@/components/Comments";
-import { SITE_CONFIG } from "@/app/site.config";
 
 export default function Page({ params }: { params: { category: string; slug: string } }) {
   const post = getPostBySlug(params.slug);
   if (!post) return notFound();
   const { content, ...frontMatter } = post;
-  const { title, description, tags } = frontMatter;
+  const { title, description, tags, abbrlink } = frontMatter;
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
   const tocContent = handleTocHeader(toc(content).json).filter(
@@ -63,7 +64,7 @@ export default function Page({ params }: { params: { category: string; slug: str
           </div>
         </div>
         <div>
-          <ReactMarkdown abbrlink={frontMatter.abbrlink!}>{content}</ReactMarkdown>
+          <MarkdownRenderer abbrlink={abbrlink}>{content}</MarkdownRenderer>
         </div>
         <Comments id="toc-comments" />
       </div>

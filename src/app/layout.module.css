@@ -5,8 +5,8 @@
   z-index: 1;
   height: var(--navbar-height);
   width: 100%;
-  background-color: var(--bg-color);
-  border-bottom: 0.5px solid var(--border-color);
+  background-color: var(--color-page-bg);
+  border-bottom: 0.5px solid var(--color-border-strong);
 }
 
 .siteIcon {
@@ -42,10 +42,10 @@
   font-size: 16px;
   line-height: 36px;
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--color-page-fg);
 }
 .linkItem.selected {
-  color: var(--quote-bg-color);
+  color: var(--color-quote-bg);
 }
 
 .menuWrapper {
@@ -71,12 +71,12 @@
 }
 .darkIcon > div:hover {
   cursor: pointer;
-  background-color: var(--hover-color);
+  background-color: var(--color-hover);
 }
 .darkIcon svg {
   width: 24px;
   height: 24px;
-  fill: var(--svg-color);
+  fill: var(--color-icon);
 }
 
 /* Menu */
@@ -93,12 +93,12 @@
 }
 .menuIcon:hover {
   cursor: pointer;
-  background-color: var(--hover-color);
+  background-color: var(--color-hover);
 }
 .menuIcon svg {
   height: 66.7%;
   width: 66.7%;
-  fill: var(--svg-color);
+  fill: var(--color-icon);
 }
 
 .menuList {
@@ -109,10 +109,10 @@
   margin-top: 4px;
   padding: 4px 0;
   width: 96px;
-  border: solid var(--border-color);
+  border: solid var(--color-border-strong);
   border-radius: 2px;
   border-width: 1px;
-  background-color: var(--bg-color);
+  background-color: var(--color-page-bg);
   box-shadow: var(--shadow);
 }
 
@@ -121,7 +121,7 @@
   text-align: center;
 }
 .menuItem:hover {
-  background-color: var(--hover-color);
+  background-color: var(--color-hover);
 }
 
 /* Footer */
@@ -130,7 +130,7 @@
   margin: 32px 48px 0 48px;
   padding-top: 16px;
   padding-bottom: 16px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--color-border-strong);
 }
 
 .footerContainer {
@@ -162,7 +162,7 @@
 }
 
 .rssIcon svg {
-  fill: var(--text-color);
+  fill: var(--color-page-fg);
 }
 
 .rssIcon svg:hover + :global(#icon-desc) {
@@ -176,7 +176,7 @@
   margin-left: -81px;
   bottom: 180%;
   left: 50%;
-  background-color: var(--hover-color);
+  background-color: var(--color-hover);
   width: 150px;
   text-align: center;
   padding: 4px 6px;
@@ -191,7 +191,7 @@
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: var(--hover-color) transparent transparent transparent;
+  border-color: var(--color-hover) transparent transparent transparent;
 }
 
 .rssLink {

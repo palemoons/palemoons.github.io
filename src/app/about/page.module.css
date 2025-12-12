@@ -68,7 +68,7 @@
   width: calc(50vw - 490px);
   padding-top: 48px;
   padding-left: 16px;
-  border-left: solid 1px var(--border-color);
+  border-left: solid 1px var(--color-border-strong);
   @media (max-width: 1340px) {
     width: calc(50vw - 420px);
   }

@@ -1,37 +1,67 @@
+@import "tailwindcss";
+
 :root {
-  --bg-color: #f4f4f5;
-  --text-color: #27272a;
-  --hover-color: #d4d4d8;
-  --border-color: #71717a;
-  --svg-color: #18181b;
-  --inline-bg-color: #d4d4d8;
-  --inline-code-color: #3f3f46;
-  --code-bg-color: #2f2f2f;
-  --code-color: #c5c8c6;
-  --bg-muted-color: #ededed;
-  --border-muted-color: #d0d7deb3;
-  --quote-color: #636c76;
-  --quote-bg-color: #a3a3a3;
-  --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --navbar-height: 56px;
+  /* 页面主背景 & 文字 */
+  --color-page-bg: #f4f4f5; /* --bg-color */
+  --color-page-fg: #27272a; /* --text-color */
+
+  /* 卡片 / 次级背景 */
+  --color-surface-bg: #ededed; /* --bg-muted-color */
+  --color-surface-border: #d0d7deb3; /* --border-muted-color */
+
+  /* 线条 / 强边框 */
+  --color-border-strong: #71717a; /* --border-color */
+
+  /* 悬浮 & 交互 */
+  --color-hover: #d4d4d8; /* --hover-color */
+
+  /* 图标 / SVG */
+  --color-icon: #18181b; /* --svg-color */
+
+  /* 行内 code（浅色背景） */
+  --color-inline-bg: #d4d4d8; /* --inline-bg-color */
+  --color-inline-fg: #3f3f46; /* --inline-code-color */
+
+  /* 代码块 */
+  --color-code-bg: #2f2f2f; /* --code-bg-color */
+  --color-code-fg: #c5c8c6; /* --code-color */
+
+  /* 引用 blockquote */
+  --color-quote-bg: #a3a3a3; /* --quote-bg-color */
+  --color-quote-fg: #636c76; /* --quote-color */
+
+  /* 其他 token */
+  --shadow-soft: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --layout-navbar-height: 56px; /* --navbar-height */
 }
 
+/* 暗色主题：只覆盖需要反转的 token */
 [data-theme="dark"] {
-  --bg-color: #27272a;
-  --text-color: #f4f4f5;
-  --hover-color: #3f3f46;
-  --svg-color: #f4f4f5;
-  --inline-bg-color: #3f3f46;
-  --inline-code-color: #d4d4d8;
-  --bg-muted-color: #2f2f2f;
-  --quote-color: #8d96a0;
-  --quote-bg-color: #525252;
+  --color-page-bg: #27272a;
+  --color-page-fg: #f4f4f5;
+
+  --color-surface-bg: #2f2f2f;
+  --color-surface-border: #3f3f46;
+
+  --color-hover: #3f3f46;
+
+  --color-icon: #f4f4f5;
+
+  --color-inline-bg: #3f3f46;
+  --color-inline-fg: #d4d4d8;
+
+  /* 如果你希望 code 块暗色主题不变，可以不改 */
+  /* --color-code-bg: ... */
+  /* --color-code-fg: ... */
+
+  --color-quote-bg: #525252;
+  --color-quote-fg: #8d96a0;
 }
 
 html {
   min-height: 100%;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: var(--color-page-bg);
+  color: var(--color-page-fg);
   font-family:
     Lucida Grande,
     Geneva,
@@ -42,7 +72,7 @@ html {
 }
 
 html a {
-  color: var(--text-color);
+  color: var(--color-page-fg);
 }
 
 body {
@@ -62,7 +92,7 @@ body::-webkit-scrollbar-track {
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
+  background-color: var(--color-border-strong);
 }
 
 .main {
@@ -97,7 +127,7 @@ body::-webkit-scrollbar-thumb {
 
 .url {
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--color-page-fg);
 }
 
 .h-full {

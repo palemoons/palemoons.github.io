@@ -3,18 +3,18 @@
   height: 36px;
   text-align: center;
   line-height: 44px;
-  border: solid 1px var(--border-color);
+  border: solid 1px var(--color-border-strong);
   border-radius: 4px;
-  background-color: var(--bg-color);
+  background-color: var(--color-page-bg);
 }
 
 .IconWrapper:hover {
-  background-color: var(--hover-color);
+  background-color: var(--color-hover);
   cursor: pointer;
 }
 
 .IconWrapper > svg {
-  fill: var(--svg-color);
+  fill: var(--color-icon);
 }
 
 .mobileTOC {
@@ -23,8 +23,8 @@
   bottom: 56px;
   min-width: 200px;
   max-width: 280px;
-  background-color: var(--bg-color);
-  border: 0.5px solid var(--border-color);
+  background-color: var(--color-page-bg);
+  border: 0.5px solid var(--color-border-strong);
   border-radius: 4px;
   padding: 12px 12px;
   max-height: calc(100vh - 200px);
@@ -55,7 +55,7 @@
 }
 
 .tocWrapper::-webkit-scrollbar-thumb {
-  background-color: var(--border-color);
+  background-color: var(--color-border-strong);
 }
 
 .title {

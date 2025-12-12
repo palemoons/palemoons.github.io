@@ -1,15 +1,16 @@
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import { Metadata } from "next";
-import toc from "markdown-toc-unlazy";
-import { getAboutPost } from "@/lib/posts";
-import ReactMarkdown from "@/components/ReactMarkdown";
-import Comments from "@/components/Comments";
-import { TOC, MobileTOC } from "@/components/TOC";
-import { Itoc } from "@/interfaces/Post";
 import avatar from "@/assets/avatar.jpg";
-import styles from "./page.module.css";
+import Comments from "@/components/Comments";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { MobileTOC, TOC } from "@/components/TOC";
+import { Itoc } from "@/interfaces/post";
+import { getAboutPost } from "@/lib/posts";
+import toc from "markdown-toc-unlazy";
+import { Metadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+
 import { SITE_CONFIG } from "../site.config";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: `关于 | ${SITE_CONFIG.title}`,
@@ -53,8 +54,7 @@ export default function AboutPage() {
             <Image src={avatar} width={160} height={160} alt="avatar" className={styles.avatar} />
           </div>
         </div>
-
-        <ReactMarkdown abbrlink={frontMatter.abbrlink!}>{content}</ReactMarkdown>
+        <MarkdownRenderer abbrlink={frontMatter.abbrlink}>{content}</MarkdownRenderer>
         <Comments id="toc-comments" />
       </div>
       <div className={styles.tocWrapper}>

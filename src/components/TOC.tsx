@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { Itoc } from "@/interfaces/Post";
+import { Itoc } from "@/interfaces/post";
 import styles from "./TOC.module.css";
 
 const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLAttributes<HTMLDivElement>) => {

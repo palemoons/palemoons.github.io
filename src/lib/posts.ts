@@ -2,9 +2,10 @@ import fs from "fs";
 import path from "path";
 import yaml from "js-yaml";
 import matter from "gray-matter";
-import { IPost, IPostHeader, ITag } from "@/interfaces/Post";
+import { IPost, IPostHeader, ITag } from "@/interfaces/post";
 
-const postsDir = path.join(process.cwd(), "_posts");
+const postsDir = path.join("/Users/palemoons/Documents/blog-content/");
+// const postsDir = path.join(process.cwd(), "_posts");
 const publicDir = path.join(process.cwd(), "public");
 const postIndexPath = path.join(publicDir, "postIndex.json");
 

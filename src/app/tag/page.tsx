@@ -1,7 +1,7 @@
 import Link from "next/link";
 import pinyin from "pinyin";
 import { countTags } from "@/lib/posts";
-import { ITag } from "@/interfaces/Post";
+import { ITag } from "@/interfaces/post";
 import classNames from "classnames";
 import styles from "./page.module.css";
 import { Metadata } from "next";

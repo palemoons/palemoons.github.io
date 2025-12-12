@@ -20,7 +20,7 @@
 }
 
 .spinner svg {
-  stroke: var(--svg-color);
+  stroke: var(--color-icon);
 }
 
 .container {
