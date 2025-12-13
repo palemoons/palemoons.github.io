@@ -1,13 +1,12 @@
 "use client";
 
 import { SITE_CONFIG } from "./site.config";
-import styles from "./not-found.module.css";
 
 export default function NotFound() {
   return (
-    <div className={`${styles.notfound} container`}>
+    <div className="container flex grow flex-col justify-center text-center">
       <title>{`404 | ${SITE_CONFIG.title}`}</title>
-      <div className={styles.title}>Oops!</div>
+      <div className="mb-4 text-[40px] font-semibold">Oops!</div>
       <div>This page could not be found.</div>
     </div>
   );

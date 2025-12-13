@@ -12,7 +12,6 @@ import classNames from "classnames";
 import InfoIcon from "@/components/icons/InfoIcon";
 import icoPath from "@/app/favicon.ico";
 import { SITE_CONFIG } from "@/app/site.config";
-import styles from "./layout.module.css";
 import "./global.css";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -56,26 +55,22 @@ const Navbar = () => {
     };
   }, []);
   return (
-    <div className={styles.navi}>
+    <div className="sticky top-0 z-[1] h-[var(--navbar-height)] w-full border-b-[0.5px] border-b-[color:var(--color-border-strong)] bg-[color:var(--color-page-bg)]">
       <div className="h-full container flex">
         <Link href="/" className="flexItem url">
-          <Image
-            src={icoPath}
-            priority={false}
-            width={32}
-            height={32}
-            alt={SITE_CONFIG.title}
-            className={styles.siteIcon}
-          />
-          <div className={styles.title}>{SITE_CONFIG.title}</div>
+          <Image src={icoPath} priority={false} width={32} height={32} alt={SITE_CONFIG.title} className="h-6 w-6 p-[6px]" />
+          <div className="px-1 text-base font-semibold leading-6">{SITE_CONFIG.title}</div>
         </Link>
-        <nav className={styles.links}>
+        <nav className="hidden h-full flex-auto justify-end md:inline-flex">
           {navItems.map((navItem, i) => (
             <div className="flexItem" key={i.toString()}>
               <Link
-                className={classNames(styles.linkItem, {
-                  [styles.selected]: currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url,
-                })}
+                className={classNames(
+                  "w-[84px] rounded-[2px] border border-transparent p-[2px] text-center text-base leading-9 no-underline text-[color:var(--color-page-fg)]",
+                  {
+                    "text-[color:var(--color-quote-bg)]": currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url,
+                  },
+                )}
                 href={`/${navItem.url}`}
                 key={i.toString()}
               >
@@ -84,15 +79,15 @@ const Navbar = () => {
             </div>
           ))}
         </nav>
-        <div className={styles.menuWrapper}>
-          <div className={styles.menu} onClick={onToggleMenu} ref={menuRef}>
-            <div className={classNames(styles.menuIcon, "flexItem", "w-full", "h-full")}>
+        <div className="inline-flex flex-auto items-center justify-end pr-1 md:hidden">
+          <div className="relative h-9 w-9" onClick={onToggleMenu} ref={menuRef}>
+            <div className="flexItem h-full w-full rounded-[2px] border border-transparent hover:cursor-pointer hover:bg-[color:var(--color-hover)] [&>svg]:h-[66.7%] [&>svg]:w-[66.7%] [&>svg]:fill-[color:var(--color-icon)]">
               <MenuIcon />
             </div>
             {isOpen && (
-              <div className={styles.menuList}>
+              <div className="absolute right-0 top-full z-[1] mt-1 w-24 rounded-[2px] border border-[color:var(--color-border-strong)] bg-[color:var(--color-page-bg)] py-1 shadow">
                 {navItems.map((navItem, i) => (
-                  <div key={i.toString()} className={styles.menuItem}>
+                  <div key={i.toString()} className="px-1 py-1 text-center hover:bg-[color:var(--color-hover)]">
                     <Link href={`/${navItem.url}`} className="url">
                       {navItem.name}
                     </Link>
@@ -102,8 +97,10 @@ const Navbar = () => {
             )}
           </div>
         </div>
-        <div className={classNames(styles.darkIcon, "flexItem", "h-full")} onClick={onUpdateTheme}>
-          <div className="flexItem">{mounted && (theme === "light" ? <MoonIcon /> : <SunIcon />)}</div>
+        <div className="flexItem h-full flex-none cursor-pointer" onClick={onUpdateTheme}>
+          <div className="flexItem h-9 w-9 rounded-[2px] border border-transparent hover:bg-[color:var(--color-hover)]">
+            {mounted && (theme === "light" ? <MoonIcon className="h-6 w-6 fill-[color:var(--color-icon)]" /> : <SunIcon className="h-6 w-6 fill-[color:var(--color-icon)]" />)}
+          </div>
         </div>
       </div>
     </div>
@@ -119,18 +116,22 @@ const Footer = () => {
     setTimeout(() => setIsCopy(false), 1200);
   };
   return (
-    <footer className={styles.footer}>
+    <footer className="static mx-12 mt-8 border-t border-[color:var(--color-border-strong)] pt-4 pb-4">
       <div className="container">
-        <div className={styles.footerContainer}>
+        <div className="mb-[2px] flex items-end justify-center text-sm leading-[18px] max-[640px]:flex-col max-[640px]:items-center [&>span]:mx-1">
           <span>
             © 2020-{new Date().getFullYear()} by {SITE_CONFIG.author}
           </span>
-          <span className={styles.dot}> · </span>
+          <span className="mx-1"> · </span>
           <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
-            <div className={styles.rss}>
-              <span className={styles.rssIcon}>
+            <div className="flex items-center">
+              <span className="relative inline-flex items-center group [&>svg]:fill-[color:var(--color-page-fg)]">
                 <InfoIcon aria-describedby="icon-desc" />
-                <span role="tooltip" id="icon-desc">
+                <span
+                  role="tooltip"
+                  id="icon-desc"
+                  className="invisible absolute bottom-[180%] left-1/2 -ml-[81px] w-[150px] cursor-pointer rounded-[2px] bg-[color:var(--color-hover)] px-[6px] py-1 text-center group-hover:visible after:absolute after:left-1/2 after:top-full after:-ml-[5px] after:border-[5px] after:border-solid after:border-t-[color:var(--color-hover)] after:border-r-transparent after:border-b-transparent after:border-l-transparent after:content-['']"
+                >
                   受GitHub Pages限制
                   <br />
                   无法在线查看XML文件
@@ -138,28 +139,28 @@ const Footer = () => {
                   点击链接以复制
                 </span>
               </span>
-              <span className={styles.rssLink} onClick={onCopy}>
+              <span className="cursor-pointer underline" onClick={onCopy}>
                 {isCopy ? "已复制!" : "RSS Feed"}
               </span>
             </div>
           </CopyToClipboard>
         </div>
       </div>
-      <div className={styles.footerContainer}>
+      <div className="mb-[2px] flex items-end justify-center text-sm leading-[18px] max-[640px]:flex-col max-[640px]:items-center [&>span]:mx-1">
         <span>
           Built on{" "}
           <Link href="https://nextjs.org/" target="_blank">
             NextJS
           </Link>
         </span>
-        <span className={styles.dot}> · </span>
+        <span className="mx-1"> · </span>
         <span>
           Powered by{" "}
           <Link href={SITE_CONFIG.siteRepo} target="_blank">
             Github
           </Link>
         </span>
-        <span className={styles.dot}> · </span>
+        <span className="mx-1"> · </span>
         <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
       </div>
     </footer>

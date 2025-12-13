@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import Link from "next/link";
 import { Itoc } from "@/interfaces/post";
-import styles from "./TOC.module.css";
+import Link from "next/link";
+import React, { useEffect, useRef, useState } from "react";
 
 const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLAttributes<HTMLDivElement>) => {
-  const stylesList = [styles.toc_h1, styles.toc_h2, styles.toc_h3, styles.toc_h4, styles.toc_h5];
+  const headingBase = "my-[2px] truncate whitespace-nowrap text-ellipsis no-underline hover:underline [&]:text-inherit";
+  const headingList = [
+    headingBase,
+    `${headingBase} ml-3`,
+    `${headingBase} ml-6`,
+    `${headingBase} ml-9`,
+    `${headingBase} ml-12`,
+    `${headingBase} ml-[60px]`,
+  ];
   const { className, ...rest } = props;
   const [activeId, setActiveId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,7 +31,7 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
         threshold: 0,
       },
     );
-    const headingElements = tocContent.map((toc) => document.getElementById(handleSlug(toc.slug)));
+    const headingElements = tocContent.map((toc) => document.getElementById(toc.slug));
     headingElements.forEach((element) => {
       if (element) observer.observe(element);
     });
@@ -37,7 +44,7 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
 
   useEffect(() => {
     if (containerRef.current && activeId) {
-      const element = document.getElementsByClassName(styles.active)[0] as HTMLElement;
+      const element = document.getElementsByClassName("toc-active")[0] as HTMLElement;
       if (element) {
         const container = containerRef.current;
         const containerHeight = container.clientHeight;
@@ -54,26 +61,21 @@ const TOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React.HTMLA
   }, [activeId]);
 
   return (
-    <div className={`${styles.tocWrapper} ${className || ""}`} ref={containerRef} {...rest}>
-      <div className={styles.title}>目录</div>
+    <div ref={containerRef} {...rest}>
+      <div className="title my-4 text-2xl font-semibold">目录</div>
       {tocContent.map((value, index) => {
-        const slug = handleSlug(value.slug);
         return (
-          <Link
-            className={`${stylesList[value.lvl]} ${activeId === slug ? styles.active : ""}`}
-            key={index.toString()}
-            href={`#${slug}`}
-          >
+          <Link key={index.toString()} href={`#${value.slug}`}>
             {value.content}
           </Link>
         );
       })}
-      <div className={styles.fixedLink}>
-        <Link className={styles.toTop} href="#toc-title">
+      <div className="mt-4 [&>span]:mx-2">
+        <Link className="inline no-underline hover:underline" href="#toc-title">
           顶部
         </Link>
         <span>|</span>
-        <Link className={styles.toComments} href="#toc-comments">
+        <Link className="inline no-underline hover:underline" href="#toc-comments">
           评论
         </Link>
       </div>
@@ -97,14 +99,14 @@ const MobileTOC = ({ tocContent, ...props }: { tocContent: Array<Itoc> } & React
   return (
     <div ref={tocRef} {...props}>
       <div
-        className={styles.IconWrapper}
+        className="h-9 w-9 rounded border border-[color:var(--color-border-strong)] bg-[color:var(--color-page-bg)] text-center leading-[44px] hover:cursor-pointer hover:bg-[color:var(--color-hover)] [&>svg]:fill-[color:var(--color-icon)]"
         onClick={() => {
           setIsOpen(!isOpen);
         }}
       >
         <SettingIcon />
       </div>
-      <TOC tocContent={tocContent} className={styles.mobileTOC} style={{ display: isOpen ? "block" : "none" }} />
+      <TOC tocContent={tocContent} />
     </div>
   );
 };
@@ -127,11 +129,5 @@ const SettingIcon = (props: React.SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-
-const handleSlug = (slug: string) =>
-  slug
-    .toLowerCase()
-    .replace(/[^\p{Script=Han}a-z0-9]+/gu, "-")
-    .replace(/^-|-$/g, "") || slug;
 
 export { TOC, MobileTOC };

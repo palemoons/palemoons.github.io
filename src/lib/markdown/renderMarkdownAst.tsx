@@ -2,6 +2,7 @@
 
 import { IUpdateBlockNode, IUpdateHintNode } from "@/interfaces/markdown";
 import type { PhrasingContent, Root, RootContent, Table } from "mdast";
+import path from "path";
 import React from "react";
 import type { ReactNode } from "react";
 
@@ -46,7 +47,7 @@ const createRenderNode = (abbrlink: string) => {
         );
 
       case "image":
-        const finalSrc = `/img/${abbrlink}/${node.url}`;
+        const finalSrc = path.join("/img", abbrlink, node.url);
         return (
           <>
             <img src={finalSrc} alt={node.alt ?? ""} />

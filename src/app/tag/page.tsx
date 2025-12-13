@@ -3,7 +3,6 @@ import pinyin from "pinyin";
 import { countTags } from "@/lib/posts";
 import { ITag } from "@/interfaces/post";
 import classNames from "classnames";
-import styles from "./page.module.css";
 import { Metadata } from "next";
 import { SITE_CONFIG } from "../site.config";
 
@@ -17,21 +16,29 @@ export default function TagArchive() {
   const tagList = Object.entries(tagRecord);
   return (
     <div className="container">
-      <div className={styles.siteTitle}>文章分类</div>
+      <div className="mt-12 mb-6 text-[40px] font-semibold">文章分类</div>
       {tagList.map((value, index) => {
         const [letter, tags] = value;
         if (tags.length)
           return (
             <div key={index.toString()}>
-              <div className={styles.tagLetter}>{letter.toUpperCase()}</div>
-              <div className={styles.tagContainer}>
+              <div className="text-[32px] font-semibold">{letter.toUpperCase()}</div>
+              <div className="mt-2 pb-1">
                 {tags.map((tag, i) => (
-                  <Link href={`/tag/${tag.name}`} className={classNames(styles.tagLink, "flexItem")} key={i.toString()}>
+                  <Link
+                    href={`/tag/${tag.name}`}
+                    className={classNames(
+                      "flexItem mr-[6px] mb-1 rounded-[2px] bg-[color:var(--color-inline-bg)] px-[6px] py-[3px] text-sm leading-[18px] text-[color:var(--color-inline-fg)] no-underline",
+                    )}
+                    key={i.toString()}
+                  >
                     # {tag.name} ({tag.count})
                   </Link>
                 ))}
               </div>
-              {index < tagList.length - 1 && <hr className={styles.tagBorder} />}
+              {index < tagList.length - 1 && (
+                <hr className="mt-0 mb-4 border-none border-b border-b-[color:var(--color-quote-fg)]" />
+              )}
             </div>
           );
         else return null;

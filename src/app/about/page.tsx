@@ -10,7 +10,6 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import { SITE_CONFIG } from "../site.config";
-import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: `关于 | ${SITE_CONFIG.title}`,
@@ -27,40 +26,47 @@ export default function AboutPage() {
     toc(content).json.filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader),
   );
   return (
-    <div className={styles.pageWrapper}>
-      <div className={styles.tocWrapper} />
-      <div className={`${styles.postWrapper} container`}>
-        <div className={styles.header}>
-          <div className={styles.titleContainer}>
-            <div className={styles.title} id="toc-title">
+    <div className="flex justify-center">
+      <div className="w-[calc(50vw-490px)] border-l border-l-[color:var(--color-border-strong)] pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden" />
+      <div className="container max-[1340px]:max-w-[720px] max-[1200px]:max-w-[640px]">
+        <div className="flex items-center justify-between pt-8 max-[640px]:flex-col-reverse">
+          <div className="h-min max-[640px]:text-center">
+            <div
+              className="my-2 text-[40px] font-semibold"
+              id="toc-title"
+              style={{ scrollMarginTop: "calc(var(--navbar-height) + 12px)" }}
+            >
               {frontMatter.title}
             </div>
-            <div className={styles.description}>{frontMatter.description}</div>
-            <div className={styles.postTime}>
-              <span>
+            <div className="mt-2 mb-1 whitespace-pre-line text-sm">{frontMatter.description}</div>
+            <div className="mb-1 [&>span]:mr-3 [&>span]:text-sm [&>span]:text-[#808080]">
+              <span className="mb-4 inline-block">
                 发布于 {createdDate.getFullYear()} 年 {createdDate.getMonth() + 1} 月 {createdDate.getDate()} 日
               </span>
               {updatedDate && (
                 <>
-                  <span>|</span>
-                  <span>
+                  <span className="mb-4 inline-block">|</span>
+                  <span className="mb-4 inline-block">
                     更新于 {updatedDate.getFullYear()} 年 {updatedDate.getMonth() + 1} 月 {updatedDate.getDate()} 日
                   </span>
                 </>
               )}
             </div>
           </div>
-          <div className={styles.avatarContainer}>
-            <Image src={avatar} width={160} height={160} alt="avatar" className={styles.avatar} />
+          <div className="text-center">
+            <Image src={avatar} width={160} height={160} alt="avatar" className="rounded-full" />
           </div>
         </div>
-        <MarkdownRenderer abbrlink={frontMatter.abbrlink}>{content}</MarkdownRenderer>
+        <MarkdownRenderer abbrlink={""}>{content}</MarkdownRenderer>
         <Comments id="toc-comments" />
       </div>
-      <div className={styles.tocWrapper}>
-        <TOC tocContent={tocContent} className={styles.toc} />
+      <div className="hidden w-[calc(50vw-490px)] border-l border-l-[color:var(--color-border-strong)] pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden">
+        <TOC
+          tocContent={tocContent}
+          className="sticky top-[var(--navbar-height)] h-[calc(100vh-var(--navbar-height)-24px)] w-full overflow-y-auto"
+        />
       </div>
-      <MobileTOC tocContent={tocContent} className={styles.mobileTOC} />
+      <MobileTOC tocContent={tocContent} className="fixed bottom-4 right-4 z-[1] min-[1080px]:hidden" />
     </div>
   );
 }

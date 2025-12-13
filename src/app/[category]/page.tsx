@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Pagination } from "@/components/PostList";
 import { getPostsByCategory } from "@/lib/posts";
-import styles from "./page.module.css";
 import { SITE_CONFIG } from "../site.config";
 
 export default function postArchive({ params }: { params: { category: string } }) {
@@ -10,7 +9,7 @@ export default function postArchive({ params }: { params: { category: string } }
 
   return (
     <div className="container">
-      <div className={styles.siteTitle}>
+      <div className="mt-12 mb-6 text-[40px] font-semibold">
         {SITE_CONFIG.categories.filter((item) => item.url === params.category)[0].name}
       </div>
       <div>共归档 {posts.length} 篇文章。</div>

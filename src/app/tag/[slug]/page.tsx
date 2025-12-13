@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Pagination } from "@/components/PostList";
 import { countTags, getPostsByTag } from "@/lib/posts";
-import styles from "./page.module.css";
 import { SITE_CONFIG } from "@/app/site.config";
 
 export default function TagPage({ params }: { params: { slug: string } }) {
@@ -9,8 +8,10 @@ export default function TagPage({ params }: { params: { slug: string } }) {
   if (posts.length <= 0) return notFound();
   return (
     <div className="container">
-      <div className={styles.siteTitle}>
-        <span className={styles.tag}>#{decodeURI(params.slug)}</span>
+      <div className="mt-12 mb-6 text-[40px] font-semibold">
+        <span className="rounded-[2px] bg-[color:var(--color-inline-bg)] px-[6px] py-1 text-[color:var(--color-inline-fg)]">
+          #{decodeURI(params.slug)}
+        </span>
       </div>
       <div>共归档 {posts.length} 篇文章。</div>
       <Pagination posts={posts} pageSize={SITE_CONFIG.categoryPaginationSize} />
