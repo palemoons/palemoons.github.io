@@ -30,6 +30,7 @@ interface Itoc {
   lvl: number;
   i: number;
   seen: number;
+  number?: string;
 }
 
 export type { IPost, IPostHeader, ITag, Itoc };

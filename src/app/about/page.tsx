@@ -1,10 +1,11 @@
 import avatar from "@/assets/avatar.jpg";
 import Comments from "@/components/Comments";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import { MobileTOC, TOC } from "@/components/TOC";
+import TableOfContents from "@/components/TableOfContents";
 import { Itoc } from "@/interfaces/post";
+import { compileMarkdown } from "@/lib/markdown/parse";
+import extractToc from "@/lib/markdown/toc";
 import { getAboutPost } from "@/lib/posts";
-import toc from "markdown-toc-unlazy";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -22,13 +23,12 @@ export default function AboutPage() {
   const { content, ...frontMatter } = post;
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
-  const tocContent = handleTocHeader(
-    toc(content).json.filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader),
-  );
+  const ast = compileMarkdown(content);
+  const tocContent = extractToc(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
     <div className="flex justify-center">
-      <div className="w-[calc(50vw-490px)] border-l border-l-[color:var(--color-border-strong)] pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden" />
-      <div className="container max-[1340px]:max-w-[720px] max-[1200px]:max-w-[640px]">
+      <div className="w-[calc(50vw-490px)] border-l border-l-(--color-border-strong) pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden" />
+      <div>
         <div className="flex items-center justify-between pt-8 max-[640px]:flex-col-reverse">
           <div className="h-min max-[640px]:text-center">
             <div
@@ -57,27 +57,12 @@ export default function AboutPage() {
             <Image src={avatar} width={160} height={160} alt="avatar" className="rounded-full" />
           </div>
         </div>
-        <MarkdownRenderer abbrlink={""}>{content}</MarkdownRenderer>
+        <MarkdownRenderer>{ast}</MarkdownRenderer>
         <Comments id="toc-comments" />
       </div>
-      <div className="hidden w-[calc(50vw-490px)] border-l border-l-[color:var(--color-border-strong)] pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden">
-        <TOC
-          tocContent={tocContent}
-          className="sticky top-[var(--navbar-height)] h-[calc(100vh-var(--navbar-height)-24px)] w-full overflow-y-auto"
-        />
+      <div className="hidden w-[calc(50vw-490px)] border-l border-l-(--color-border-strong) pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden">
+        <TableOfContents tocContent={tocContent} />
       </div>
-      <MobileTOC tocContent={tocContent} className="fixed bottom-4 right-4 z-[1] min-[1080px]:hidden" />
     </div>
   );
 }
-
-const handleTocHeader = (tocContent: Array<Itoc>) => {
-  const minLvl = Math.min(...tocContent.map((header) => header.lvl));
-  return tocContent.map((header) => {
-    const { lvl, ...rest } = header;
-    return {
-      lvl: lvl - minLvl,
-      ...rest,
-    };
-  });
-};

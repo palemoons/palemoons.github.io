@@ -1,11 +1,12 @@
 import { SITE_CONFIG } from "@/app/site.config";
 import Comments from "@/components/Comments";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-import { MobileTOC, TOC } from "@/components/TOC";
+import TableOfContents from "@/components/TableOfContents";
 import { Itoc } from "@/interfaces/post";
-import { compileMarkdown } from "@/lib/markdown/compileMarkdown";
-import extractToc from "@/lib/markdown/extractToc";
+import { compileMarkdown } from "@/lib/markdown/parse";
+import extractToc from "@/lib/markdown/toc";
 import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
+import classNames from "classnames";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -23,10 +24,10 @@ export default function Page({ params }: { params: { category: string; slug: str
   const tocContent = extractToc(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
     <div className="flex justify-center">
-      <div className="container max-[1340px]:max-w-[720px] max-[1200px]:max-w-[640px]">
-        <div className="border-b border-b-[color:var(--color-quote-fg)]">
+      <div className="container w-170">
+        <div className="border-b border-b-(--color-quote-fg)">
           <div
-            className="mt-12 mb-3 block text-[40px] font-semibold leading-[48px]"
+            className="mt-12 mb-3 block text-[40px] font-semibold leading-12"
             id="toc-title"
             style={{ scrollMarginTop: "calc(var(--navbar-height) + 12px)" }}
           >
@@ -39,7 +40,7 @@ export default function Page({ params }: { params: { category: string; slug: str
                 <div key={index.toString()} className="flexItem">
                   <Link
                     href={`/tag/${tag}`}
-                    className="mr-[6px] mb-1 rounded-[2px] bg-[color:var(--color-inline-bg)] px-[6px] py-[3px] text-sm leading-[18px] text-[color:var(--color-inline-fg)] no-underline"
+                    className="mr-1.5 mb-1 rounded-xs bg-(--color-inline-bg) px-1.5 py-0.75 text-sm leading-4.5 text-(--color-inline-fg) no-underline"
                   >
                     # {tag}
                   </Link>
@@ -78,24 +79,17 @@ export default function Page({ params }: { params: { category: string; slug: str
         </div>
         <Comments id="toc-comments" />
       </div>
-      <TOC
+      <TableOfContents
         tocContent={tocContent}
-        className="sticky top-[var(--navbar-height)] h-[calc(100vh-var(--navbar-height)-24px)] w-full overflow-y-auto"
+        className={classNames(
+          "sticky top-(--layout-navbar-height)",
+          "w-70 h-[calc(100vh-var(--layout-navbar-height))]",
+          "overflow-y-auto overflow-x-hidden",
+        )}
       />
     </div>
   );
 }
-
-const handleTocHeader = (tocContent: Array<Itoc>) => {
-  const minLvl = Math.min(...tocContent.map((header) => header.lvl));
-  return tocContent.map((header) => {
-    const { lvl, ...rest } = header;
-    return {
-      lvl: lvl - minLvl,
-      ...rest,
-    };
-  });
-};
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const post = getPostBySlug(params.slug);

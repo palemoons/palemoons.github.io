@@ -6,9 +6,12 @@ import path from "path";
 import React from "react";
 import type { ReactNode } from "react";
 
+import createSlugger from "./slug";
+import { headingToText } from "./text";
+
 type MarkdownNode = RootContent | IUpdateBlockNode | IUpdateHintNode;
 
-export function renderMarkdownAst(root: Root, abbrlink: string): ReactNode {
+export const renderMarkdownAst = (root: Root, abbrlink: string): ReactNode => {
   const renderNode = createRenderNode(abbrlink);
 
   return (
@@ -18,9 +21,10 @@ export function renderMarkdownAst(root: Root, abbrlink: string): ReactNode {
       ))}
     </>
   );
-}
+};
 
 const createRenderNode = (abbrlink: string) => {
+  const slugger = createSlugger();
   const renderNode = (node: MarkdownNode): ReactNode => {
     switch (node.type) {
       //inline elements
@@ -64,7 +68,9 @@ const createRenderNode = (abbrlink: string) => {
 
       case "heading": {
         const Tag = (`h${node.depth}` as keyof JSX.IntrinsicElements) || "h6";
-        return <Tag>{renderPhrasingChildren(node.children)}</Tag>;
+        const text = headingToText(node);
+        const id = slugger(text);
+        return <Tag id={id}>{renderPhrasingChildren(node.children)}</Tag>;
       }
 
       case "blockquote":
