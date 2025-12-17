@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "tailwindcss-motion";
 
 :root {
   /* 页面主背景 & 文字（Light：偏白） */

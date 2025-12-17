@@ -3,7 +3,7 @@
 import type { Itoc } from "@/interfaces/post";
 import classNames from "classnames";
 import Link from "next/link";
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 
 import SettingIcon from "./icons/SettingIcon";
 
@@ -16,22 +16,19 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
 
   const [activeId, setActiveId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const desktopContainerRef = useRef<HTMLDivElement>(null);
   const mobileListRef = useRef<HTMLDivElement>(null);
 
-  const tocIndent = useMemo(
-    () =>
-      ({
-        1: "ml-0",
-        2: "ml-4",
-        3: "ml-8",
-        4: "ml-12",
-        5: "ml-16",
-        6: "ml-20",
-      }) as const,
-    [],
-  );
+  const tocIndent = {
+    1: "ml-0",
+    2: "ml-4",
+    3: "ml-8",
+    4: "ml-12",
+    5: "ml-16",
+    6: "ml-20",
+  } as const;
 
   // update activeId by observing heading
   useEffect(() => {
@@ -87,7 +84,6 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
     const elementHeight = element.clientHeight;
     const scrollTop = elementOffsetTop - containerHeight / 2 + elementHeight / 2;
     container.scrollTo({ top: scrollTop, behavior: "smooth" });
-    element.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [mobileOpen, activeId]);
 
   // disable background scrolling when opening
@@ -100,14 +96,18 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
     };
   }, [mobileOpen]);
 
-  const currentTitle = useMemo(() => {
-    if (!activeId) return null;
-    const hit = tocContent.find((v) => v.slug === activeId);
-    return hit?.content ?? null;
-  }, [activeId, tocContent]);
-
   const onClickItem = () => {
+    closeMobileToc();
+  };
+
+  const openMobileToc = () => {
+    setMounted(true);
+    requestAnimationFrame(() => setMobileOpen(true));
+  };
+
+  const closeMobileToc = () => {
     setMobileOpen(false);
+    window.setTimeout(() => setMounted(false), 280);
   };
 
   return (
@@ -120,6 +120,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
       >
         <div className="mb-3 flex items-center justify-between">
           <div className="text-base font-semibold tracking-tight">文章目录</div>
+          <span className="text-xs opacity-60">TOC</span>
         </div>
 
         <nav className="space-y-1">
@@ -128,7 +129,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
               key={index.toString()}
               className={classNames(
                 "flex items-start gap-2 text-sm leading-6",
-                tocIndent[(value.lvl as 1 | 2 | 3 | 4 | 5 | 6) ?? 1],
+                tocIndent[(value.lvl + 1) as 1 | 2 | 3 | 4 | 5 | 6],
               )}
             >
               <span className="py-1 opacity-60">{value.number}</span>
@@ -167,12 +168,12 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
       {/* Mobile Floating Button */}
       <button
         type="button"
-        onClick={() => setMobileOpen(true)}
+        onClick={openMobileToc}
         className={classNames(
           "fixed right-4 bottom-4 z-50 md:hidden",
           "rounded-sm border border-(--color-border-muted) shadow-sm",
           "bg-(--color-page-bg) p-1.5",
-          "opacity-90 hover:opacity-100 cursor-pointer",
+          "cursor-pointer opacity-90 hover:opacity-100",
         )}
         aria-label="打开文章目录"
       >
@@ -180,30 +181,39 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
       </button>
 
       {/* Mobile */}
-      {mobileOpen && (
+      {mounted && (
         <div className="fixed inset-0 z-50 md:hidden">
           <button
+            data-state={mobileOpen ? "open" : "closed"}
             type="button"
-            className="absolute inset-0 bg-black/30"
+            className={classNames(
+              "absolute inset-0 bg-black/30",
+              "motion-duration-250 motion-ease-in-out",
+              "data-[state=open]:motion-opacity-in data-[state=closed]:motion-opacity-out",
+            )}
             aria-label="关闭目录"
-            onClick={() => setMobileOpen(false)}
+            onClick={closeMobileToc}
           />
 
           <div
+            data-state={mobileOpen ? "open" : "closed"}
             className={classNames(
               "absolute right-0 bottom-0 left-0",
-              "bg-(--color-page-bg) text-(--color-page-fg)",
-              "rounded-t-2xl border-t border-(--color-border-muted)",
-              "shadow-lg",
+              "bg-(--color-page-bg) text-(--color-page-fg) shadow-lg",
+
+              "will-change-transform",
+              "motion-duration-250 motion-ease-in-out",
+              "data-[state=open]:motion-translate-y-in-100 data-[state=closed]:motion-translate-y-out-100",
             )}
           >
             <div className="px-4 pt-3 pb-2">
               <div className="mx-auto h-1 w-10 rounded-full bg-(--color-border-muted) opacity-80" />
               <div className="mt-3 flex items-center justify-between">
+                <div className="text-base font-semibold tracking-tight">文章目录</div>
                 <button
                   type="button"
                   className="rounded-md px-2 py-1 text-sm opacity-80 hover:bg-(--color-hover) hover:opacity-100"
-                  onClick={() => setMobileOpen(false)}
+                  onClick={closeMobileToc}
                 >
                   关闭
                 </button>
@@ -217,7 +227,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
                     key={index.toString()}
                     className={classNames(
                       "flex items-start gap-2 text-sm leading-6",
-                      tocIndent[(value.lvl as 1 | 2 | 3 | 4 | 5 | 6) ?? 1],
+                      tocIndent[(value.lvl + 1) as 1 | 2 | 3 | 4 | 5 | 6],
                     )}
                   >
                     <span className="py-1 opacity-60">{value.number}</span>
