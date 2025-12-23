@@ -35,19 +35,7 @@ export default function remarkDirectiveUpdate() {
               dateText,
             },
           };
-
           (parent.children as any[])[index] = updateBlockNode;
-        } else if (dir.type === "leafDirective") {
-          const updateHintNode: IUpdateHintNode = {
-            type: "updateHint",
-            children: [],
-            data: {
-              ...(dir.attributes || {}),
-              dateRaw: rawDate,
-              dateText,
-            },
-          };
-          (parent.children as any[])[index] = updateHintNode;
         }
       }
     });

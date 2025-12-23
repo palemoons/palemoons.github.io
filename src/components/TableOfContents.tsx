@@ -34,6 +34,8 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
   useEffect(() => {
     if (!tocContent?.length) return;
 
+    const navbarHeight = getComputedStyle(document.documentElement).getPropertyValue("--layout-navbar-height") || "0px";
+
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
@@ -44,7 +46,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
       },
       {
         root: null,
-        rootMargin: "0px 0px -50% 0px",
+        rootMargin: `-${navbarHeight} 0px -50% 0px`,
         threshold: 0,
       },
     );

@@ -1,6 +1,6 @@
 import type { Heading, PhrasingContent } from "mdast";
 
-export function headingToText(node: Heading): string {
+const headingToText = (node: Heading): string => {
   const parts: string[] = [];
   const walk = (children: readonly PhrasingContent[]) => {
     for (const c of children) {
@@ -13,4 +13,6 @@ export function headingToText(node: Heading): string {
   };
   walk(node.children as readonly PhrasingContent[]);
   return parts.join("").replace(/\s+/g, " ").trim();
-}
+};
+
+export default headingToText;

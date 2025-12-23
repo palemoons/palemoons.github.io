@@ -1,63 +1,68 @@
 @import "tailwindcss";
 @plugin "tailwindcss-motion";
 
+@theme inline {
+  --font-text: var(--font-text);
+  --font-code: var(--font-code);
+}
+
 :root {
-  /* 页面主背景 & 文字（Light：偏白） */
-  --color-page-bg: #fafafa; /* 接近白，避免刺眼纯白 */
-  --color-page-fg: #111827; /* 深灰黑：正文 */
+  --color-page-bg: #fafafa;
+  --color-page-fg: #111827;
 
-  /* 卡片 / 次级背景 */
-  --color-surface-bg: #f3f4f6; /* 浅灰底 */
-  --color-surface-border: #e5e7eb; /* 细边框 */
+  --color-surface-bg: #f3f4f6;
+  --color-surface-border: #e5e7eb;
 
-  /* 线条 / 强边框 */
-  --color-border-strong: #9ca3af; /* 强一点的边线 */
+  --color-border-strong: #9ca3af;
 
-  /* 悬浮 & 交互 */
   --color-hover: #e5e7eb;
 
-  /* 图标 / SVG */
   --color-icon: #111827;
 
-  /* 行内 code（浅色背景） */
-  --color-inline-bg: #e5e7eb;
-  --color-inline-fg: #111827;
+  --color-inline-bg: #e0e4ea;
+  --color-inline-fg: #374151;
 
-  /* 代码块（Light 下也保持深色更“开发者风”） */
+  --color-tag-bg: #e7e7ec;
+  --color-tag-fg: #4b5563;
+
+  --color-text-muted: #71717a;
+
+  --color-accent-update: #7c2d2d;
+
   --color-code-bg: #0b0f14;
   --color-code-fg: #e5e7eb;
 
-  /* 引用 blockquote（低对比、偏“GitHub 简洁”） */
-  --color-quote-bg: #f3f4f6;
-  --color-quote-fg: #4b5563;
+  --color-quote-bg: #eef2f7;
+  --color-quote-fg: #52525b;
 
-  /* 其他 token */
   --shadow-soft: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --layout-navbar-height: 56px; /* --navbar-height */
+  --layout-navbar-height: 56px;
 }
 
-/* 暗色主题：只覆盖需要反转的 token */
 [data-theme="dark"] {
-  --color-page-bg: #0b0f14; /* 近黑：主背景 */
-  --color-page-fg: #e5e7eb; /* 浅灰：正文 */
+  --color-page-bg: #1c1c20;
+  --color-page-fg: #e5e7eb;
 
-  --color-surface-bg: #111827; /* 卡片底：比 page bg 亮一档 */
-  --color-surface-border: #1f2937; /* 细边框 */
+  --color-surface-bg: #232327;
+  --color-surface-border: #2c2c33;
 
-  --color-border-strong: #374151;
+  --color-border-strong: #3a3a44;
 
-  --color-hover: #1f2937;
+  --color-hover: #34343c;
 
   --color-icon: #e5e7eb;
 
-  --color-inline-bg: #1f2937;
-  --color-inline-fg: #e5e7eb;
+  --color-inline-bg: #2a2a32;
+  --color-inline-fg: #d1d5db;
 
-  /* code 块在 dark 下不需要变（已经是深色体系） */
-  /* --color-code-bg: #0b0f14; */
-  /* --color-code-fg: #e5e7eb; */
+  --color-tag-bg: #2f2f38;
+  --color-tag-fg: #d4d4d8;
 
-  --color-quote-bg: #111827;
+  --color-text-muted: #a1a1aa;
+
+  --color-accent-update: #fca5a5;
+
+  --color-quote-bg: #24242c;
   --color-quote-fg: #9ca3af;
 }
 
@@ -65,18 +70,13 @@ html {
   min-height: 100%;
   background-color: var(--color-page-bg);
   color: var(--color-page-fg);
-  font-family:
-    Lucida Grande,
-    Geneva,
-    ui-sans-serif;
   font-size: 1rem;
   line-height: 28px;
   scroll-behavior: smooth;
 }
 
 html a {
-  color: inherit;
-  text-underline-offset: 4px;
+  text-underline-offset: 5px;
 }
 html a:hover {
   background: var(--color-hover);

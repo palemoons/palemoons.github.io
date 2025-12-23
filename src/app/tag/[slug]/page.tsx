@@ -9,7 +9,7 @@ export default function TagPage({ params }: { params: { slug: string } }) {
   return (
     <div className="container">
       <div className="mt-12 mb-6 text-[40px] font-semibold">
-        <span className="rounded-[2px] bg-[color:var(--color-inline-bg)] px-[6px] py-1 text-[color:var(--color-inline-fg)]">
+        <span className="rounded-[2px] bg-[color:var(--color-text-muted)] px-[6px] py-1 text-[color:var(--color-inline-fg)]">
           #{decodeURI(params.slug)}
         </span>
       </div>

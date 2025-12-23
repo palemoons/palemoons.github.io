@@ -3,29 +3,29 @@ import { Root } from "mdast";
 import { visit } from "unist-util-visit";
 
 import createSlugger from "./slug";
-import { headingToText } from "./text";
+import headingToText from "./text";
 
-const extractToc = (ast: Root): Array<Itoc> => {
-  const toc: Itoc[] = [];
+const buildHeadingTree = (ast: Root): Array<Itoc> => {
+  const toc: Array<Itoc> = [];
   const slugger = createSlugger();
   visit(ast, "heading", (node) => {
     const content = headingToText(node);
     if (!content) return;
-
     const slug = slugger(content);
-
     toc.push({
       content,
       slug,
       lvl: node.depth,
       i: toc.length,
       seen: 0,
+      number: "",
     });
   });
-  return addTocNumbers(handleTocHeader(toc));
+  const normToc = normalizeTocLevels(toc);
+  return addTocNumbers(normToc);
 };
 
-const handleTocHeader = (tocContent: Array<Itoc>): Array<Itoc> => {
+const normalizeTocLevels = (tocContent: Array<Itoc>): Array<Itoc> => {
   const minLvl = Math.min(...tocContent.map((header) => header.lvl));
   return tocContent.map((header) => {
     const { lvl, ...rest } = header;
@@ -48,4 +48,4 @@ const addTocNumbers = (toc: Array<Itoc>): Array<Itoc> => {
   });
 };
 
-export default extractToc;
+export default buildHeadingTree;

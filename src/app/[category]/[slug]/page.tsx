@@ -1,10 +1,10 @@
 import { SITE_CONFIG } from "@/app/site.config";
 import Comments from "@/components/Comments";
-import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import TableOfContents from "@/components/TableOfContents";
 import { Itoc } from "@/interfaces/post";
 import { compileMarkdown } from "@/lib/markdown/parse";
-import extractToc from "@/lib/markdown/toc";
+import buildHeadingTree from "@/lib/markdown/toc";
 import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
 import classNames from "classnames";
 import { Metadata } from "next";
@@ -21,26 +21,22 @@ export default function Page({ params }: { params: { category: string; slug: str
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
 
   const ast = compileMarkdown(content);
-  const tocContent = extractToc(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
+  const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
     <div className="flex justify-center">
       <div className="container w-170">
-        <div className="border-b border-b-(--color-quote-fg)">
-          <div
-            className="mt-12 mb-3 block text-[40px] font-semibold leading-12"
-            id="toc-title"
-            style={{ scrollMarginTop: "calc(var(--navbar-height) + 12px)" }}
-          >
+        <div className="mb-10 border-b border-b-(--color-quote-fg)">
+          <h1 className="mt-14 mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
             {title}
-          </div>
-          <div className="mt-2 mb-1 text-sm">{description}</div>
+          </h1>
+          <div className="mt-3 mb-3 text-sm leading-relaxed">{description}</div>
           {tags && (
-            <div>
+            <div className="mt-2 mb-4 flex flex-wrap">
               {tags.map((tag, index) => (
                 <div key={index.toString()} className="flexItem">
                   <Link
                     href={`/tag/${tag}`}
-                    className="mr-1.5 mb-1 rounded-xs bg-(--color-inline-bg) px-1.5 py-0.75 text-sm leading-4.5 text-(--color-inline-fg) no-underline"
+                    className="mr-2 mb-2 rounded-xs bg-(--color-tag-bg) px-2 py-1 text-sm leading-4.5 text-(--color-text-muted) no-underline"
                   >
                     # {tag}
                   </Link>
@@ -48,43 +44,41 @@ export default function Page({ params }: { params: { category: string; slug: str
               ))}
             </div>
           )}
-          <div className="mb-1 [&>span]:mr-3 [&>span]:text-sm [&>span]:text-[#808080]">
-            <span className="mb-4 inline-block">
+          <div className="mt-2 mb-3 text-sm leading-relaxed text-(--color-text-muted)">
+            <span className="mr-3">
               发布于 {createdDate.getFullYear()} 年 {createdDate.getMonth() + 1} 月 {createdDate.getDate()} 日
             </span>
             {updatedDate && (
               <>
-                <span className="mb-4 inline-block">|</span>
-                <span className="mb-4 inline-block">
+                <span className="mr-3">|</span>
+                <span className="mr-3">
                   更新于 {updatedDate.getFullYear()} 年 {updatedDate.getMonth() + 1} 月 {updatedDate.getDate()} 日
                 </span>
               </>
             )}
-            <span className="mb-4 inline-block">|</span>
-            <span className="mb-4 inline-block">
-              遵循{" "}
+            <span className="mr-3">|</span>
+            <span className="mr-3">
+              遵循
               <Link
                 href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
                 target="_blank"
-                className="text-[#808080]"
+                className="mx-0.5 rounded-sm px-1 py-0.5"
               >
                 CC BY-NC-SA 4.0
-              </Link>{" "}
+              </Link>
               许可
             </span>
           </div>
         </div>
-        <div>
-          <MarkdownRenderer abbrlink={abbrlink}>{ast}</MarkdownRenderer>
-        </div>
+        <MarkdownRenderer imgPrefix={abbrlink}>{ast}</MarkdownRenderer>
         <Comments id="toc-comments" />
       </div>
       <TableOfContents
         tocContent={tocContent}
         className={classNames(
           "sticky top-(--layout-navbar-height)",
-          "w-70 h-[calc(100vh-var(--layout-navbar-height))]",
-          "overflow-y-auto overflow-x-hidden",
+          "h-[calc(100vh-var(--layout-navbar-height))] w-70",
+          "overflow-x-hidden overflow-y-auto",
         )}
       />
     </div>

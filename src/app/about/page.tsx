@@ -1,10 +1,10 @@
 import avatar from "@/assets/avatar.jpg";
 import Comments from "@/components/Comments";
-import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
 import TableOfContents from "@/components/TableOfContents";
 import { Itoc } from "@/interfaces/post";
 import { compileMarkdown } from "@/lib/markdown/parse";
-import extractToc from "@/lib/markdown/toc";
+import buildHeadingTree from "@/lib/markdown/toc";
 import { getAboutPost } from "@/lib/posts";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -24,10 +24,9 @@ export default function AboutPage() {
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
   const ast = compileMarkdown(content);
-  const tocContent = extractToc(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
+  const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
     <div className="flex justify-center">
-      <div className="w-[calc(50vw-490px)] border-l border-l-(--color-border-strong) pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden" />
       <div>
         <div className="flex items-center justify-between pt-8 max-[640px]:flex-col-reverse">
           <div className="h-min max-[640px]:text-center">
@@ -38,7 +37,7 @@ export default function AboutPage() {
             >
               {frontMatter.title}
             </div>
-            <div className="mt-2 mb-1 whitespace-pre-line text-sm">{frontMatter.description}</div>
+            <div className="mt-2 mb-1 text-sm whitespace-pre-line">{frontMatter.description}</div>
             <div className="mb-1 [&>span]:mr-3 [&>span]:text-sm [&>span]:text-[#808080]">
               <span className="mb-4 inline-block">
                 发布于 {createdDate.getFullYear()} 年 {createdDate.getMonth() + 1} 月 {createdDate.getDate()} 日

@@ -28,7 +28,7 @@ export default function TagArchive() {
                   <Link
                     href={`/tag/${tag.name}`}
                     className={classNames(
-                      "flexItem mr-[6px] mb-1 rounded-[2px] bg-[color:var(--color-inline-bg)] px-[6px] py-[3px] text-sm leading-[18px] text-[color:var(--color-inline-fg)] no-underline",
+                      "flexItem mr-[6px] mb-1 rounded-[2px] bg-[color:var(--color-text-muted)] px-[6px] py-[3px] text-sm leading-[18px] text-[color:var(--color-inline-fg)] no-underline",
                     )}
                     key={i.toString()}
                   >
