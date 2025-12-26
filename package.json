@@ -29,7 +29,6 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "tailwindcss": "^4.1.18",
-    "tailwindcss-motion": "^1.1.1",
     "unified": "^11.0.5"
   },
   "devDependencies": {

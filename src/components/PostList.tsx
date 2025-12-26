@@ -1,27 +1,34 @@
 "use client";
 
+import { IPostHeader } from "@/interfaces/post";
+import classnames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
-import { IPostHeader } from "@/interfaces/post";
 
-const BlogList = ({ posts, size = -1 }: { posts: Array<{ key: string; value: IPostHeader }>; size?: number }) => {
+interface BlogListProps {
+  posts: Array<{ key: string; value: IPostHeader }>;
+  size?: number;
+}
+const BlogList = ({ posts, size = 5, ...componentProps }: BlogListProps & React.ComponentProps<"div">) => {
+  const { className, ...restProps } = componentProps;
   const postsData = size > 0 ? posts.slice(0, size) : posts;
   return (
-    <div>
+    <div className={classnames("flex flex-col gap-6", className)} {...restProps}>
       {postsData.map((post, index) => {
         const { key: abbrlink, value: postInfo } = post;
-        const { title, category, date } = postInfo;
+        const { title, category, description, date } = postInfo;
         return (
-          <div key={index.toString()} className="my-3 flex w-full justify-between text-base">
-            <Link href={`/${category}/${abbrlink}`} className="no-underline hover:underline">
-              {title}
-            </Link>
-            <Link
-              href={`/${category}/${abbrlink}`}
-              className="no-underline hover:underline max-sm:hidden"
-            >
-              {date}
-            </Link>
+          <div className="flex flex-col gap-1" key={index.toString()}>
+            <div className="text-sm tabular-nums opacity-60">{date}</div>
+            <div>
+              <Link
+                href={`/${category}/${abbrlink}`}
+                className="text-base font-semibold no-underline hover:underline hover:decoration-(--color-link-underline)"
+              >
+                {title}
+              </Link>
+            </div>
+            {description && <p className="text-sm leading-6 opacity-70">{description}</p>}
           </div>
         );
       })}

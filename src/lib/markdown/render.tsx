@@ -22,7 +22,7 @@ const renderMarkdownAst = (root: Root, img_prefix: string): ReactNode => {
       className={classNames(
         "text-base leading-8 font-extralight",
         // paragraph
-        "[&>p]:my-4",
+        "[&>p]:my-5",
         // heading
         "[&>h2]:mt-10 [&>h2]:mb-4",
         "[&>h3]:mt-8 [&>h3]:mb-3",
@@ -73,8 +73,8 @@ const createRenderNode = (img_prefix: string) => {
             target="_blank"
             className={classNames(
               "mx-0.5 rounded-sm",
-              "underline decoration-(--color-border-strong) decoration-1",
-              "hover:decoration-2",
+              "underline decoration-(--color-link-underline) decoration-1",
+              "hover:decoration-[1.5px]",
             )}
           >
             {renderPhrasingChildren(node.children)}
@@ -131,7 +131,7 @@ const createRenderNode = (img_prefix: string) => {
         const className = classNames(
           "my-4 ml-6 space-y-1.5",
           "text-[var(--color-page-fg)]",
-          "marker:text-[var(--color-border-strong)]",
+          "marker:text-[var(--color-text-muted)]",
           node.ordered ? "list-decimal" : "list-disc",
         );
 
@@ -154,7 +154,7 @@ const createRenderNode = (img_prefix: string) => {
                 type="checkbox"
                 checked={Boolean(node.checked)}
                 readOnly
-                className="h-4 w-4 rounded-sm accent-(--color-border-strong)"
+                className="h-4 w-4 rounded-sm accent-(--color-text-muted)"
               />
               <div>
                 {node.children.map((child, i) => (

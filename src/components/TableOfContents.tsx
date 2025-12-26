@@ -109,7 +109,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
 
   const closeMobileToc = () => {
     setMobileOpen(false);
-    window.setTimeout(() => setMounted(false), 280);
+    window.setTimeout(() => setMounted(false), 300);
   };
 
   return (
@@ -125,41 +125,42 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
           <span className="text-xs opacity-60">TOC</span>
         </div>
 
-        <nav className="space-y-1">
-          {tocContent.map((value, index) => (
-            <div
-              key={index.toString()}
-              className={classNames(
-                "flex items-start gap-2 text-sm leading-6",
-                tocIndent[(value.lvl + 1) as 1 | 2 | 3 | 4 | 5 | 6],
-              )}
-            >
-              <span className="py-1 opacity-60">{value.number}</span>
-              <Link
-                href={`#${value.slug}`}
+        {tocContent.length > 0 ? (
+          <nav className="space-y-1">
+            {tocContent.map((value, index) => (
+              <div
+                key={index.toString()}
                 className={classNames(
-                  "block flex-1 truncate rounded-sm px-2 py-1",
-                  activeId === value.slug
-                    ? "toc-active underline decoration-(--color-border-strong) decoration-2 underline-offset-4 opacity-100"
-                    : "no-underline opacity-80 hover:opacity-100",
+                  "flex items-start gap-2 text-sm leading-6",
+                  tocIndent[(value.lvl + 1) as 1 | 2 | 3 | 4 | 5 | 6],
                 )}
               >
-                {value.content}
-              </Link>
-            </div>
-          ))}
-        </nav>
+                <span className="py-1 opacity-60">{value.number}</span>
+                <Link
+                  href={`#${value.slug}`}
+                  className={classNames(
+                    "block flex-1 truncate rounded-sm px-2 py-1 hover:bg-(--color-hover)",
+                    activeId === value.slug
+                      ? "toc-active font-semibold underline decoration-(--color-link-underline) decoration-1 underline-offset-4 opacity-100"
+                      : "no-underline opacity-80 hover:opacity-100",
+                  )}
+                >
+                  {value.content}
+                </Link>
+              </div>
+            ))}
+          </nav>
+        ) : (
+          <div className="py-2 pl-4 text-sm leading-6 opacity-60">本文未划分章节</div>
+        )}
 
-        <div className="mt-4 flex items-center gap-2 text-sm opacity-80">
-          <Link
-            className="rounded-md px-2 py-1 no-underline hover:bg-(--color-hover) hover:opacity-100"
-            href="#toc-title"
-          >
+        <div className="mt-3 flex items-center gap-4 text-sm opacity-80">
+          <Link className="rounded-md py-1 no-underline hover:bg-(--color-hover) hover:opacity-100" href="#toc-title">
             顶部
           </Link>
           <span className="opacity-50">|</span>
           <Link
-            className="rounded-md px-2 py-1 no-underline hover:bg-(--color-hover) hover:opacity-100"
+            className="rounded-md py-1 no-underline hover:bg-(--color-hover) hover:opacity-100"
             href="#toc-comments"
           >
             评论
@@ -186,26 +187,22 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
       {mounted && (
         <div className="fixed inset-0 z-50 md:hidden">
           <button
-            data-state={mobileOpen ? "open" : "closed"}
             type="button"
             className={classNames(
               "absolute inset-0 bg-black/30",
-              "motion-duration-250 motion-ease-in-out",
-              "data-[state=open]:motion-opacity-in data-[state=closed]:motion-opacity-out",
+              mobileOpen ? "opacity-100" : "opacity-0",
+              "transition-opacity duration-250 ease-in-out",
             )}
             aria-label="关闭目录"
             onClick={closeMobileToc}
           />
 
           <div
-            data-state={mobileOpen ? "open" : "closed"}
             className={classNames(
               "absolute right-0 bottom-0 left-0",
               "bg-(--color-page-bg) text-(--color-page-fg) shadow-lg",
-
-              "will-change-transform",
-              "motion-duration-250 motion-ease-in-out",
-              "data-[state=open]:motion-translate-y-in-100 data-[state=closed]:motion-translate-y-out-100",
+              mobileOpen ? "translate-y-0" : "translate-y-full",
+              "transition-transform duration-250 ease-in-out",
             )}
           >
             <div className="px-4 pt-3 pb-2">
@@ -239,7 +236,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
                       className={classNames(
                         "block flex-1 truncate rounded-sm px-2 py-2",
                         activeId === value.slug
-                          ? "toc-active underline decoration-(--color-border-strong) decoration-2 underline-offset-4 opacity-100"
+                          ? "toc-active underline decoration-(--color-link-underline) decoration-2 underline-offset-4 opacity-100"
                           : "no-underline opacity-80 hover:opacity-100",
                       )}
                     >

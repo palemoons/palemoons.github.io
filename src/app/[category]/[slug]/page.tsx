@@ -23,8 +23,8 @@ export default function Page({ params }: { params: { category: string; slug: str
   const ast = compileMarkdown(content);
   const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
-    <div className="flex justify-center">
-      <div className="container w-170">
+    <div>
+      <div>
         <div className="mb-10 border-b border-b-(--color-quote-fg)">
           <h1 className="mt-14 mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
             {title}

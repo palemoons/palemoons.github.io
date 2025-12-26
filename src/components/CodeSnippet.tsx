@@ -58,7 +58,8 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
 
       <div className="relative">
         <div
-          className={classNames("overflow-auto", extended ? "max-h-none" : `max-h-[${SITE_CONFIG.maxCodeHeight}px]`)}
+          className="overflow-auto transition-[max-height] duration-500 ease-in-out"
+          style={{ maxHeight: extended ? codeHeight : SITE_CONFIG.maxCodeHeight }}
         >
           <SyntaxHighlighter
             PreTag={(props) => <code {...props} ref={codeRef} />}
@@ -67,6 +68,7 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
             showLineNumbers
             className={className}
             customStyle={{
+              background: "transparent",
               fontSize: "0.875rem",
               lineHeight: "1.6",
             }}
@@ -89,47 +91,26 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
           </SyntaxHighlighter>
         </div>
 
-        {canToggle && !extended && (
+        {canToggle && (
           <>
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-(--color-surface-bg)" />
+            {!extended && (
+              <div className="absolute inset-x-0 bottom-0 h-12 bg-linear-to-b from-transparent to-(--color-surface-bg)" />
+            )}
             <button
               type="button"
               onClick={onExtend}
               className={classNames(
-                "absolute right-2 bottom-2",
-                "inline-flex items-center gap-1.5",
-                "rounded-md border px-2 py-1 text-xs",
-                "border-(--color-surface-border) bg-(--color-surface-bg)",
-                "opacity-90 hover:bg-(--color-hover) hover:opacity-100",
-                "focus:outline-none focus-visible:ring-1 focus-visible:ring-(--color-border-strong)",
+                "absolute right-2 bottom-2 inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-xs",
+                "border border-(--color-surface-border) bg-(--color-surface-bg)",
+                "cursor-pointer opacity-90 hover:bg-(--color-hover) hover:opacity-100",
                 "transition-[background,opacity] duration-150",
               )}
-              aria-label="展开代码"
+              aria-label={extended ? "收起代码" : "展开代码"}
             >
-              <ExtendIcon />
-              展开
+              <ExtendIcon width={12} height={12} className={extended ? "rotate-180" : ""} />
+              <span>{extended ? "收起" : "展开"}</span>
             </button>
           </>
-        )}
-
-        {canToggle && extended && (
-          <button
-            type="button"
-            onClick={onExtend}
-            className={classNames(
-              "absolute right-2 bottom-2",
-              "inline-flex items-center gap-1.5",
-              "rounded-md border px-2 py-1 text-xs",
-              "border-(--color-surface-border) bg-(--color-surface-bg)",
-              "opacity-90 hover:bg-(--color-hover) hover:opacity-100",
-              "focus:outline-none focus-visible:ring-1 focus-visible:ring-(--color-border-strong)",
-              "transition-[background,opacity] duration-150",
-            )}
-            aria-label="收起代码"
-          >
-            <ExtendIcon />
-            收起
-          </button>
         )}
       </div>
     </div>
