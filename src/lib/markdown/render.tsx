@@ -117,10 +117,12 @@ const createRenderNode = (img_prefix: string) => {
 
       case "blockquote":
         return (
-          <blockquote>
-            {node.children.map((child, i) => (
-              <React.Fragment key={i}>{renderNode(child)}</React.Fragment>
-            ))}
+          <blockquote className="my-6 rounded-sm border-l-4 border-(--color-border-strong) bg-(--color-quote-bg) px-4 py-2 text-(--color-quote-fg)">
+            <div className="space-y-2 text-sm leading-6">
+              {node.children.map((child, i) => (
+                <React.Fragment key={i}>{renderNode(child)}</React.Fragment>
+              ))}
+            </div>
           </blockquote>
         );
 

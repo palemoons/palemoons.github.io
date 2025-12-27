@@ -2,7 +2,7 @@
 
 import icoPath from "@/app/favicon.ico";
 import { SITE_CONFIG } from "@/app/site.config";
-import InfoIcon from "@/components/icons/InfoIcon";
+import { RssCopyLink } from "@/components/RssCopyLink";
 import MenuIcon from "@/components/icons/MenuIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
 import SunIcon from "@/components/icons/SunIcon";
@@ -15,7 +15,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
 
 import "./global.css";
 
@@ -29,7 +28,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       <body>
         <ThemeProvider defaultTheme="system">
           <Navbar />
-          <main className="m-auto max-w-2xl px-4">{children}</main>
+          <main>{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
@@ -129,56 +128,42 @@ const Navbar = () => {
 };
 
 const Footer = () => {
-  const [isCopy, setIsCopy] = useState<Boolean>(false);
-
-  const onCopy = () => {
-    if (isCopy) return;
-    setIsCopy(true);
-    setTimeout(() => setIsCopy(false), 1200);
-  };
   return (
-    <footer className="static mx-4 mt-4 border-t border-(--color-border-strong) py-4">
-      <div>
-        <div className="mb-0.5 text-sm leading-4.5">
+    <footer className="mx-4 mt-4 border-t border-(--color-border-strong) py-4 text-sm font-extralight">
+      <div className="flex flex-col items-center gap-1 sm:gap-0">
+        <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
           <span>
-            © 2020-{new Date().getFullYear()} by {SITE_CONFIG.author}
+            © 2020 - {new Date().getFullYear()} by {SITE_CONFIG.author}
           </span>
-          <span> · </span>
-          <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
-            <div className="flex items-center">
-              <span className="group relative inline-flex items-center [&>svg]:fill-(--color-page-fg)">
-                <InfoIcon aria-describedby="icon-desc" />
-                <span
-                  role="tooltip"
-                  id="icon-desc"
-                  className="invisible absolute bottom-[180%] left-1/2 -ml-20.25 w-37.5 cursor-pointer rounded-xs bg-(--color-hover) px-1.5 py-1 text-center group-hover:visible after:absolute after:top-full after:left-1/2 after:-ml-1.25 after:border-[5px] after:border-solid after:border-t-(--color-hover) after:border-r-transparent after:border-b-transparent after:border-l-transparent after:content-['']"
-                >
-                  点击链接以复制
-                </span>
-              </span>
-              <span className="ml-1 cursor-pointer underline" onClick={onCopy}>
-                {isCopy ? "已复制!" : "RSS Feed"}
-              </span>
-            </div>
-          </CopyToClipboard>
+          <span className="hidden sm:inline">·</span>
+          <RssCopyLink siteUrl={SITE_CONFIG.siteUrl} />
         </div>
-      </div>
-      <div className="mb-0.5 flex items-end justify-center text-sm leading-4.5 max-[640px]:flex-col max-[640px]:items-center [&>span]:mx-1">
-        <span>
-          Built on{" "}
-          <Link href="https://nextjs.org/" target="_blank">
-            NextJS
-          </Link>
-        </span>
-        <span className="mx-1"> · </span>
-        <span>
-          Powered by{" "}
-          <Link href={SITE_CONFIG.siteRepo} target="_blank">
-            Github
-          </Link>
-        </span>
-        <span className="mx-1"> · </span>
-        <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
+
+        <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
+          <span>
+            Built on{" "}
+            <Link
+              href="https://nextjs.org/"
+              target="_blank"
+              className="underline decoration-(--color-link-underline) decoration-1 underline-offset-3 hover:decoration-[1.5px]"
+            >
+              NextJS
+            </Link>
+          </span>
+          <span className="hidden sm:inline">·</span>
+          <span>
+            Powered by{" "}
+            <Link
+              href={SITE_CONFIG.siteRepo}
+              target="_blank"
+              className="underline decoration-(--color-link-underline) decoration-1 underline-offset-3 hover:decoration-[1.5px]"
+            >
+              GitHub
+            </Link>
+          </span>
+          <span className="hidden sm:inline">·</span>
+          <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
+        </div>
       </div>
     </footer>
   );

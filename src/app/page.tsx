@@ -32,7 +32,7 @@ const Index = () => {
   const recentNotes = getPostsByCategory("note");
   const recentArticles = getPostsByCategory("article");
   return (
-    <section>
+    <section className="m-auto max-w-2xl px-4">
       <div
         id="introduction"
         className="mb-6 [&_a]:underline [&_a]:decoration-(--color-link-underline) [&_a]:decoration-1 [&_a:hover]:decoration-[1.5px]"

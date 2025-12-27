@@ -6,7 +6,6 @@ import { Itoc } from "@/interfaces/post";
 import { compileMarkdown } from "@/lib/markdown/parse";
 import buildHeadingTree from "@/lib/markdown/toc";
 import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
-import classNames from "classnames";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -19,14 +18,13 @@ export default function Page({ params }: { params: { category: string; slug: str
   const abbrlink = params.slug;
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
-
   const ast = compileMarkdown(content);
   const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
-    <div>
-      <div>
-        <div className="mb-10 border-b border-b-(--color-quote-fg)">
-          <h1 className="mt-14 mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
+    <section className="flex justify-center gap-4">
+      <div className="max-w-2xl px-4">
+        <div className="mt-14 mb-10 border-b border-b-(--color-quote-fg)">
+          <h1 className="mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
             {title}
           </h1>
           <div className="mt-3 mb-3 text-sm leading-relaxed">{description}</div>
@@ -75,13 +73,9 @@ export default function Page({ params }: { params: { category: string; slug: str
       </div>
       <TableOfContents
         tocContent={tocContent}
-        className={classNames(
-          "sticky top-(--layout-navbar-height)",
-          "h-[calc(100vh-var(--layout-navbar-height))] w-70",
-          "overflow-x-hidden overflow-y-auto",
-        )}
+        className="sticky top-(--layout-navbar-height) h-[calc(100vh-var(--layout-navbar-height))] w-70 shrink-0 overflow-x-hidden overflow-y-auto pt-8"
       />
-    </div>
+    </section>
   );
 }
 

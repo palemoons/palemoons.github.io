@@ -8,6 +8,7 @@ import buildHeadingTree from "@/lib/markdown/toc";
 import { getAboutPost } from "@/lib/posts";
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { SITE_CONFIG } from "../site.config";
@@ -26,42 +27,39 @@ export default function AboutPage() {
   const ast = compileMarkdown(content);
   const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
   return (
-    <div className="flex justify-center">
-      <div>
-        <div className="flex items-center justify-between pt-8 max-[640px]:flex-col-reverse">
-          <div className="h-min max-[640px]:text-center">
-            <div
-              className="my-2 text-[40px] font-semibold"
-              id="toc-title"
-              style={{ scrollMarginTop: "calc(var(--navbar-height) + 12px)" }}
-            >
+    <section className="flex justify-center gap-4">
+      <div className="max-w-2xl px-4">
+        <div className="mt-14 mb-10 flex flex-col-reverse gap-4 border-b border-b-(--color-quote-fg) md:flex-row md:items-center md:justify-between">
+          <div>
+            <h1 className="mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
               {frontMatter.title}
-            </div>
-            <div className="mt-2 mb-1 text-sm whitespace-pre-line">{frontMatter.description}</div>
-            <div className="mb-1 [&>span]:mr-3 [&>span]:text-sm [&>span]:text-[#808080]">
-              <span className="mb-4 inline-block">
+            </h1>
+            <div className="mt-3 mb-3 text-sm leading-relaxed whitespace-pre-line">{frontMatter.description}</div>
+            <div className="mt-2 mb-3 text-sm leading-relaxed text-(--color-text-muted)">
+              <span className="mr-3">
                 发布于 {createdDate.getFullYear()} 年 {createdDate.getMonth() + 1} 月 {createdDate.getDate()} 日
               </span>
               {updatedDate && (
                 <>
-                  <span className="mb-4 inline-block">|</span>
-                  <span className="mb-4 inline-block">
+                  <span className="mr-3">|</span>
+                  <span className="mr-3">
                     更新于 {updatedDate.getFullYear()} 年 {updatedDate.getMonth() + 1} 月 {updatedDate.getDate()} 日
                   </span>
                 </>
               )}
             </div>
           </div>
-          <div className="text-center">
-            <Image src={avatar} width={160} height={160} alt="avatar" className="rounded-full" />
+          <div className="inline-flex shrink-0 items-center">
+            <Image src={avatar} width={128} height={128} alt="avatar" className="rounded-full" />
           </div>
         </div>
         <MarkdownRenderer>{ast}</MarkdownRenderer>
         <Comments id="toc-comments" />
       </div>
-      <div className="hidden w-[calc(50vw-490px)] border-l border-l-(--color-border-strong) pt-12 pl-4 max-[1340px]:w-[calc(50vw-420px)] max-[1200px]:w-[calc(50vw-380px)] max-[1080px]:hidden">
-        <TableOfContents tocContent={tocContent} />
-      </div>
-    </div>
+      <TableOfContents
+        tocContent={tocContent}
+        className="sticky top-(--layout-navbar-height) h-[calc(100vh-var(--layout-navbar-height))] w-70 shrink-0 overflow-x-hidden overflow-y-auto pt-8"
+      />
+    </section>
   );
 }

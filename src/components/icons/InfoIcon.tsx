@@ -2,8 +2,8 @@ export default function InfoIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={props.width ?? 12}
-      height={props.height ?? 12}
+      width={props.width ?? 16}
+      height={props.height ?? 16}
       viewBox="0 0 1024 1024"
       {...props}
     >

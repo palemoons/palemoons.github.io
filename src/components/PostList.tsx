@@ -9,9 +9,9 @@ interface BlogListProps {
   posts: Array<{ key: string; value: IPostHeader }>;
   size?: number;
 }
-const BlogList = ({ posts, size = 5, ...componentProps }: BlogListProps & React.ComponentProps<"div">) => {
+const BlogList = ({ posts, size, ...componentProps }: BlogListProps & React.ComponentProps<"div">) => {
   const { className, ...restProps } = componentProps;
-  const postsData = size > 0 ? posts.slice(0, size) : posts;
+  const postsData = size ? posts.slice(0, size) : posts;
   return (
     <div className={classnames("flex flex-col gap-6", className)} {...restProps}>
       {postsData.map((post, index) => {
@@ -67,40 +67,44 @@ const Pagination = ({
     <>
       <div>
         {splittedPosts.map(([year, posts], index) => (
-          <div key={index.toString()} className="mt-2 mb-6">
-            <div className="text-4xl font-semibold">{year}</div>
+          <section key={index.toString()} className="mt-6 mb-12">
+            <h2 className="mb-4 text-3xl font-semibold">{year}</h2>
             <BlogList posts={posts} />
-          </div>
+          </section>
         ))}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex items-center justify-center gap-2 text-sm">
         <button
-          className="border border-transparent bg-transparent text-base hover:cursor-pointer disabled:cursor-not-allowed"
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
           onClick={() => handleSetPage(1)}
           disabled={currentPage === 1}
         >
           首页
         </button>
+
         <button
-          className="border border-transparent bg-transparent text-base hover:cursor-pointer disabled:cursor-not-allowed"
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
         >
           上一页
         </button>
-        <span className="flexItem mx-2 text-base">
+
+        <span className="mx-2 text-(--color-text-muted) select-none">
           {currentPage} / {totalPages}
         </span>
+
         <button
-          className="border border-transparent bg-transparent text-base hover:cursor-pointer disabled:cursor-not-allowed"
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
           下一页
         </button>
+
         <button
-          className="border border-transparent bg-transparent text-base hover:cursor-pointer disabled:cursor-not-allowed"
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
           onClick={() => handleSetPage(totalPages)}
           disabled={currentPage === totalPages}
         >

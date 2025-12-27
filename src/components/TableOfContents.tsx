@@ -118,7 +118,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
       <aside
         ref={desktopContainerRef}
         {...rest}
-        className={classNames("hidden p-4 text-(--color-page-fg) md:block", className ?? "")}
+        className={classNames("hidden p-4 text-(--color-page-fg) lg:block", className ?? "")}
       >
         <div className="mb-3 flex items-center justify-between">
           <div className="text-base font-semibold tracking-tight">文章目录</div>
@@ -173,7 +173,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
         type="button"
         onClick={openMobileToc}
         className={classNames(
-          "fixed right-4 bottom-4 z-50 md:hidden",
+          "fixed right-4 bottom-4 z-50 lg:hidden",
           "rounded-sm border border-(--color-border-muted) shadow-sm",
           "bg-(--color-page-bg) p-1.5",
           "cursor-pointer opacity-90 hover:opacity-100",
@@ -185,7 +185,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
 
       {/* Mobile */}
       {mounted && (
-        <div className="fixed inset-0 z-50 md:hidden">
+        <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
             className={classNames(
