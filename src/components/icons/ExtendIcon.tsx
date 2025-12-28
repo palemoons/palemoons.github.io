@@ -1,11 +1,5 @@
-const ExtendIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={props.width ?? 16}
-    height={props.height ?? 16}
-    viewBox="0 0 1024 1024"
-    {...props}
-  >
+const ExtendIcon = ({ width = 16, height = 16, ...rest }: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 1024 1024" {...rest}>
     <path
       fill="currentColor"
       d="M515.04 557.19c-11.54 0-23.02-4.39-31.81-13.18L123.34 184.13c-17.57-17.57-17.57-46.04 0-63.61s46.04-17.57 63.61 0L515.04 448.6l328.08-328.08c17.57-17.57 46.04-17.57 63.61 0s17.57 46.04 0 63.61L546.84 544.01c-8.78 8.79-20.26 13.18-31.8 13.18z"

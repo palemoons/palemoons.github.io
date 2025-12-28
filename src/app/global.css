@@ -36,7 +36,6 @@
   --color-quote-bg: #eef2f7;
   --color-quote-fg: #6b7280;
 
-  --shadow-soft: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --layout-navbar-height: 56px;
 }
 
@@ -70,21 +69,11 @@
 }
 
 html {
-  min-height: 100%;
   background-color: var(--color-page-bg);
   color: var(--color-page-fg);
-  font-size: 1rem;
-  line-height: 28px;
   scroll-behavior: smooth;
 }
 
 html a {
   text-underline-offset: 3px;
-}
-
-body {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  margin: 0px;
 }

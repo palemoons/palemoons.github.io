@@ -1,9 +1,9 @@
+import { ITag } from "@/interfaces/post";
+import { countTags } from "@/lib/posts";
+import { Metadata } from "next";
 import Link from "next/link";
 import pinyin from "pinyin";
-import { countTags } from "@/lib/posts";
-import { ITag } from "@/interfaces/post";
-import classNames from "classnames";
-import { Metadata } from "next";
+
 import { SITE_CONFIG } from "../site.config";
 
 export const metadata: Metadata = {
@@ -15,34 +15,23 @@ export default function TagArchive() {
   const tagRecord = sortTagsByAlphabet(countTags());
   const tagList = Object.entries(tagRecord);
   return (
-    <div className="container">
-      <div className="mt-12 mb-6 text-[40px] font-semibold">文章分类</div>
-      {tagList.map((value, index) => {
-        const [letter, tags] = value;
-        if (tags.length)
-          return (
-            <div key={index.toString()}>
-              <div className="text-[32px] font-semibold">{letter.toUpperCase()}</div>
-              <div className="mt-2 pb-1">
-                {tags.map((tag, i) => (
-                  <Link
-                    href={`/tag/${tag.name}`}
-                    className={classNames(
-                      "flexItem mr-[6px] mb-1 rounded-[2px] bg-[color:var(--color-text-muted)] px-[6px] py-[3px] text-sm leading-[18px] text-[color:var(--color-inline-fg)] no-underline",
-                    )}
-                    key={i.toString()}
-                  >
-                    # {tag.name} ({tag.count})
-                  </Link>
-                ))}
-              </div>
-              {index < tagList.length - 1 && (
-                <hr className="mt-0 mb-4 border-none border-b border-b-[color:var(--color-quote-fg)]" />
-              )}
-            </div>
-          );
-        else return null;
-      })}
+    <div className="mx-auto max-w-2xl px-4">
+      <div className="mt-12 mb-6 text-4xl font-semibold">文章分类</div>
+      <div className="flex flex-wrap gap-x-4 gap-y-3">
+        {tagList.map((value) => {
+          const [_, tags] = value;
+          if (!tags.length) return null;
+          return tags.map((tag, i) => (
+            <Link
+              href={`/tag/${tag.name}`}
+              className="rounded-xs bg-(--color-tag-bg) px-2 py-0.5 text-xs leading-4 text-(--color-tag-fg) no-underline"
+              key={i.toString()}
+            >
+              # {tag.name} ({tag.count})
+            </Link>
+          ));
+        })}
+      </div>
     </div>
   );
 }

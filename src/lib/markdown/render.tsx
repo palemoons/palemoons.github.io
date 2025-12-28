@@ -3,8 +3,9 @@
 import CodeSnippet from "@/components/CodeSnippet";
 import { IUpdateBlockNode, IUpdateHintNode } from "@/interfaces/markdown";
 import classNames from "classnames";
+import katex from "katex";
+import "katex/dist/katex.min.css";
 import type { PhrasingContent, Root, RootContent } from "mdast";
-import Image from "next/image";
 import path from "path";
 import React from "react";
 import type { ReactNode } from "react";
@@ -299,6 +300,23 @@ const createRenderNode = (img_prefix: string) => {
             ))}
           </td>
         );
+
+      // remark-math
+      case "inlineMath": {
+        const html = katex.renderToString(node.value, {
+          displayMode: false,
+          throwOnError: false,
+        });
+        return <span dangerouslySetInnerHTML={{ __html: html }} />;
+      }
+
+      case "math": {
+        const html = katex.renderToString(node.value, {
+          displayMode: true,
+          throwOnError: false,
+        });
+        return <div dangerouslySetInnerHTML={{ __html: html }} />;
+      }
 
       // directive update
       case "updateBlock":

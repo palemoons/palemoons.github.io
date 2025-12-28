@@ -33,7 +33,7 @@ export function RssCopyLink({ siteUrl }: { siteUrl: string }) {
               setTipOpen(!tipOpen);
             }}
           >
-            <InfoIcon width={10} height={10} />
+            <InfoIcon width={10} height={10} className="fill-(--color-icon)" />
           </button>
 
           {tipOpen && (

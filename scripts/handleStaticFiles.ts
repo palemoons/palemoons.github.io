@@ -1,11 +1,10 @@
+import { IPostHeader } from "@/interfaces/post";
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
-import { IPostHeader } from "@/interfaces/post";
+import path from "path";
 
-const postsDir = path.join("/Users/palemoons/Documents/blog-content/");
-// const postsDir = path.join(process.cwd(), "_posts");
+const postsDir = path.join(process.cwd(), "_posts");
 const publicImgDir = path.join(process.cwd(), "public", "img");
 const nonPostDirs = ["about", "scripts", ".git"];
 

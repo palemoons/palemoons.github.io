@@ -23,22 +23,21 @@ export default function Page({ params }: { params: { category: string; slug: str
   return (
     <section className="flex justify-center gap-4">
       <div className="max-w-2xl px-4">
-        <div className="mt-14 mb-10 border-b border-b-(--color-quote-fg)">
+        <div className="mt-14 mb-10 border-b border-b-(--color-border-strong)">
           <h1 className="mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
             {title}
           </h1>
           <div className="mt-3 mb-3 text-sm leading-relaxed">{description}</div>
           {tags && (
-            <div className="mt-2 mb-4 flex flex-wrap">
+            <div className="mt-2 mb-2 flex flex-wrap gap-2">
               {tags.map((tag, index) => (
-                <div key={index.toString()} className="flexItem">
-                  <Link
-                    href={`/tag/${tag}`}
-                    className="mr-2 mb-2 rounded-xs bg-(--color-tag-bg) px-2 py-1 text-sm leading-4.5 text-(--color-text-muted) no-underline"
-                  >
-                    # {tag}
-                  </Link>
-                </div>
+                <Link
+                  href={`/tag/${tag}`}
+                  className="rounded-xs bg-(--color-tag-bg) px-1 py-0.5 text-xs leading-4 text-(--color-tag-fg) no-underline"
+                  key={index.toString()}
+                >
+                  # {tag}
+                </Link>
               ))}
             </div>
           )}

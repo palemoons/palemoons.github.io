@@ -180,7 +180,7 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
         )}
         aria-label="打开文章目录"
       >
-        <SettingIcon />
+        <SettingIcon className="fill-(--color-icon)" />
       </button>
 
       {/* Mobile */}
@@ -220,31 +220,35 @@ const TableOfContents = ({ tocContent, ...props }: Props): ReactNode => {
             </div>
 
             <div ref={mobileListRef} className="max-h-[60vh] overflow-auto px-4 pb-4">
-              <nav className="space-y-1">
-                {tocContent.map((value, index) => (
-                  <div
-                    key={index.toString()}
-                    className={classNames(
-                      "flex items-start gap-2 text-sm leading-6",
-                      tocIndent[(value.lvl + 1) as 1 | 2 | 3 | 4 | 5 | 6],
-                    )}
-                  >
-                    <span className="py-1 opacity-60">{value.number}</span>
-                    <Link
-                      href={`#${value.slug}`}
-                      onClick={onClickItem}
+              {tocContent.length > 0 ? (
+                <nav className="space-y-1">
+                  {tocContent.map((value, index) => (
+                    <div
+                      key={index.toString()}
                       className={classNames(
-                        "block flex-1 truncate rounded-sm px-2 py-2",
-                        activeId === value.slug
-                          ? "toc-active underline decoration-(--color-link-underline) decoration-2 underline-offset-4 opacity-100"
-                          : "no-underline opacity-80 hover:opacity-100",
+                        "flex items-start gap-2 text-sm leading-6",
+                        tocIndent[(value.lvl + 1) as 1 | 2 | 3 | 4 | 5 | 6],
                       )}
                     >
-                      {value.content}
-                    </Link>
-                  </div>
-                ))}
-              </nav>
+                      <span className="py-1 opacity-60">{value.number}</span>
+                      <Link
+                        href={`#${value.slug}`}
+                        onClick={onClickItem}
+                        className={classNames(
+                          "block flex-1 truncate rounded-sm px-2 py-2",
+                          activeId === value.slug
+                            ? "toc-active underline decoration-(--color-link-underline) decoration-2 underline-offset-4 opacity-100"
+                            : "no-underline opacity-80 hover:opacity-100",
+                        )}
+                      >
+                        {value.content}
+                      </Link>
+                    </div>
+                  ))}
+                </nav>
+              ) : (
+                <div className="py-2 pl-4 text-sm leading-6 opacity-60">本文未划分章节</div>
+              )}
 
               <div className="mt-4 flex items-center gap-2 text-sm opacity-80">
                 <Link
