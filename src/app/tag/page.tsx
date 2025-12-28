@@ -1,10 +1,9 @@
+import { ITag } from "@/interfaces/post";
+import { countTags } from "@/lib/posts";
+import { Metadata } from "next";
 import Link from "next/link";
 import pinyin from "pinyin";
-import { countTags } from "@/lib/posts";
-import { ITag } from "@/interfaces/Post";
-import classNames from "classnames";
-import styles from "./page.module.css";
-import { Metadata } from "next";
+
 import { SITE_CONFIG } from "../site.config";
 
 export const metadata: Metadata = {
@@ -16,26 +15,23 @@ export default function TagArchive() {
   const tagRecord = sortTagsByAlphabet(countTags());
   const tagList = Object.entries(tagRecord);
   return (
-    <div className="container">
-      <div className={styles.siteTitle}>文章分类</div>
-      {tagList.map((value, index) => {
-        const [letter, tags] = value;
-        if (tags.length)
-          return (
-            <div key={index.toString()}>
-              <div className={styles.tagLetter}>{letter.toUpperCase()}</div>
-              <div className={styles.tagContainer}>
-                {tags.map((tag, i) => (
-                  <Link href={`/tag/${tag.name}`} className={classNames(styles.tagLink, "flexItem")} key={i.toString()}>
-                    # {tag.name} ({tag.count})
-                  </Link>
-                ))}
-              </div>
-              {index < tagList.length - 1 && <hr className={styles.tagBorder} />}
-            </div>
-          );
-        else return null;
-      })}
+    <div className="mx-auto max-w-2xl px-4">
+      <div className="mt-12 mb-6 text-4xl font-semibold">文章分类</div>
+      <div className="flex flex-wrap gap-x-4 gap-y-3">
+        {tagList.map((value) => {
+          const [_, tags] = value;
+          if (!tags.length) return null;
+          return tags.map((tag, i) => (
+            <Link
+              href={`/tag/${tag.name}`}
+              className="rounded-xs bg-(--color-tag-bg) px-2 py-0.5 text-xs leading-4 text-(--color-tag-fg) no-underline"
+              key={i.toString()}
+            >
+              # {tag.name} ({tag.count})
+            </Link>
+          ));
+        })}
+      </div>
     </div>
   );
 }

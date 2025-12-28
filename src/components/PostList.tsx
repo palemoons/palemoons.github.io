@@ -1,25 +1,34 @@
 "use client";
 
+import { IPostHeader } from "@/interfaces/post";
+import classnames from "classnames";
 import Link from "next/link";
 import { useState } from "react";
-import { IPostHeader } from "@/interfaces/Post";
-import styles from "./PostList.module.css";
 
-const BlogList = ({ posts, size = -1 }: { posts: Array<{ key: string; value: IPostHeader }>; size?: number }) => {
-  const postsData = size > 0 ? posts.slice(0, size) : posts;
+interface BlogListProps {
+  posts: Array<{ key: string; value: IPostHeader }>;
+  size?: number;
+}
+const BlogList = ({ posts, size, ...componentProps }: BlogListProps & React.ComponentProps<"div">) => {
+  const { className, ...restProps } = componentProps;
+  const postsData = size ? posts.slice(0, size) : posts;
   return (
-    <div>
+    <div className={classnames("flex flex-col gap-6", className)} {...restProps}>
       {postsData.map((post, index) => {
         const { key: abbrlink, value: postInfo } = post;
-        const { title, category, date } = postInfo;
+        const { title, category, description, date } = postInfo;
         return (
-          <div key={index.toString()} className={styles.listItem}>
-            <Link href={`/${category}/${abbrlink}`} className={styles.href}>
-              {title}
-            </Link>
-            <Link href={`/${category}/${abbrlink}`} className={`${styles.href} ${styles.date}`}>
-              {date}
-            </Link>
+          <div className="flex flex-col gap-1" key={index.toString()}>
+            <div className="text-sm tabular-nums opacity-60">{date}</div>
+            <div>
+              <Link
+                href={`/${category}/${abbrlink}`}
+                className="text-base font-semibold no-underline hover:underline hover:decoration-(--color-link-underline)"
+              >
+                {title}
+              </Link>
+            </div>
+            {description && <p className="text-sm leading-6 opacity-70">{description}</p>}
           </div>
         );
       })}
@@ -58,27 +67,47 @@ const Pagination = ({
     <>
       <div>
         {splittedPosts.map(([year, posts], index) => (
-          <div key={index.toString()} className={styles.yearContainer}>
-            <div className={styles.yearTitle}>{year}</div>
+          <section key={index.toString()} className="mt-6 mb-12">
+            <h2 className="mb-4 text-3xl font-semibold">{year}</h2>
             <BlogList posts={posts} />
-          </div>
+          </section>
         ))}
       </div>
 
-      <div className={styles.pageSetter}>
-        <button onClick={() => handleSetPage(1)} disabled={currentPage === 1}>
+      <div className="flex items-center justify-center gap-2 text-sm">
+        <button
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
+          onClick={() => handleSetPage(1)}
+          disabled={currentPage === 1}
+        >
           首页
         </button>
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+
+        <button
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
           上一页
         </button>
-        <span className="flexItem">
+
+        <span className="mx-2 text-(--color-text-muted) select-none">
           {currentPage} / {totalPages}
         </span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+
+        <button
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
           下一页
         </button>
-        <button onClick={() => handleSetPage(totalPages)} disabled={currentPage === totalPages}>
+
+        <button
+          className="rounded-sm px-2 py-1 text-(--color-page-fg) enabled:cursor-pointer enabled:hover:bg-(--color-hover) disabled:opacity-40"
+          onClick={() => handleSetPage(totalPages)}
+          disabled={currentPage === totalPages}
+        >
           末页
         </button>
       </div>

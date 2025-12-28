@@ -1,19 +1,19 @@
+import { IPostHeader } from "@/interfaces/post";
 import fs from "fs";
-import path from "path";
 import matter from "gray-matter";
 import yaml from "js-yaml";
-import { IPostHeader } from "@/interfaces/Post";
+import path from "path";
 
 const postsDir = path.join(process.cwd(), "_posts");
 const publicImgDir = path.join(process.cwd(), "public", "img");
-const nonPostDirs = ["about", "scripts"];
+const nonPostDirs = ["about", "scripts", ".git"];
 
 const ONLY_STRING_SCHEMA = new yaml.Schema({
   explicit: [
-    new yaml.Type('tag:yaml.org,2002:str', {
-      kind: 'scalar',
+    new yaml.Type("tag:yaml.org,2002:str", {
+      kind: "scalar",
       resolve: () => true,
-      construct: (data) => (data != null ? data.toString() : ''),
+      construct: (data) => (data != null ? data.toString() : ""),
     }),
   ],
 });
@@ -21,8 +21,7 @@ const ONLY_STRING_SCHEMA = new yaml.Schema({
 const customMatter = (content: string) =>
   matter(content, {
     engines: {
-      yaml: (str: string) =>
-        yaml.load(str, { schema: ONLY_STRING_SCHEMA }) as Record<string, any>,
+      yaml: (str: string) => yaml.load(str, { schema: ONLY_STRING_SCHEMA }) as Record<string, any>,
     },
   });
 
@@ -36,13 +35,13 @@ categories.forEach((category) => {
   const postYearFolders = fs.readdirSync(path.join(postsDir, category));
   postYearFolders.forEach((yearFolder) => {
     const postFolder = path.join(postsDir, category, yearFolder);
-    const posts = fs.readdirSync(postFolder);
+    const posts = fs.readdirSync(postFolder).filter((f) => !f.startsWith("."));
     posts.forEach((post) => {
       const fullPath = path.join(postFolder, post, `${post}.md`);
       const fileContents = fs.readFileSync(fullPath, "utf8");
       // Use gray-matter to parse the post metadata section
       const { data: frontMatter } = customMatter(fileContents);
-      
+
       const postInfo: IPostHeader = {
         title: frontMatter.title,
         category: category,

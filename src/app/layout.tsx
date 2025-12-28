@@ -1,27 +1,34 @@
 "use client";
 
-import { ThemeProvider } from "next-themes";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { SVGProps, useEffect, useState, useRef } from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
-import classNames from "classnames";
-import InfoIcon from "@/components/icons/InfoIcon";
 import icoPath from "@/app/favicon.ico";
 import { SITE_CONFIG } from "@/app/site.config";
-import styles from "./layout.module.css";
+import { RssCopyLink } from "@/components/RssCopyLink";
+import MenuIcon from "@/components/icons/MenuIcon";
+import MoonIcon from "@/components/icons/MoonIcon";
+import SunIcon from "@/components/icons/SunIcon";
+import { codeFont, textFont } from "@/lib/font";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import classNames from "classnames";
+import { ThemeProvider } from "next-themes";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+
 import "./global.css";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
-      <body>
+    <html
+      lang="zh-CN"
+      suppressHydrationWarning
+      className={`${textFont.variable} ${codeFont.variable} ${textFont.className}`}
+    >
+      <body className="flex min-h-screen flex-col">
         <ThemeProvider defaultTheme="system">
           <Navbar />
-          <main className="main">{children}</main>
+          <main className="flex-1">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
@@ -56,26 +63,24 @@ const Navbar = () => {
     };
   }, []);
   return (
-    <div className={styles.navi}>
-      <div className="h-full container flex">
-        <Link href="/" className="flexItem url">
-          <Image
-            src={icoPath}
-            priority={false}
-            width={32}
-            height={32}
-            alt={SITE_CONFIG.title}
-            className={styles.siteIcon}
-          />
-          <div className={styles.title}>{SITE_CONFIG.title}</div>
+    <div className="sticky top-0 z-1 h-(--layout-navbar-height) w-full border-b border-(--color-surface-border) bg-(--color-page-bg)/95 backdrop-blur">
+      <div className="mx-auto flex h-full items-center justify-between px-4">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 rounded-md px-2 py-1 no-underline hover:bg-(--color-hover)"
+        >
+          <Image src={icoPath} priority={false} width={24} height={24} alt={SITE_CONFIG.title} />
+          <div className="text-base font-semibold tracking-tight">{SITE_CONFIG.title}</div>
         </Link>
-        <nav className={styles.links}>
+        <nav className="hidden h-full flex-1 items-center justify-end gap-1 md:flex">
           {navItems.map((navItem, i) => (
-            <div className="flexItem" key={i.toString()}>
+            <div key={i.toString()}>
               <Link
-                className={classNames(styles.linkItem, {
-                  [styles.selected]: currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url,
-                })}
+                className={classNames(
+                  "rounded-md px-3 py-2 text-sm font-medium text-(--color-page-fg) no-underline hover:bg-(--color-hover)",
+                  currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url &&
+                    "font-semibold text-(--color-page-fg) underline decoration-(--color-link-underline) decoration-1",
+                )}
                 href={`/${navItem.url}`}
                 key={i.toString()}
               >
@@ -84,104 +89,104 @@ const Navbar = () => {
             </div>
           ))}
         </nav>
-        <div className={styles.menuWrapper}>
-          <div className={styles.menu} onClick={onToggleMenu} ref={menuRef}>
-            <div className={classNames(styles.menuIcon, "flexItem", "w-full", "h-full")}>
-              <MenuIcon />
-            </div>
-            {isOpen && (
-              <div className={styles.menuList}>
-                {navItems.map((navItem, i) => (
-                  <div key={i.toString()} className={styles.menuItem}>
-                    <Link href={`/${navItem.url}`} className="url">
+
+        <div className="flex-1 text-right md:hidden" ref={menuRef}>
+          {/* Trigger */}
+          <button
+            type="button"
+            onClick={onToggleMenu}
+            aria-label="打开菜单"
+            aria-expanded={isOpen}
+            className="inline-flex items-center justify-center rounded-md p-2 hover:cursor-pointer hover:bg-(--color-hover)"
+          >
+            <MenuIcon width={20} height={20} className="fill-(--color-icon)" />
+          </button>
+
+          {/* Expand area (below navbar) */}
+          {isOpen && (
+            <div className="absolute top-full right-0 left-0 z-1 border-b border-(--color-surface-border) bg-(--color-page-bg)/95 backdrop-blur">
+              <div className="flex flex-col gap-1 px-4 py-2">
+                {navItems.map((navItem, i) => {
+                  const href = `/${navItem.url}`;
+                  const active = currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url;
+
+                  return (
+                    <Link
+                      key={i.toString()}
+                      href={href}
+                      onClick={() => setIsOpen(false)}
+                      className={classNames(
+                        "rounded-md px-3 py-2 text-sm no-underline hover:bg-(--color-hover)",
+                        active && "font-semibold underline decoration-(--color-link-underline) decoration-1",
+                      )}
+                    >
                       {navItem.name}
                     </Link>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-        <div className={classNames(styles.darkIcon, "flexItem", "h-full")} onClick={onUpdateTheme}>
-          <div className="flexItem">{mounted && (theme === "light" ? <MoonIcon /> : <SunIcon />)}</div>
-        </div>
+
+        <button
+          type="button"
+          aria-label="主题切换"
+          onClick={onUpdateTheme}
+          className="cursor-pointer rounded-md p-2 hover:bg-(--color-hover)"
+        >
+          {mounted &&
+            (theme === "light" ? (
+              <MoonIcon width={20} height={20} className="fill-(--color-icon)" />
+            ) : (
+              <SunIcon width={20} height={20} className="fill-(--color-icon)" />
+            ))}
+        </button>
       </div>
     </div>
   );
 };
 
 const Footer = () => {
-  const [isCopy, setIsCopy] = useState<Boolean>(false);
-
-  const onCopy = () => {
-    if (isCopy) return;
-    setIsCopy(true);
-    setTimeout(() => setIsCopy(false), 1200);
-  };
   return (
-    <footer className={styles.footer}>
-      <div className="container">
-        <div className={styles.footerContainer}>
+    <footer className="mx-4 mt-4 border-t border-(--color-border-strong) py-4 text-sm font-extralight">
+      <div className="flex flex-col items-center gap-1 sm:gap-0">
+        <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
           <span>
-            © 2020-{new Date().getFullYear()} by {SITE_CONFIG.author}
+            © 2020 - {new Date().getFullYear()} by {SITE_CONFIG.author}
           </span>
-          <span className={styles.dot}> · </span>
-          <CopyToClipboard text={`${SITE_CONFIG.siteUrl}/feed`}>
-            <div className={styles.rss}>
-              <span className={styles.rssIcon}>
-                <InfoIcon aria-describedby="icon-desc" />
-                <span role="tooltip" id="icon-desc">
-                  受GitHub Pages限制
-                  <br />
-                  无法在线查看XML文件
-                  <br />
-                  点击链接以复制
-                </span>
-              </span>
-              <span className={styles.rssLink} onClick={onCopy}>
-                {isCopy ? "已复制!" : "RSS Feed"}
-              </span>
-            </div>
-          </CopyToClipboard>
+          <span className="hidden sm:inline">·</span>
+          <RssCopyLink siteUrl={SITE_CONFIG.siteUrl} />
         </div>
-      </div>
-      <div className={styles.footerContainer}>
-        <span>
-          Built on{" "}
-          <Link href="https://nextjs.org/" target="_blank">
-            NextJS
-          </Link>
-        </span>
-        <span className={styles.dot}> · </span>
-        <span>
-          Powered by{" "}
-          <Link href={SITE_CONFIG.siteRepo} target="_blank">
-            Github
-          </Link>
-        </span>
-        <span className={styles.dot}> · </span>
-        <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
+
+        <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
+          <span>
+            Built on{" "}
+            <Link
+              href="https://nextjs.org/"
+              target="_blank"
+              className="underline decoration-(--color-link-underline) decoration-1 underline-offset-3 hover:decoration-[1.5px]"
+            >
+              NextJS
+            </Link>
+          </span>
+          <span className="hidden sm:inline">·</span>
+          <span>
+            Powered by{" "}
+            <Link
+              href={SITE_CONFIG.siteRepo}
+              target="_blank"
+              className="underline decoration-(--color-link-underline) decoration-1 underline-offset-3 hover:decoration-[1.5px]"
+            >
+              GitHub
+            </Link>
+          </span>
+          <span className="hidden sm:inline">·</span>
+          <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
+        </div>
       </div>
     </footer>
   );
 };
-
-const MoonIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path d="M10 6a8 8 0 0 0 11.955 6.956C21.474 18.03 17.2 22 12 22 6.477 22 2 17.523 2 12c0-5.2 3.97-9.474 9.044-9.955A7.963 7.963 0 0 0 10 6zm-6 6a8 8 0 0 0 8 8 8.006 8.006 0 0 0 6.957-4.045c-.316.03-.636.045-.957.045-5.523 0-10-4.477-10-10 0-.321.015-.64.045-.957A8.006 8.006 0 0 0 4 12zm14.164-9.709L19 2.5v1l-.836.209a2 2 0 0 0-1.455 1.455L16.5 6h-1l-.209-.836a2 2 0 0 0-1.455-1.455L13 3.5v-1l.836-.209A2 2 0 0 0 15.29.836L15.5 0h1l.209.836a2 2 0 0 0 1.455 1.455zm5 5L24 7.5v1l-.836.209a2 2 0 0 0-1.455 1.455L21.5 11h-1l-.209-.836a2 2 0 0 0-1.455-1.455L18 8.5v-1l.836-.209a2 2 0 0 0 1.455-1.455L20.5 5h1l.209.836a2 2 0 0 0 1.455 1.455z" />
-  </svg>
-);
-
-const SunIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" {...props}>
-    <path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85 1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z" />
-  </svg>
-);
-
-const MenuIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={200} height={200} viewBox="0 0 1024 1024" {...props}>
-    <path d="M904 160H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8zm0 624H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8zm0-312H120c-4.4 0-8 3.6-8 8v64c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-64c0-4.4-3.6-8-8-8z" />
-  </svg>
-);
 
 export default RootLayout;

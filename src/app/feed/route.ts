@@ -1,6 +1,6 @@
 import { Feed } from "feed";
 import { getSortedPosts } from "@/lib/posts";
-import { IPostHeader } from "@/interfaces/Post";
+import { IPostHeader } from "@/interfaces/post";
 import { SITE_CONFIG } from "@/app/site.config";
 
 export async function GET() {
