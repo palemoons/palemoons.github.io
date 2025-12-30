@@ -4,7 +4,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import React from "react";
 
-import { SITE_CONFIG } from "./site.config";
+import SITE_CONFIG from "./site.config";
 
 export const metadata: Metadata = {
   title: SITE_CONFIG.title,

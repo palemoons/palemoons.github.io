@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { SITE_CONFIG } from "../site.config";
+import SITE_CONFIG from "../site.config";
 
 export const metadata: Metadata = {
   title: `关于 | ${SITE_CONFIG.title}`,

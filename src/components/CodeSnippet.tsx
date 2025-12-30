@@ -1,6 +1,6 @@
 "use client";
 
-import { SITE_CONFIG } from "@/app/site.config";
+import SITE_CONFIG from "@/app/site.config";
 import ClipBoardIcon from "@/components/icons/ClipBoardIcon";
 import CopyIcon from "@/components/icons/CopyIcon";
 import ExtendIcon from "@/components/icons/ExtendIcon";

@@ -1,4 +1,4 @@
-import { SITE_CONFIG } from "./site.config";
+import SITE_CONFIG from "./site.config";
 
 export default function NotFound() {
   return (

@@ -1,11 +1,11 @@
-const isProd = process.env.NODE_ENV === "production";
+import requireEnv from "@/lib/env";
 
-export const SITE_CONFIG = {
+const SITE_CONFIG = {
   title: "Palemoons' Archive",
   description: "Palemoons' personal website",
   author: "Palemoons",
   generator: "Next.js",
-  siteUrl: isProd ? "https://blog.palemoons.tech" : "http://localhost:3000",
+  siteUrl: requireEnv("SITE_URL"),
   siteRepo: "https://github.com/palemoons/palemoons.github.io",
   commentRepo: "palemoons/blog-comment",
   landingPageListSize: 5,
@@ -23,3 +23,5 @@ export const SITE_CONFIG = {
     { name: "关于本站", url: "about" },
   ],
 };
+
+export default SITE_CONFIG;

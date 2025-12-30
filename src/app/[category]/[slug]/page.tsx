@@ -1,4 +1,4 @@
-import { SITE_CONFIG } from "@/app/site.config";
+import SITE_CONFIG from "@/app/site.config";
 import Comments from "@/components/Comments";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 import TableOfContents from "@/components/TableOfContents";

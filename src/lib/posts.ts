@@ -1,10 +1,11 @@
-import fs from "fs";
-import path from "path";
-import yaml from "js-yaml";
-import matter from "gray-matter";
 import { IPost, IPostHeader, ITag } from "@/interfaces/post";
+import requireEnv from "@/lib/env";
+import fs from "fs";
+import matter from "gray-matter";
+import yaml from "js-yaml";
+import path from "path";
 
-const postsDir = path.join(process.cwd(), "_posts");
+const postsDir = path.resolve(process.cwd(), requireEnv("POSTS_DIR"));
 const publicDir = path.join(process.cwd(), "public");
 const postIndexPath = path.join(publicDir, "postIndex.json");
 

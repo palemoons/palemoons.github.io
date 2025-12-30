@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import pinyin from "pinyin";
 
-import { SITE_CONFIG } from "../site.config";
+import SITE_CONFIG from "../site.config";
 
 export const metadata: Metadata = {
   title: `文章分类 | ${SITE_CONFIG.title}`,

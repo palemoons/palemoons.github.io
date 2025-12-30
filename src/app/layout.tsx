@@ -1,7 +1,7 @@
 "use client";
 
 import icoPath from "@/app/favicon.ico";
-import { SITE_CONFIG } from "@/app/site.config";
+import SITE_CONFIG from "@/app/site.config";
 import { RssCopyLink } from "@/components/RssCopyLink";
 import MenuIcon from "@/components/icons/MenuIcon";
 import MoonIcon from "@/components/icons/MoonIcon";

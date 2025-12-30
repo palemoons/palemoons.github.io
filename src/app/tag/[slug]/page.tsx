@@ -1,4 +1,4 @@
-import { SITE_CONFIG } from "@/app/site.config";
+import SITE_CONFIG from "@/app/site.config";
 import { Pagination } from "@/components/PostList";
 import { countTags, getPostsByTag } from "@/lib/posts";
 import { notFound } from "next/navigation";

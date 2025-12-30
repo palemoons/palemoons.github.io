@@ -1,6 +1,6 @@
 "use client";
 
-import { SITE_CONFIG } from "@/app/site.config";
+import SITE_CONFIG from "@/app/site.config";
 import Spinner from "@/components/icons/SpinnerIcon";
 import classNames from "classnames";
 import { useTheme } from "next-themes";

@@ -1,4 +1,4 @@
-import { SITE_CONFIG } from "./site.config";
+import SITE_CONFIG from "./site.config";
 import { getPostBySlug, getSortedPosts } from "@/lib/posts";
 
 export default function sitemap() {
