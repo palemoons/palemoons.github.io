@@ -1,11 +1,12 @@
 import { IPost, IPostHeader, ITag } from "@/interfaces/post";
-import requireEnv from "@/lib/env";
 import fs from "fs";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 import path from "path";
 
-const postsDir = path.resolve(process.cwd(), requireEnv("POSTS_DIR"));
+const rawPostsDir = process.env.POSTS_DIR;
+if (!rawPostsDir) throw new Error("POSTS_DIR is not defined in environment variables");
+const postsDir = path.resolve(process.cwd(), rawPostsDir);
 const publicDir = path.join(process.cwd(), "public");
 const postIndexPath = path.join(publicDir, "postIndex.json");
 

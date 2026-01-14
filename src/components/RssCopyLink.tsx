@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useId, useMemo, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-export function RssCopyLink({ siteUrl }: { siteUrl: string }) {
+export default function RssCopyLink({ siteUrl }: { siteUrl: string }) {
   const tooltipId = useId();
   const [isCopy, setIsCopy] = useState<Boolean>(false);
   const [tipOpen, setTipOpen] = useState(false);

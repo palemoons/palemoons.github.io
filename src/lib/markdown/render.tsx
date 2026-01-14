@@ -133,7 +133,6 @@ const createRenderNode = (img_prefix: string) => {
 
         const className = classNames(
           "my-4 ml-6 space-y-1.5",
-          "text-[var(--color-page-fg)]",
           "marker:text-[var(--color-text-muted)]",
           node.ordered ? "list-decimal" : "list-disc",
         );

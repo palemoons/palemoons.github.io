@@ -1,11 +1,10 @@
-import requireEnv from "@/lib/env";
 
 const SITE_CONFIG = {
   title: "Palemoons' Archive",
   description: "Palemoons' personal website",
   author: "Palemoons",
   generator: "Next.js",
-  siteUrl: requireEnv("SITE_URL"),
+  siteUrl: process.env.SITE_URL,
   siteRepo: "https://github.com/palemoons/palemoons.github.io",
   commentRepo: "palemoons/blog-comment",
   landingPageListSize: 5,

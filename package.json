@@ -1,6 +1,6 @@
 {
   "name": "palemoons.github.io",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "tsx scripts/handleStaticFiles.ts && next dev",
