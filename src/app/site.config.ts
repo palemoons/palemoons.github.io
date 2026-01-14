@@ -4,7 +4,7 @@ const SITE_CONFIG = {
   description: "Palemoons' personal website",
   author: "Palemoons",
   generator: "Next.js",
-  siteUrl: process.env.SITE_URL,
+  siteUrl: process.env.SITE_URL ?? "unknown",
   siteRepo: "https://github.com/palemoons/palemoons.github.io",
   commentRepo: "palemoons/blog-comment",
   landingPageListSize: 5,
