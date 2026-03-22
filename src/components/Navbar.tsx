@@ -41,10 +41,7 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-1 h-(--layout-navbar-height) w-full border-b border-(--color-surface-border) bg-(--color-page-bg)/95 backdrop-blur">
       <div className="mx-auto flex h-full items-center justify-between px-4">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 rounded-md px-2 py-1 no-underline hover:bg-(--color-hover)"
-        >
+        <Link href="/" className="inline-flex items-center gap-2 rounded-md px-2 py-1 no-underline">
           <Image src={icoPath} priority={false} width={24} height={24} alt={SITE_CONFIG.title} />
           <div className="text-base font-semibold tracking-tight">{SITE_CONFIG.title}</div>
         </Link>
@@ -53,7 +50,7 @@ const Navbar = () => {
             <div key={i.toString()}>
               <Link
                 className={classNames(
-                  "rounded-md px-3 py-2 text-sm font-medium text-(--color-page-fg) no-underline hover:bg-(--color-hover)",
+                  "rounded-md px-3 py-2 text-sm font-medium text-(--color-page-fg) no-underline",
                   currentPath.replace(/^\/([^\/]*).*$/, "$1") === navItem.url &&
                     "font-semibold text-(--color-page-fg) underline decoration-(--color-link-underline) decoration-1",
                 )}
@@ -73,7 +70,7 @@ const Navbar = () => {
             onClick={onToggleMenu}
             aria-label="打开菜单"
             aria-expanded={isOpen}
-            className="inline-flex items-center justify-center rounded-md p-2 hover:cursor-pointer hover:bg-(--color-hover)"
+            className="inline-flex items-center justify-center rounded-md p-2 hover:cursor-pointer"
           >
             <MenuIcon width={20} height={20} className="fill-(--color-icon)" />
           </button>
@@ -92,7 +89,7 @@ const Navbar = () => {
                       href={href}
                       onClick={() => setIsOpen(false)}
                       className={classNames(
-                        "rounded-md px-3 py-2 text-sm no-underline hover:bg-(--color-hover)",
+                        "rounded-md px-3 py-2 text-sm no-underline",
                         active && "font-semibold underline decoration-(--color-link-underline) decoration-1",
                       )}
                     >
@@ -109,7 +106,7 @@ const Navbar = () => {
           type="button"
           aria-label="主题切换"
           onClick={onUpdateTheme}
-          className="cursor-pointer rounded-md p-2 hover:bg-(--color-hover)"
+          className="cursor-pointer rounded-md p-2"
         >
           {mounted &&
             (theme === "light" ? (
