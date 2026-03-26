@@ -3,8 +3,11 @@ import { getSortedPosts } from "@/lib/posts";
 import { IPostHeader } from "@/interfaces/post";
 import SITE_CONFIG from "@/app/site.config";
 
+export const dynamic = "force-static";
+
 export async function GET() {
-  const posts: Array<{ key: string; value: IPostHeader }> = getSortedPosts();
+  const posts: Array<{ key: string; value: IPostHeader }> = await getSortedPosts();
+  
   const feed = new Feed({
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,

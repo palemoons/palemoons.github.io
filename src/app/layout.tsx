@@ -12,6 +12,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       lang="zh-CN"
       suppressHydrationWarning
       className={`${textFont.variable} ${codeFont.variable} ${textFont.className}`}
+      data-scroll-behavior="smooth"
     >
       <body className="flex min-h-screen flex-col">
         <ThemeProvider defaultTheme="system">

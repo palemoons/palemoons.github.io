@@ -6,100 +6,107 @@ import path from "path";
 
 const rawPostsDir = process.env.POSTS_DIR;
 if (!rawPostsDir) throw new Error("POSTS_DIR is not defined in environment variables");
+
 const postsDir = path.resolve(process.cwd(), rawPostsDir);
 const publicDir = path.join(process.cwd(), "public");
 const postIndexPath = path.join(publicDir, "postIndex.json");
 
-export const getSortedPosts = () => {
-  const posts = Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<[string, IPostHeader]>;
-  return posts
-    .map((value) => ({ key: value[0], value: value[1] }))
-    .sort((a, b) => (a.value.date < b.value.date ? 1 : -1));
-};
+// cache postIndex
 
-export const getPostBySlug = (slug: string) => {
-  const abbrlinkMap = new Map(Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8")))) as Map<
-    string,
-    IPostHeader
-  >;
-  const realSlug = abbrlinkMap.get(slug);
+let cachedPostIndex: Record<string, IPostHeader> | null = null;
+
+async function loadPostIndex(): Promise<Record<string, IPostHeader>> {
+  // use cache
+  if (cachedPostIndex) return cachedPostIndex;
+  const raw = await fs.promises.readFile(postIndexPath, "utf-8");
+  const parsed = JSON.parse(raw);
+  cachedPostIndex = parsed;
+  return parsed;
+}
+
+export async function getSortedPosts() {
+  const postIndex = await loadPostIndex();
+  return Object.entries(postIndex)
+    .map(([key, value]) => ({ key, value }))
+    .sort((a, b) => (a.value.date < b.value.date ? 1 : -1));
+}
+
+export async function getPostBySlug(slug: string): Promise<IPost | null> {
+  const postIndex = await loadPostIndex();
+
+  const realSlug = postIndex[slug];
   if (!realSlug) return null;
+
   const year = new Date(realSlug.date).getFullYear();
   const fullPath = path.join(postsDir, realSlug.category, year.toString(), realSlug.fname, `${realSlug.fname}.md`);
-  const fileContents = fs.readFileSync(fullPath, "utf8");
-  const { data, content } = matter(fileContents);
+
+  const fileContents = await fs.promises.readFile(fullPath, "utf8");
+
+  const { data, content } = customMatter(fileContents);
   const { tags, ...rest } = data;
-  const frontMatter = {
-    tags: tags?.split(",").map((value: string) => value.trim()),
+
+  return {
+    tags: tags?.split(",").map((v: string) => v.trim()),
     category: realSlug.category,
     fname: realSlug.fname,
     ...rest,
-  };
+    content,
+  } as IPost;
+}
 
-  return { ...frontMatter, content } as IPost;
-};
+export async function getPostsByCategory(category: string) {
+  const postIndex = await loadPostIndex();
 
-export const getPostsByCategory = (category: string) => {
-  const postArray = Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<[string, IPostHeader]>;
-  const posts = postArray.filter((value) => {
-    const postInfo = value[1];
-    return postInfo.category === category;
-  });
-  return posts
-    .map((value) => ({ key: value[0], value: value[1] }))
+  return Object.entries(postIndex)
+    .filter(([_, post]) => post.category === category)
+    .map(([key, value]) => ({ key, value }))
     .sort((a, b) => (a.value.date < b.value.date ? 1 : -1));
-};
+}
 
-export const getPostsByTag = (tag: string) => {
-  const postIndexArray = Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<
-    [string, IPostHeader]
-  >;
-  const posts = postIndexArray.filter((value) => {
-    const postInfo = value[1] as IPostHeader;
-    return postInfo.tags.includes(tag);
-  });
-  return posts
-    .map((value) => ({ key: value[0], value: value[1] }))
+export async function getPostsByTag(tag: string) {
+  const postIndex = await loadPostIndex();
+
+  return Object.entries(postIndex)
+    .filter(([_, post]) => post.tags.includes(tag))
+    .map(([key, value]) => ({ key, value }))
     .sort((a, b) => (a.value.date < b.value.date ? 1 : -1));
-};
+}
 
-export const countTags = () => {
-  const postIndex = new Map(
-    Object.entries(JSON.parse(fs.readFileSync(postIndexPath, "utf-8"))) as Array<[string, IPostHeader]>,
-  );
+export async function countTags(): Promise<ITag[]> {
+  const postIndex = await loadPostIndex();
+
   const tagCount: Record<string, number> = {};
 
-  for (let postInfo of postIndex.values()) {
-    const tags = postInfo.tags;
-    tags?.forEach((tag) => {
-      if (tag in tagCount) tagCount[tag] += 1;
-      else tagCount[tag] = 1;
+  Object.values(postIndex).forEach((post) => {
+    post.tags?.forEach((tag) => {
+      tagCount[tag] = (tagCount[tag] || 0) + 1;
     });
-  }
+  });
 
-  const tags: Array<ITag> = Object.entries(tagCount).map(([name, count]) => ({
+  return Object.entries(tagCount).map(([name, count]) => ({
     name,
     count,
   }));
-  return tags;
-};
+}
 
 // Get About content
-export const getAboutPost = () => {
+export async function getAboutPost(): Promise<IPost | null> {
   const fpath = path.join(postsDir, "about", "about.md");
 
-  if (!fs.existsSync(fpath)) return null;
+  try {
+    const post = await fs.promises.readFile(fpath, "utf-8");
+    const { data, content } = customMatter(post);
 
-  const post = fs.readFileSync(fpath, "utf-8");
-  const { data, content } = customMatter(post);
-
-  return {
-    fname: "about",
-    category: "about",
-    ...data,
-    content,
-  } as IPost;
-};
+    return {
+      fname: "about",
+      category: "about",
+      ...data,
+      content,
+    } as IPost;
+  } catch {
+    return null;
+  }
+}
 
 const customMatter = (content: string) =>
   matter(content, {

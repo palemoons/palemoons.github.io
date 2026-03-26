@@ -2,7 +2,6 @@ import { BlogList } from "@/components/PostList";
 import { getPostsByCategory } from "@/lib/posts";
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
-import React from "react";
 
 import SITE_CONFIG from "./site.config";
 
@@ -28,9 +27,10 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const Index = () => {
-  const recentNotes = getPostsByCategory("note");
-  const recentArticles = getPostsByCategory("article");
+const Index = async () => {
+  const recentNotes = await getPostsByCategory("note");
+  const recentArticles = await getPostsByCategory("article");
+
   return (
     <section className="m-auto max-w-2xl px-4">
       <div

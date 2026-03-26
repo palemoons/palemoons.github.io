@@ -10,16 +10,31 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export default function Page({ params }: { params: { category: string; slug: string } }) {
-  const post = getPostBySlug(params.slug);
-  if (!post) return notFound();
+export const dynamic = "force-static";
+
+type PageProps = {
+  params: Promise<{
+    category: string;
+    slug: string;
+  }>;
+};
+
+export default async function Page({ params }: PageProps) {
+  const { category, slug } = await params;
+
+  const post = await getPostBySlug(slug);
+  if (!post || post.category !== category) {
+    notFound();
+  }
+
   const { content, ...frontMatter } = post;
   const { title, description, tags } = frontMatter;
-  const abbrlink = params.slug;
+  const abbrlink = slug;
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
   const ast = compileMarkdown(content);
   const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
+
   return (
     <section className="flex justify-center gap-4">
       <div className="max-w-2xl px-4">
@@ -78,21 +93,32 @@ export default function Page({ params }: { params: { category: string; slug: str
   );
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const post = getPostBySlug(params.slug);
-  if (!post) return notFound();
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { category, slug } = await params;
 
-  return { title: `${post.title} | ${SITE_CONFIG.title}`, description: post.title };
+  const post = await getPostBySlug(slug);
+  if (!post || post.category !== category) {
+    notFound();
+  }
+
+  return {
+    title: `${post.title} | ${SITE_CONFIG.title}`,
+    description: post.title,
+  };
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   const categories = SITE_CONFIG.categories;
-  return categories
-    .map((category) =>
-      getPostsByCategory(category.url).map((post) => ({
+
+  const allParams = await Promise.all(
+    categories.map(async (category) => {
+      const posts = await getPostsByCategory(category.url);
+      return posts.map((post) => ({
         category: category.url,
         slug: post.key,
-      })),
-    )
-    .flat();
+      }));
+    }),
+  );
+
+  return allParams.flat();
 }

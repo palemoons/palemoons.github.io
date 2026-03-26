@@ -6,6 +6,12 @@ import classNames from "classnames";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 
+type UtterancesTheme = "github-light" | "github-dark";
+
+function getUtterancesTheme(theme?: string): UtterancesTheme {
+  return theme === "light" ? "github-light" : "github-dark";
+}
+
 export default function Comments(props: React.HTMLAttributes<HTMLDivElement>) {
   const { theme } = useTheme();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -15,28 +21,44 @@ export default function Comments(props: React.HTMLAttributes<HTMLDivElement>) {
     const element = containerRef.current;
     if (!element) return;
 
+    const utterancesTheme = getUtterancesTheme(theme);
+    const iframe = element.querySelector("iframe.utterances-frame") as HTMLIFrameElement | null;
+
+    if (iframe) {
+      iframe.contentWindow?.postMessage(
+        {
+          type: "set-theme",
+          theme: utterancesTheme,
+        },
+        "https://utteranc.es",
+      );
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
-    element.replaceChildren();
+    // element.replaceChildren();
 
-    const s = document.createElement("script");
-    s.src = "https://utteranc.es/client.js";
-    s.setAttribute("repo", SITE_CONFIG.commentRepo);
-    s.setAttribute("issue-term", "pathname");
-    s.setAttribute("theme", theme === "light" ? "github-light" : "github-dark");
-    s.setAttribute("crossorigin", "anonymous");
-    s.async = true;
+    const scriptElement = document.createElement("script");
+    scriptElement.src = "https://utteranc.es/client.js";
+    scriptElement.async = true;
+    scriptElement.crossOrigin = "anonymous";
+    scriptElement.setAttribute("repo", SITE_CONFIG.commentRepo);
+    scriptElement.setAttribute("issue-term", "pathname");
+    scriptElement.setAttribute("theme", "github-light");
+    scriptElement.setAttribute("theme", utterancesTheme);
 
-    const observer = new MutationObserver(() => {
-      const iframe = element.querySelector("iframe.utterances-frame");
-      if (iframe) {
+    scriptElement.onload = (ev) => {
+      const commentsContainer = document.getElementById("comments-container") as HTMLIFrameElement | null;
+      if (commentsContainer && commentsContainer.children[1]) {
+        // for some reason it shows two comment elements, this is to hide second one.
+        const duplicatedIframe = commentsContainer.children[1] as HTMLIFrameElement;
+        duplicatedIframe.style.display = "none";
         setLoading(false);
-        observer.disconnect();
       }
-    });
+    };
 
-    observer.observe(element, { childList: true, subtree: true });
-
-    return () => observer.disconnect();
+    element.appendChild(scriptElement);
   }, [theme]);
 
   return (
@@ -44,7 +66,6 @@ export default function Comments(props: React.HTMLAttributes<HTMLDivElement>) {
       <div className="pb-2 text-2xl">Comments</div>
 
       <div className="relative">
-        {/* Spinner overlay */}
         <div
           className={classNames(
             "pointer-events-none absolute inset-0 flex h-64 items-center justify-center transition-opacity duration-300",
@@ -54,23 +75,7 @@ export default function Comments(props: React.HTMLAttributes<HTMLDivElement>) {
           <Spinner width={24} height={24} className="stroke-(--color-icon)" />
         </div>
 
-        {/* Utterances container */}
-        <div
-          className="min-h-64 w-full"
-          ref={(element) => {
-            if (!element) return;
-
-            const scriptElement = document.createElement("script");
-            scriptElement.setAttribute("src", "https://utteranc.es/client.js");
-            scriptElement.setAttribute("repo", SITE_CONFIG.commentRepo);
-            scriptElement.setAttribute("issue-term", "pathname");
-            scriptElement.setAttribute("theme", theme === "light" ? "github-light" : "github-dark");
-            scriptElement.setAttribute("crossorigin", "anonymous");
-            scriptElement.setAttribute("async", "true");
-
-            element.replaceChildren(scriptElement);
-          }}
-        />
+        <div ref={containerRef} className="min-h-64 w-full" id="comments-container" />
       </div>
     </section>
   );

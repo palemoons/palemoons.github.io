@@ -6,26 +6,30 @@ import { Itoc } from "@/interfaces/post";
 import { compileMarkdown } from "@/lib/markdown/parse";
 import buildHeadingTree from "@/lib/markdown/toc";
 import { getAboutPost } from "@/lib/posts";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import SITE_CONFIG from "../site.config";
+
+export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: `关于 | ${SITE_CONFIG.title}`,
   description: "About the blog and author.",
 };
 
-export default function AboutPage() {
-  const post = getAboutPost();
-  if (!post) return notFound();
+export default async function AboutPage() {
+  const post = await getAboutPost();
+  if (!post) notFound();
+
   const { content, ...frontMatter } = post;
   const createdDate = new Date(frontMatter.date);
   const updatedDate = frontMatter.updated ? new Date(frontMatter.updated) : null;
+
   const ast = compileMarkdown(content);
   const tocContent = buildHeadingTree(ast).filter((header: Itoc) => header.lvl <= SITE_CONFIG.tocMaxHeader);
+
   return (
     <section className="flex justify-center gap-4">
       <div className="max-w-2xl px-4">
@@ -53,9 +57,11 @@ export default function AboutPage() {
             <Image src={avatar} width={128} height={128} alt="avatar" className="rounded-full" />
           </div>
         </div>
+
         <MarkdownRenderer>{ast}</MarkdownRenderer>
         <Comments id="toc-comments" />
       </div>
+
       <TableOfContents
         tocContent={tocContent}
         className="sticky top-(--layout-navbar-height) h-[calc(100vh-var(--layout-navbar-height))] w-70 shrink-0 overflow-x-hidden overflow-y-auto pt-8"
