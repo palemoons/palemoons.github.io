@@ -67,7 +67,7 @@ export async function getPostsByTag(tag: string) {
   const postIndex = await loadPostIndex();
 
   return Object.entries(postIndex)
-    .filter(([_, post]) => post.tags.includes(tag))
+    .filter(([_, post]) => post.tags?.includes(tag))
     .map(([key, value]) => ({ key, value }))
     .sort((a, b) => (a.value.date < b.value.date ? 1 : -1));
 }

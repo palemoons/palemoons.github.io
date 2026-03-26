@@ -14,27 +14,28 @@ type PageProps = {
 export default async function TagPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const posts = await getPostsByTag(decodeURI(slug));
+  const posts = await getPostsByTag(decodeURIComponent(slug));
   if (posts.length <= 0) return notFound();
   return (
     <div className="mx-auto max-w-2xl px-4">
-      <h1 className="mt-12 mb-3 text-4xl font-semibold">#{decodeURI(slug)}</h1>
+      <h1 className="mt-12 mb-3 text-4xl font-semibold">#{decodeURIComponent(slug)}</h1>
       <div className="mb-8 text-sm leading-relaxed text-(--color-text-muted)">共归档 {posts.length} 篇文章。</div>
       <Pagination posts={posts} pageSize={SITE_CONFIG.categoryPaginationSize} />
     </div>
   );
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
   return {
-    title: `${decodeURI(params.slug)} | ${SITE_CONFIG.title}`,
-    description: `Posts including tag ${decodeURI(params.slug)}`,
+    title: `${decodeURIComponent(slug)} | ${SITE_CONFIG.title}`,
+    description: `Posts including tag ${decodeURIComponent(slug)}`,
   };
 }
 
 export async function generateStaticParams() {
   const tags = await countTags();
   return tags.map((tag) => ({
-    slug: tag.name,
+    slug: encodeURIComponent(tag.name),
   }));
 }

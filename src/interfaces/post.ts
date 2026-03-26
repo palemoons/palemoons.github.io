@@ -1,22 +1,18 @@
-interface IPost {
+type BasePost = {
   fname: string; // Filename, without ".md"
-  category: string;
   title: string;
   date: string;
+  category: string;
+  tags?: string[];
+  description: string;
   updated?: string;
-  tags?: Array<string>;
   abbrlink?: string;
-  description: string;
-  content: string;
-}
+};
 
-interface IPostHeader {
-  fname: string;
-  title: string;
-  date: string;
-  category: string;
-  tags: Array<string>;
-  description: string;
+type IPostHeader = BasePost;
+
+interface IPost extends BasePost {
+  content: string;
 }
 
 interface ITag {
