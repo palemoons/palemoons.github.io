@@ -1,15 +1,12 @@
 import { IPostHeader } from "@/interfaces/post";
 import { isDraftPost } from "@/lib/draft";
-import { loadEnvConfig } from "@next/env";
+import { getPostsDir } from "@/lib/env.server";
 import fs from "fs";
 import matter from "gray-matter";
 import yaml from "js-yaml";
 import path from "path";
 
-loadEnvConfig(process.cwd());
-const rawPostsDir = process.env.POSTS_DIR;
-if (!rawPostsDir) throw new Error("POSTS_DIR is not defined in environment variables");
-const postsDir = path.resolve(process.cwd(), rawPostsDir);
+const postsDir = path.resolve(process.cwd(), getPostsDir());
 
 const publicImgDir = path.join(process.cwd(), "public", "img");
 const nonPostDirs = ["about", "scripts", ".git"];

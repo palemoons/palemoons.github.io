@@ -5,7 +5,12 @@ import Link from "next/link";
 
 import RssCopyLink from "./RssCopyLink";
 
-const Footer = () => {
+type FooterProps = {
+  buildDate: string;
+  siteUrl: string;
+};
+
+const Footer = ({ buildDate, siteUrl }: FooterProps) => {
   return (
     <footer className="mx-4 mt-4 border-t border-(--color-border-strong) py-4 text-sm font-extralight">
       <div className="flex flex-col items-center gap-1 sm:gap-0">
@@ -14,7 +19,7 @@ const Footer = () => {
             © 2020 - {new Date().getFullYear()} by {SITE_CONFIG.author}
           </span>
           <span className="hidden sm:inline">·</span>
-          <RssCopyLink siteUrl={SITE_CONFIG.siteUrl} />
+          <RssCopyLink siteUrl={siteUrl} />
         </div>
 
         <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
@@ -40,7 +45,7 @@ const Footer = () => {
             </Link>
           </span>
           <span className="hidden sm:inline">·</span>
-          <span>Deployed on {SITE_CONFIG.buildTime.toISOString().split("T")[0]}</span>
+          <span>Deployed on {buildDate}</span>
         </div>
       </div>
     </footer>
