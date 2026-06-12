@@ -1,9 +1,12 @@
 import { BlogList } from "@/components/PostList";
+import { getSiteUrl } from "@/lib/env.server";
 import { getPostsByCategory } from "@/lib/posts";
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 
 import SITE_CONFIG from "./site.config";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: SITE_CONFIG.title,
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
       "application/rss+xml": [
         {
           title: SITE_CONFIG.title,
-          url: `${SITE_CONFIG.siteUrl}/feed.xml`,
+          url: `${siteUrl}/feed.xml`,
         },
       ],
     },
