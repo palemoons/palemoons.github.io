@@ -1,13 +1,13 @@
-import { Feed } from "feed";
-import { getSortedPosts } from "@/lib/posts";
-import { IPostHeader } from "@/interfaces/post";
 import SITE_CONFIG from "@/app/site.config";
+import { IPostHeader } from "@/interfaces/post";
+import { getSortedPosts } from "@/lib/posts";
+import { Feed } from "feed";
 
 export const dynamic = "force-static";
 
 export async function GET() {
   const posts: Array<{ key: string; value: IPostHeader }> = await getSortedPosts();
-  
+
   const feed = new Feed({
     title: SITE_CONFIG.title,
     description: SITE_CONFIG.description,
@@ -29,9 +29,9 @@ export async function GET() {
     });
   });
 
-  return new Response(feed.atom1(), {
+  return new Response(feed.rss2(), {
     headers: {
-      "Content-Type": "application/atom+xml; charset=utf-8",
+      "Content-Type": "application/rss+xml; charset=utf-8",
     },
   });
 }

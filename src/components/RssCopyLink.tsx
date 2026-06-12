@@ -7,7 +7,7 @@ export default function RssCopyLink({ siteUrl }: { siteUrl: string }) {
   const tooltipId = useId();
   const [isCopy, setIsCopy] = useState<Boolean>(false);
   const [tipOpen, setTipOpen] = useState(false);
-  const rssUrl = useMemo(() => `${siteUrl}/feed`, [siteUrl]);
+  const rssUrl = useMemo(() => `${siteUrl}/feed.xml`, [siteUrl]);
 
   const onCopy = () => {
     if (isCopy) return;

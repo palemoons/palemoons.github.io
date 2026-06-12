@@ -14,7 +14,7 @@ export const metadata: Metadata = {
       "application/rss+xml": [
         {
           title: SITE_CONFIG.title,
-          url: `${SITE_CONFIG.siteUrl}/feed`,
+          url: `${SITE_CONFIG.siteUrl}/feed.xml`,
         },
       ],
     },
