@@ -7,6 +7,7 @@ type BasePost = {
   description: string;
   updated?: string;
   abbrlink?: string;
+  draft?: boolean;
 };
 
 type IPostHeader = BasePost;

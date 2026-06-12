@@ -1,4 +1,5 @@
 import { IPost, IPostHeader, ITag } from "@/interfaces/post";
+import { isDraftPost } from "@/lib/draft";
 import fs from "fs";
 import matter from "gray-matter";
 import yaml from "js-yaml";
@@ -43,6 +44,7 @@ export async function getPostBySlug(slug: string): Promise<IPost | null> {
   const fileContents = await fs.promises.readFile(fullPath, "utf8");
 
   const { data, content } = customMatter(fileContents);
+  if (isDraftPost((data as Record<string, unknown>).draft)) return null;
   const { tags, ...rest } = data;
 
   return {

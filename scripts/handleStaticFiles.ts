@@ -1,4 +1,5 @@
 import { IPostHeader } from "@/interfaces/post";
+import { isDraftPost } from "@/lib/draft";
 import { loadEnvConfig } from "@next/env";
 import fs from "fs";
 import matter from "gray-matter";
@@ -46,6 +47,7 @@ categories.forEach((category) => {
       const fileContents = fs.readFileSync(fullPath, "utf8");
       // Use gray-matter to parse the post metadata section
       const { data: frontMatter } = customMatter(fileContents);
+      if (isDraftPost(frontMatter.draft)) return;
 
       const postInfo: IPostHeader = {
         title: frontMatter.title,

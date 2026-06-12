@@ -17,6 +17,8 @@ type MarkdownNode = RootContent | IUpdateBlockNode | IUpdateHintNode;
 
 const renderMarkdownAst = (root: Root, img_prefix: string): ReactNode => {
   const renderNode = createRenderNode(img_prefix);
+  const contentNodes = root.children.filter((node) => node.type !== "footnoteDefinition");
+  const footnoteNodes = root.children.filter((node) => node.type === "footnoteDefinition");
 
   return (
     <article
@@ -33,15 +35,95 @@ const renderMarkdownAst = (root: Root, img_prefix: string): ReactNode => {
         "[&>pre]:my-6 [&>table]:my-6",
       )}
     >
-      {root.children.map((node, index) => (
+      {contentNodes.map((node, index) => (
         <React.Fragment key={index}>{renderNode(node)}</React.Fragment>
       ))}
+      {footnoteNodes.length > 0 && (
+        <section
+          className={classNames(
+            "mt-10 border-t border-(--color-surface-border) pt-6 text-sm text-(--color-page-fg)",
+            "[&_ol]:ml-6 [&_ol]:list-decimal [&_ol]:space-y-3",
+            "[&_li>p]:my-2",
+          )}
+          aria-label="脚注"
+        >
+          <ol>
+            {footnoteNodes.map((node, index) => (
+              <React.Fragment key={index}>{renderNode(node)}</React.Fragment>
+            ))}
+          </ol>
+        </section>
+      )}
     </article>
   );
 };
 
 const createRenderNode = (img_prefix: string) => {
   const slugger = createSlugger();
+  const footnoteRefCount = new Map<string, number>();
+
+  const normalizeFootnoteId = (identifier: string) => identifier.toLowerCase();
+
+  const renderParagraph = (node: { children: PhrasingContent[] }, trailingContent?: ReactNode): ReactNode => {
+    const hasBlockImage = node.children.some((c) => c.type === "image");
+    if (hasBlockImage)
+      return (
+        <div>
+          {renderPhrasingChildren(node.children)}
+          {trailingContent}
+        </div>
+      );
+
+    return (
+      <p>
+        {renderPhrasingChildren(node.children)}
+        {trailingContent}
+      </p>
+    );
+  };
+
+  const renderFootnoteBacklinks = (identifier: string, refCount: number): ReactNode => {
+    if (refCount <= 0) return null;
+
+    return Array.from({ length: refCount }).map((_, idx) => (
+      <a
+        key={idx}
+        href={`#fnref-${identifier}-${idx + 1}`}
+        className={classNames(
+          "text-xs underline decoration-(--color-link-underline) decoration-1 hover:decoration-[1.5px]",
+          idx === 0 ? "ml-2" : "ml-1",
+        )}
+        aria-label={`返回脚注引用 ${identifier}-${idx + 1}`}
+      >
+        ↩
+      </a>
+    ));
+  };
+
+  const renderFootnoteDefinitionChildren = (children: RootContent[], identifier: string, refCount: number): ReactNode => {
+    const lastParagraphIndex = children.reduce(
+      (lastIndex, child, index) => (child.type === "paragraph" ? index : lastIndex),
+      -1,
+    );
+
+    return children.map((child, index) => {
+      if (index === lastParagraphIndex && child.type === "paragraph") {
+        return <React.Fragment key={index}>{renderParagraph(child, renderFootnoteBacklinks(identifier, refCount))}</React.Fragment>;
+      }
+
+      if (lastParagraphIndex === -1 && index === children.length - 1) {
+        return (
+          <div key={index}>
+            {renderNode(child)}
+            <div className="mt-2">{renderFootnoteBacklinks(identifier, refCount)}</div>
+          </div>
+        );
+      }
+
+      return <React.Fragment key={index}>{renderNode(child)}</React.Fragment>;
+    });
+  };
+
   const renderNode = (node: MarkdownNode): ReactNode => {
     switch (node.type) {
       //inline elements
@@ -89,11 +171,27 @@ const createRenderNode = (img_prefix: string) => {
       case "break":
         return <br />;
 
+      case "footnoteReference": {
+        const identifier = normalizeFootnoteId((node as { identifier: string }).identifier);
+        const count = (footnoteRefCount.get(identifier) ?? 0) + 1;
+        footnoteRefCount.set(identifier, count);
+        const refId = `fnref-${identifier}-${count}`;
+        return (
+          <sup id={refId} className="mx-0.5 text-xs align-super">
+            <a
+              href={`#fn-${identifier}`}
+              className="underline decoration-(--color-link-underline) decoration-1 hover:decoration-[1.5px]"
+              aria-label={`跳转到脚注 ${identifier}`}
+            >
+              [{identifier}]
+            </a>
+          </sup>
+        );
+      }
+
       // block elements
       case "paragraph": {
-        const hasBlockImage = node.children.some((c) => c.type === "image");
-        if (hasBlockImage) return <div>{renderPhrasingChildren(node.children)}</div>;
-        else return <p>{renderPhrasingChildren(node.children)}</p>;
+        return renderParagraph(node);
       }
 
       case "heading": {
@@ -183,6 +281,16 @@ const createRenderNode = (img_prefix: string) => {
 
       case "thematicBreak":
         return <hr />;
+
+      case "footnoteDefinition": {
+        const identifier = normalizeFootnoteId((node as { identifier: string }).identifier);
+        const refCount = footnoteRefCount.get(identifier) ?? 0;
+        return (
+          <li id={`fn-${identifier}`} className="scroll-mt-(--layout-navbar-height)">
+            {renderFootnoteDefinitionChildren((node as { children: RootContent[] }).children, identifier, refCount)}
+          </li>
+        );
+      }
 
       case "html": {
         const raw = node.value.trim();
