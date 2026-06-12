@@ -16,7 +16,7 @@
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.1",
     "katex": "^0.16.27",
-    "next": "16.2.6",
+    "next": "16.2.9",
     "next-themes": "^0.3.0",
     "pinyin": "^4.0.0-alpha.2",
     "postcss": "^8.5.10",
@@ -42,11 +42,16 @@
     "@types/react-dom": "^18.3.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@types/rss": "^0.0.32",
-    "eslint": "^9.39.1",
-    "eslint-config-next": "16.0.7",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "16.2.9",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
+  },
+  "overrides": {
+    "gray-matter": {
+      "js-yaml": "3.14.2"
+    }
   }
 }
