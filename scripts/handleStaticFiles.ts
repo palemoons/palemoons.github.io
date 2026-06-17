@@ -3,12 +3,14 @@ import { isDraftPost } from "@/lib/draft";
 import { getPostsDir } from "@/lib/env.server";
 import fs from "fs";
 import matter from "gray-matter";
+import { imageSize } from "image-size";
 import yaml from "js-yaml";
 import path from "path";
 
 const postsDir = path.resolve(process.cwd(), getPostsDir());
 
 const publicImgDir = path.join(process.cwd(), "public", "img");
+const imageMetaPath = path.join(process.cwd(), "public", "imageMeta.json");
 const nonPostDirs = ["about", "scripts", ".git"];
 
 const ONLY_STRING_SCHEMA = new yaml.Schema({
@@ -61,7 +63,7 @@ categories.forEach((category) => {
         const ext = path.extname(file);
         if ([".jpg", ".png", ".jpeg", ".webp", ".gif"].includes(ext)) {
           const postImgDir = path.join(publicImgDir, frontMatter.abbrlink);
-          if (!fs.existsSync(postImgDir)) fs.mkdirSync(postImgDir);
+          if (!fs.existsSync(postImgDir)) fs.mkdirSync(postImgDir, { recursive: true });
           const originalFilePath = path.join(postFolder, post, file);
           const destinationPath = path.join(postImgDir, file);
           fs.copyFileSync(originalFilePath, destinationPath);
@@ -71,3 +73,22 @@ categories.forEach((category) => {
   });
 });
 fs.writeFileSync(path.join(process.cwd(), "public/postIndex.json"), JSON.stringify(Object.fromEntries(postIndex)));
+const imageMeta: Record<string, { width: number; height: number }> = {};
+const imageFiles = fs.readdirSync(publicImgDir, { recursive: true }).filter((entry) => {
+  const fullPath = path.join(publicImgDir, entry.toString());
+  return fs.lstatSync(fullPath).isFile() && [".jpg", ".png", ".jpeg", ".webp", ".gif"].includes(path.extname(fullPath));
+});
+
+imageFiles.forEach((entry) => {
+  const filePath = path.join(publicImgDir, entry.toString());
+  const dimensions = imageSize(fs.readFileSync(filePath));
+
+  if (dimensions.width && dimensions.height) {
+    imageMeta[path.posix.join("/img", entry.toString().split(path.sep).join(path.posix.sep))] = {
+      width: dimensions.width,
+      height: dimensions.height,
+    };
+  }
+});
+
+fs.writeFileSync(imageMetaPath, JSON.stringify(imageMeta, null, 2));

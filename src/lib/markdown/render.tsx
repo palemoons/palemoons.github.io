@@ -1,7 +1,7 @@
-"use client";
-
 import CodeSnippet from "@/components/CodeSnippet";
+import MarkdownImage from "@/components/MarkdownImage";
 import { IUpdateBlockNode, IUpdateHintNode } from "@/interfaces/markdown";
+import { getImageMeta } from "@/lib/image-meta";
 import classNames from "classnames";
 import katex from "katex";
 import "katex/dist/katex.min.css";
@@ -451,14 +451,11 @@ const createRenderNode = (img_prefix: string) => {
   };
 
   const renderImage = (src: string, alt?: string): ReactNode => {
+    const meta = getImageMeta(src);
+
     return (
       <figure className="my-6">
-        <img
-          src={src}
-          alt={alt ?? ""}
-          className="mx-auto max-w-full rounded-lg border border-(--color-surface-border)"
-          loading="lazy"
-        />
+        <MarkdownImage src={src} alt={alt ?? ""} width={meta?.width} height={meta?.height} />
         {alt && <figcaption className="mt-2 text-center text-sm opacity-70">{alt}</figcaption>}
       </figure>
     );
