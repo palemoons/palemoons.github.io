@@ -14,7 +14,7 @@
     "classnames": "^2.5.1",
     "feed": "^4.2.2",
     "gray-matter": "^4.0.3",
-    "js-yaml": "^4.2.0",
+    "js-yaml": "^4.3.1",
     "katex": "^0.16.27",
     "next": "16.2.9",
     "next-themes": "^0.3.0",
