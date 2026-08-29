@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Add SSH private keys for submodule repositories
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.SUBMODULE_CONTENT_PULL_KEY }}
 
@@ -77,7 +77,7 @@ jobs:
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Restore cache
         uses: actions/cache@v5
@@ -96,7 +96,7 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.runner }} run build
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
 
