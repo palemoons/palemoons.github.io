@@ -32,7 +32,7 @@ export default async function AboutPage() {
 
   return (
     <section className="flex justify-center gap-4">
-      <div className="max-w-2xl px-4">
+      <div className="min-w-0 max-w-2xl px-4">
         <div className="mt-14 mb-10 flex flex-col-reverse gap-4 border-b border-b-(--color-quote-fg) md:flex-row md:items-center md:justify-between">
           <div>
             <h1 className="mb-4 block text-4xl leading-12 font-semibold" id="toc-title">
