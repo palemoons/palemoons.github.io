@@ -36,7 +36,8 @@ function hasCodeBelow({ scrollHeight, clientHeight, scrollTop }: HTMLDivElement)
 
 const CodeSnippet = (params: { children: string; language?: string; className?: string }) => {
   const { children, language, className } = params;
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [fullscreenOpen, setFullscreenOpen] = useState(false);
   const [showBottomFade, setShowBottomFade] = useState(false);
@@ -54,6 +55,10 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
     dialogRef.current?.showModal();
     setFullscreenOpen(true);
   };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const scroll = scrollRef.current;
@@ -126,7 +131,7 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
     <SyntaxHighlighter
       PreTag="code"
       language={language}
-      style={theme === "light" ? github : atomOneDark}
+      style={mounted && resolvedTheme === "light" ? github : atomOneDark}
       showLineNumbers
       className={className}
       customStyle={{
@@ -135,13 +140,13 @@ const CodeSnippet = (params: { children: string; language?: string; className?: 
         overflowX: "visible",
         width: "max-content",
         minWidth: "100%",
-        fontSize: "0.875rem",
+        fontSize: "0.75rem",
         lineHeight: "1.6",
       }}
       codeTagProps={{
         style: {
           fontFamily: "var(--font-code)",
-          fontSize: "0.875rem",
+          fontSize: "0.75rem",
           lineHeight: "1.6",
         },
       }}
