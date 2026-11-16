@@ -195,7 +195,7 @@ const createRenderNode = (img_prefix: string) => {
       }
 
       case "heading": {
-        const Tag = (`h${node.depth}` as keyof JSX.IntrinsicElements) || "h6";
+        const Tag = (`h${node.depth}` as keyof React.JSX.IntrinsicElements) || "h6";
         const text = headingToText(node);
         const id = slugger(text);
         const headingClass = {
@@ -226,7 +226,7 @@ const createRenderNode = (img_prefix: string) => {
         );
 
       case "list": {
-        const ListTag = (node.ordered ? "ol" : "ul") as keyof JSX.IntrinsicElements;
+        const ListTag = (node.ordered ? "ol" : "ul") as keyof React.JSX.IntrinsicElements;
         const start = node.start ?? undefined;
 
         const className = classNames(
