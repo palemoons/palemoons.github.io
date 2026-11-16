@@ -72,6 +72,7 @@ html {
   background-color: var(--color-page-bg);
   color: var(--color-page-fg);
   scroll-behavior: smooth;
+  letter-spacing: 0.025rem;
 }
 
 html a {

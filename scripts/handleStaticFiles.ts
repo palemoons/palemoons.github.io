@@ -1,8 +1,8 @@
+import matter from "@11ty/gray-matter";
 import { IPostHeader } from "@/interfaces/post";
 import { isDraftPost } from "@/lib/draft";
 import { getPostsDir } from "@/lib/env.server";
 import fs from "fs";
-import matter from "gray-matter";
 import { imageSize } from "image-size";
 import yaml from "js-yaml";
 import path from "path";
@@ -44,7 +44,7 @@ categories.forEach((category) => {
     posts.forEach((post) => {
       const fullPath = path.join(postFolder, post, `${post}.md`);
       const fileContents = fs.readFileSync(fullPath, "utf8");
-      // Use gray-matter to parse the post metadata section
+      // Use @11ty/gray-matter to parse the post metadata section
       const { data: frontMatter } = customMatter(fileContents);
       if (isDraftPost(frontMatter.draft)) return;
 
